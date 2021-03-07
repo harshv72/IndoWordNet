@@ -5,7 +5,8 @@
   <title>Indowordnet</title>
   
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <script src="./assets/js/scripts.js"></script>
+  {% load static %}
+  <script src="{% static 'assets/js/scripts.js' %}"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
  
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.slim.min.js"></script>
@@ -17,7 +18,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="{% static 'styles.css' %}">
 </head>
 <body>
   <header id="home" class="position-static">
@@ -27,7 +28,7 @@
   
           <div class="navbar-header"> 
             <a class="navbar-brand" href="#" data-page="logo">
-              <img src="./assets/img/iitb_logo.png" alt="iitb_logo" height="75px" width="75px">
+              <img src="{% static 'assets/img/iitb_logo.png' %}" alt="iitb_logo" height="75px" width="75px">
             </a>
           </div>
     
