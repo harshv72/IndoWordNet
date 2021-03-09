@@ -20,7 +20,7 @@
   <link rel="stylesheet" href="{% static 'styles.css' %}">
 </head>
 
-test
+
 
 <body>
   {% include 'header.html' %}
@@ -29,25 +29,34 @@ test
   
   <div>&nbsp;</div>
   
+  <script>
+      var wordList = "{{wordList}}"
+      document.getElementById('synonyms').innerHTML = wordList;
+
+  </script>
   <div class="container-fluid synset">
     <table>
         <tbody>
             <tr class="border-bottom">
-                <th class="c" colspan="3">Number of Synset for "dog" : 5</th>
-                <th class="a" colspan="3">Showing 2/5</th>
+                <th  class="c" colspan="3">Number of Synset for "{{query}}" : {{length}}</th>
+                <th class="a" colspan="3">Showing 2/{{length}}</th>
             </tr>
             <tr class="border-bottom">
                 <td class="a">Synset</td>
                 <td class="b">:</td>
-                <td class="c">4385</td>
+                <td id="s_id" class="c">{{wordList.0.0}}</td>
                 <td class="a">POS</td>
                 <td class="b" style="width: 14px;">:</td>
-                <td class="c">NOUN</td>
+                <td id="pos" class="c">{{wordList.0.1}}</td>
             </tr>
             <tr class="border-bottom">
                 <td class="a">Synonyms</td>
                 <td class="b">:</td>
-                <td class="c" colspan="4">dog,  domestic_dog,  Canis_familiaris, </textarea></td>
+                <td id="synonyms" class="c" colspan="4">
+                    {% for i in wordList.0.2 %}
+                        <a method="GET" name="query" href="wordnet" value="{{i}}"> {{i}},</a>
+                    {% endfor %}
+                </td>
             </tr>
             <tr class="border-bottom">
                 <td class="a">Gloss</td>
