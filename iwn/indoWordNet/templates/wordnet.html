@@ -54,19 +54,19 @@
                 <td class="b">:</td>
                 <td id="synonyms" class="c" colspan="4">
                     {% for i in wordList.0.2 %}
-                        <a method="GET" name="query" href="wordnet" value="{{i}}"> {{i}},</a>
+                        <a href="wordnet?query={{i}}" > {{i}},</a>
                     {% endfor %}
                 </td>
             </tr>
             <tr class="border-bottom">
                 <td class="a">Gloss</td>
                 <td class="b">:</td>
-                <td class="c" colspan="4">a member of the genus Canis (probably descended from the common wolf) that has been domesticated by man since prehistoric times</td>
+                <td class="c" colspan="4">{{wordList.0.3}}</td>
             </tr>
             <tr class="border-bottom">
                 <td class="a">Example statement</td>
                 <td class="b">:</td>
-                <td class="c" colspan="4">occurs in many breeds</td>
+                <td class="c" colspan="4">{{wordList.0.4}}</td>
             </tr>
             <tr class="border-bottom">
                 <td class="a">Gloss in Hindi</td>

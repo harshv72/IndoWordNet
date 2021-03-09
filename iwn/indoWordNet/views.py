@@ -1,6 +1,8 @@
 from django.shortcuts import render
 from django.views.generic import TemplateView
 from indoWordNet.models import TblAllWords,TblAllSynset
+import base64
+
 # Create your views here.
 
 def index(request):
@@ -8,7 +10,6 @@ def index(request):
 
 def wordnet(request):
     word = str(request.GET.get('query'))
-    print(word)
     synset = TblAllWords.objects.filter(word = word)
     length = len(synset)
     wordList=[]
@@ -23,7 +24,12 @@ def wordnet(request):
         for j in synonuyms:
             s.append(str(j.word))
         l.append(s)
-        l.append(str(gloss.gloss))
+        a=gloss.gloss.decode("utf-8")
+        i=a.index(":")
+        gl=a[0:i]
+        ex=a[i+2:-1]
+        l.append(gl)
+        l.append(ex)
         wordList.append(l)
     return render(request,'wordnet.html', {'query':word,'length':length,'wordList':wordList})
 

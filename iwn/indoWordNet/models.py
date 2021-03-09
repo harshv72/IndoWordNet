@@ -645,7 +645,7 @@ class TblAllSynset(models.Model):
     synset_id = models.AutoField(primary_key=True)
     head = models.CharField(max_length=100, blank=True, null=True)
     synset = models.TextField(blank=True, null=True)
-    gloss = models.TextField(blank=True, null=True)
+    gloss = models.BinaryField(blank=True, null=True)
     category = models.CharField(max_length=100, blank=True, null=True)
 
     class Meta:
