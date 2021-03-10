@@ -52,23 +52,59 @@ function funct(w){
     search_button.focus();
 }
 
-var slider_img = document.querySelector('.slider-img');
-var images = ['a.jpg', 'b.jpg', 'c.jpg', 'd.jpg', 'e.jpg'];
-var i = 0;
-
-function prev(){
-	if(i <= 0) i = images.length;	
-	i--;
-	return setImg();			 
+synset = 1
+function next(l,wl){
+    document.getElementById('prev').style.display = null;
+    if(l==(synset+1)){
+        document.getElementById('next').style.display = "none"; 
+    }
+    num = document.getElementById('num').innerHTML = synset+1;
+    s_id = document.getElementById('s_id').innerHTML = wl[synset][0];
+    pos = document.getElementById('pos').innerHTML = wl[synset][1];
+    synonyms = document.getElementById('synonyms');
+    synonyms.innerHTML = "";
+    var i;
+    for (i=0; i <wl[synset][2].length;i++){   
+        var tag = document.createElement('a')
+        text = "wordnet?query="+wl[synset][2][i];
+        tag.setAttribute("href",text)
+        var textnode = document.createTextNode(wl[synset][2][i]+",")
+        tag.appendChild(textnode);
+        synonyms.appendChild(tag);
+    }
+   
+    
+    gloss = document.getElementById('gloss').innerHTML = wl[synset][3][0];
+    ex = document.getElementById('ex').innerHTML = wl[synset][3][1];
+    enGloss = document.getElementById('enGloss').innerHTML = wl[synset][4];   
+    synset = synset+1;
 }
 
-function next(){
-	if(i >= images.length-1) i = -1;
-	i++;
-	return setImg();			 
+function prev(l,wl){
+    
+    document.getElementById('next').style.display = null;
+    if((synset-2)==0){
+        document.getElementById('prev').style.display = "none"; 
+    }
+    synset = synset-1;
+    num = document.getElementById('num').innerHTML = synset;
+    s_id = document.getElementById('s_id').innerHTML = wl[synset-1][0];
+    pos = document.getElementById('pos').innerHTML = wl[synset-1][1];
+   
+    synonyms = document.getElementById('synonyms');
+    synonyms.innerHTML = "";
+    var i;
+    for (i=0; i <wl[synset-1][2].length;i++){   
+        var tag = document.createElement('a')
+        text = "wordnet?query="+wl[synset-1][2][i];
+        tag.setAttribute("href",text)
+        var textnode = document.createTextNode(wl[synset-1][2][i]+",")
+        tag.appendChild(textnode);
+        synonyms.appendChild(tag);
+    }
+   
+    gloss = document.getElementById('gloss').innerHTML = wl[synset-1][3][0];
+    ex = document.getElementById('ex').innerHTML = wl[synset-1][3][1];
+    enGloss = document.getElementById('enGloss').innerHTML = wl[synset-1][4];   
 }
 
-function setImg(){
-	return slider_img.setAttribute('src', "images/"+images[i]);
-	
-}

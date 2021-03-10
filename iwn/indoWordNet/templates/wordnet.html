@@ -29,17 +29,12 @@
   
   <div>&nbsp;</div>
   
-  <script>
-      var wordList = "{{wordList}}"
-      document.getElementById('synonyms').innerHTML = wordList;
-
-  </script>
   <div class="container-fluid synset">
-    <table>
+    <table style="width: 100%;">
         <tbody>
             <tr class="border-bottom">
                 <th  class="c" colspan="3">Number of Synset for "{{query}}" : {{length}}</th>
-                <th class="a" colspan="3">Showing 2/{{length}}</th>
+                <th class="a" colspan="3">Showing <b id="num">1</b>/{{length}}</th>
             </tr>
             <tr class="border-bottom">
                 <td class="a">Synset</td>
@@ -61,38 +56,38 @@
             <tr class="border-bottom">
                 <td class="a">Gloss</td>
                 <td class="b">:</td>
-                <td class="c" colspan="4">{{wordList.0.3}}</td>
+                <td id="gloss" class="c" colspan="4">{{wordList.0.3.0}}</td>
             </tr>
             <tr class="border-bottom">
                 <td class="a">Example statement</td>
                 <td class="b">:</td>
-                <td class="c" colspan="4">{{wordList.0.4}}</td>
-            </tr>
-            <tr class="border-bottom">
-                <td class="a">Gloss in Hindi</td>
-                <td class="b">:</td>
-                <td class="c" colspan="4">नर कुत्ता</td>
-            </tr>
+                <td id="ex" class="c" colspan="4">{{wordList.0.3.1}}</td>
+            </tr>     
             <tr >
                 <td class="a">Gloss in English</td>
                 <td class="b">:</td>
-                <td class="c" colspan="4">a member of the genus Canis (probably descended from the common wolf) that has been domesticated by man since prehistoric times; occurs in many breeds; "the dog barked all night"</td>
+                <td id="enGloss" class="c" colspan="4">{{wordList.0.4}}</td>
             </tr>
            
            
            
             <tr >
                 <td colspan="6" align="center">
-                    <button class="btn-sm  btn-primary">Previous</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <button class="btn-sm  btn-primary">&nbsp;&nbsp;&nbsp;Next&nbsp;&nbsp;&nbsp;    </button>
+                    {% if length == 1 %}
+                    {% else %}
+                        <button id="prev" class="btn-sm  btn-primary" onclick="prev({{length}},{{wordList}} );" style="display: none;">Previous</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <button id="next" class="btn-sm  btn-primary" onclick="next({{length}},{{wordList}} );">&nbsp;&nbsp;&nbsp;Next&nbsp;&nbsp;&nbsp;    </button>
+                    {% endif %}
                 </td>
             </tr>
         </tbody>    
-      </table>
-  </div>
-  
-  <div>&nbsp;</div>
+    </table> 
+        </div>
+        
 
+
+
+<div>&nbsp;</div>
   <div class="container-fluid data">
     <div class="row container-fluid">
         <div class="col-3 selector" >
