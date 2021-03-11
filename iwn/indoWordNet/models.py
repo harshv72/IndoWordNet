@@ -8,6 +8,16 @@
 from django.db import models
 
 
+class DjangoMigrations(models.Model):
+    app = models.CharField(max_length=255)
+    name = models.CharField(max_length=255)
+    applied = models.DateTimeField()
+
+    class Meta:
+        managed = False
+        db_table = 'django_migrations'
+
+
 class TblAdjectiveAlsoSee(models.Model):
     synset_id = models.IntegerField()
     also_see_id = models.IntegerField(blank=True, null=True)
@@ -642,10 +652,10 @@ class TblAdverbSenseNum(models.Model):
 
 
 class TblAllSynset(models.Model):
-    synset_id = models.AutoField(primary_key=True)
+    synset_id = models.IntegerField(primary_key=True)
     head = models.CharField(max_length=100, blank=True, null=True)
     synset = models.TextField(blank=True, null=True)
-    gloss = models.TextField(blank=True, null=True)
+    gloss = models.BinaryField(blank=True, null=True)
     category = models.CharField(max_length=100, blank=True, null=True)
 
     class Meta:
@@ -654,7 +664,7 @@ class TblAllSynset(models.Model):
 
 
 class TblAllWords(models.Model):
-    synset_id = models.IntegerField(primary_key = True)
+    synset_id = models.IntegerField(primary_key=True)
     word = models.CharField(max_length=100)
     pos = models.CharField(max_length=100)
     sense_num = models.IntegerField()
@@ -1611,3 +1621,333 @@ class TblVerbTroponymy(models.Model):
     class Meta:
         managed = False
         db_table = 'tbl_verb_troponymy'
+
+class EnglishHindiIdMapping(models.Model):
+    hindi_id = models.IntegerField(primary_key=True)
+    hindi_category = models.CharField(max_length=100, blank=True, null=True)
+    english_id = models.IntegerField(blank=True, null=True)
+    english_category = models.CharField(max_length=100, blank=True, null=True)
+    type_link = models.CharField(max_length=10, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'english_hindi_id_mapping'
+
+
+class EnglishSynsetData(models.Model):
+    synset_id = models.IntegerField(primary_key=True)
+    category = models.CharField(max_length=100)
+    synset_words = models.CharField(max_length=1000, blank=True, null=True)
+    gloss = models.CharField(max_length=1000, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'english_synset_data'
+        unique_together = (('synset_id', 'category'),)
+
+
+class EnglishSynsetData1(models.Model):
+    synset_id = models.IntegerField()
+    category = models.CharField(max_length=100)
+    synset_words = models.CharField(max_length=1000, blank=True, null=True)
+    gloss = models.CharField(max_length=1000, blank=True, null=True)
+    head = models.CharField(max_length=100, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'english_synset_data1'
+
+
+class IdMapping(models.Model):
+    mapping_id = models.AutoField(primary_key=True)
+    hindi_id = models.CharField(max_length=11)
+    hindi_category = models.CharField(max_length=20)
+    english_id = models.CharField(max_length=11)
+    english_category = models.CharField(max_length=20)
+    comments = models.CharField(max_length=4048, blank=True, null=True)
+    last_modified = models.DateTimeField()
+
+    class Meta:
+        managed = False
+        db_table = 'id_mapping'
+        unique_together = (('hindi_id', 'hindi_category', 'english_id', 'english_category'),)
+
+
+class IdMapping2(models.Model):
+    mapping_id = models.AutoField(primary_key=True)
+    hindi_id = models.CharField(max_length=11)
+    hindi_category = models.CharField(max_length=20)
+    english_id = models.CharField(max_length=11)
+    english_category = models.CharField(max_length=20)
+    comments = models.CharField(max_length=4048, blank=True, null=True)
+    last_modified = models.DateTimeField()
+
+    class Meta:
+        managed = False
+        db_table = 'id_mapping2'
+        unique_together = (('hindi_id', 'hindi_category', 'english_id', 'english_category'),)
+
+
+class TblAllAssameseSynsetData(models.Model):
+    synset_id = models.IntegerField(primary_key=True)
+    head = models.CharField(max_length=100, blank=True, null=True)
+    synset = models.TextField(blank=True, null=True)
+    gloss = models.TextField(blank=True, null=True)
+    category = models.CharField(max_length=100, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'tbl_all_assamese_synset_data'
+
+
+class TblAllBengaliSynsetData(models.Model):
+    synset_id = models.CharField(primary_key=True, max_length=11)
+    head = models.CharField(max_length=255, blank=True, null=True)
+    synset = models.TextField(blank=True, null=True)
+    gloss = models.TextField(blank=True, null=True)
+    category = models.CharField(max_length=100, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'tbl_all_bengali_synset_data'
+
+
+class TblAllBodoSynsetData(models.Model):
+    synset_id = models.IntegerField(primary_key=True)
+    head = models.CharField(max_length=100, blank=True, null=True)
+    synset = models.TextField(blank=True, null=True)
+    gloss = models.TextField(blank=True, null=True)
+    category = models.CharField(max_length=100, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'tbl_all_bodo_synset_data'
+
+
+class TblAllEnglishSynsetData(models.Model):
+    synset_id = models.IntegerField()
+    head = models.CharField(max_length=100, blank=True, null=True)
+    synset = models.CharField(max_length=1000, blank=True, null=True)
+    gloss = models.CharField(max_length=1000, blank=True, null=True)
+    category = models.CharField(max_length=100)
+
+    class Meta:
+        managed = False
+        db_table = 'tbl_all_english_synset_data'
+
+
+class TblAllGujaratiSynsetData(models.Model):
+    synset_id = models.IntegerField(primary_key=True)
+    head = models.CharField(max_length=100, blank=True, null=True)
+    synset = models.TextField(blank=True, null=True)
+    gloss = models.TextField(blank=True, null=True)
+    category = models.CharField(max_length=100, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'tbl_all_gujarati_synset_data'
+
+
+class TblAllHindiSynsetData(models.Model):
+    synset_id = models.IntegerField()
+    head = models.CharField(max_length=100, blank=True, null=True)
+    synset = models.TextField(blank=True, null=True)
+    gloss = models.TextField(blank=True, null=True)
+    category = models.CharField(max_length=100, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'tbl_all_hindi_synset_data'
+
+
+class TblAllHindiSynsetDataOld(models.Model):
+    synset_id = models.IntegerField()
+    head = models.CharField(max_length=100, blank=True, null=True)
+    synset = models.TextField(blank=True, null=True)
+    gloss = models.TextField(blank=True, null=True)
+    category = models.CharField(max_length=100, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'tbl_all_hindi_synset_data_old'
+
+
+class TblAllKannadaSynsetData(models.Model):
+    synset_id = models.IntegerField(primary_key=True)
+    head = models.CharField(max_length=100, blank=True, null=True)
+    synset = models.TextField(blank=True, null=True)
+    gloss = models.TextField(blank=True, null=True)
+    category = models.CharField(max_length=100, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'tbl_all_kannada_synset_data'
+
+
+class TblAllKashmiriSynsetData(models.Model):
+    synset_id = models.IntegerField(primary_key=True)
+    head = models.CharField(max_length=100, blank=True, null=True)
+    synset = models.TextField(blank=True, null=True)
+    gloss = models.TextField(blank=True, null=True)
+    category = models.CharField(max_length=100, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'tbl_all_kashmiri_synset_data'
+
+
+class TblAllKonkaniSynsetData(models.Model):
+    synset_id = models.IntegerField(primary_key=True)
+    head = models.CharField(max_length=100, blank=True, null=True)
+    synset = models.TextField(blank=True, null=True)
+    gloss = models.TextField(blank=True, null=True)
+    category = models.CharField(max_length=100, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'tbl_all_konkani_synset_data'
+
+
+class TblAllMalayalamSynsetData(models.Model):
+    synset_id = models.IntegerField(primary_key=True)
+    head = models.CharField(max_length=100, blank=True, null=True)
+    synset = models.TextField(blank=True, null=True)
+    gloss = models.TextField(blank=True, null=True)
+    category = models.CharField(max_length=100, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'tbl_all_malayalam_synset_data'
+
+
+class TblAllManipuriSynsetData(models.Model):
+    synset_id = models.IntegerField(primary_key=True)
+    head = models.CharField(max_length=100, blank=True, null=True)
+    synset = models.TextField(blank=True, null=True)
+    gloss = models.TextField(blank=True, null=True)
+    category = models.CharField(max_length=100, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'tbl_all_manipuri_synset_data'
+
+
+class TblAllMarathiSynsetData(models.Model):
+    synset_id = models.IntegerField()
+    head = models.CharField(max_length=100, blank=True, null=True)
+    synset = models.CharField(max_length=250, blank=True, null=True)
+    gloss = models.TextField(blank=True, null=True)
+    category = models.CharField(max_length=100, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'tbl_all_marathi_synset_data'
+
+
+class TblAllMeiteiSynsetData(models.Model):
+    synset_id = models.IntegerField(primary_key=True)
+    head = models.CharField(max_length=100, blank=True, null=True)
+    synset = models.TextField(blank=True, null=True)
+    gloss = models.TextField(blank=True, null=True)
+    category = models.CharField(max_length=100, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'tbl_all_meitei_synset_data'
+
+
+class TblAllNepaliSynsetData(models.Model):
+    synset_id = models.IntegerField(primary_key=True)
+    head = models.CharField(max_length=100, blank=True, null=True)
+    synset = models.TextField(blank=True, null=True)
+    gloss = models.TextField(blank=True, null=True)
+    category = models.CharField(max_length=100, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'tbl_all_nepali_synset_data'
+
+
+class TblAllOriyaSynsetData(models.Model):
+    synset_id = models.CharField(primary_key=True, max_length=11)
+    head = models.CharField(max_length=255, blank=True, null=True)
+    synset = models.TextField(blank=True, null=True)
+    gloss = models.TextField(blank=True, null=True)
+    category = models.CharField(max_length=100, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'tbl_all_oriya_synset_data'
+
+
+class TblAllPunjabiSynsetData(models.Model):
+    synset_id = models.IntegerField(primary_key=True)
+    head = models.CharField(max_length=100, blank=True, null=True)
+    synset = models.TextField(blank=True, null=True)
+    gloss = models.TextField(blank=True, null=True)
+    category = models.CharField(max_length=100, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'tbl_all_punjabi_synset_data'
+
+
+class TblAllSanskritSynsetData(models.Model):
+    synset_id = models.IntegerField(primary_key=True)
+    head = models.CharField(max_length=100, blank=True, null=True)
+    synset = models.TextField(blank=True, null=True)
+    gloss = models.TextField(blank=True, null=True)
+    category = models.CharField(max_length=100, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'tbl_all_sanskrit_synset_data'
+
+
+class TblAllSynsetData(models.Model):
+    language = models.CharField(db_column='Language', max_length=100, blank=True, null=True)  # Field name made lowercase.
+    synset_id = models.IntegerField()
+    head = models.CharField(max_length=100, blank=True, null=True)
+    synset = models.TextField(blank=True, null=True)
+    gloss = models.TextField(blank=True, null=True)
+    category = models.CharField(max_length=100, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'tbl_all_synset_data'
+
+
+class TblAllTamilSynsetData(models.Model):
+    synset_id = models.IntegerField(primary_key=True)
+    head = models.CharField(max_length=100, blank=True, null=True)
+    synset = models.TextField(blank=True, null=True)
+    gloss = models.TextField(blank=True, null=True)
+    category = models.CharField(max_length=100, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'tbl_all_tamil_synset_data'
+
+
+class TblAllTeluguSynsetData(models.Model):
+    synset_id = models.IntegerField(primary_key=True)
+    head = models.CharField(max_length=100, blank=True, null=True)
+    synset = models.TextField(blank=True, null=True)
+    gloss = models.TextField(blank=True, null=True)
+    category = models.CharField(max_length=100, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'tbl_all_telugu_synset_data'
+
+
+class TblAllUrduSynsetData(models.Model):
+    synset_id = models.IntegerField(primary_key=True)
+    head = models.CharField(max_length=100, blank=True, null=True)
+    synset = models.TextField(blank=True, null=True)
+    gloss = models.TextField(blank=True, null=True)
+    category = models.CharField(max_length=100, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'tbl_all_urdu_synset_data'
