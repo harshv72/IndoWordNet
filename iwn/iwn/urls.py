@@ -22,4 +22,5 @@ urlpatterns = [
     path('home',views.index,name='index'),
     path('home#contactUs',views.contactUs,name='contactUs'),
     path('home#feedBack',views.feedBack,name='feedBack'),
+    path('fetch_onto',views.onto,name='onto'),
 ]
