@@ -53,13 +53,15 @@ function funct(w){
 }
 
 synset = 1
-function next(l,wl){
+function next(l,wl)
+{
     document.getElementById('prev').style.display = null;
     if(l==(synset+1)){
         document.getElementById('next').style.display = "none"; 
     }
     num = document.getElementById('num').innerHTML = synset+1;
     s_id = document.getElementById('s_id').innerHTML = wl[synset][0];
+
     pos = document.getElementById('pos').innerHTML = wl[synset][1];
     synonyms = document.getElementById('synonyms');
     synonyms.innerHTML = "";
@@ -76,9 +78,55 @@ function next(l,wl){
     
     gloss = document.getElementById('gloss').innerHTML = wl[synset][3][0];
     ex = document.getElementById('ex').innerHTML = wl[synset][3][1];
-    enGloss = document.getElementById('enGloss').innerHTML = wl[synset][4];   
+    enGloss = document.getElementById('enGloss').innerHTML = wl[synset][4];
+    
+    $.ajax({
+        url: 'fetch_onto',
+        data: {
+          'synset_id': wl[synset][0]
+        },
+        dataType: 'json',
+        success: function (data) {
+          if (data) {
+            var data = JSON.parse(data);
+            console.log(data);
+            ontodata = document.getElementById('onto_data');
+            ontodata.innerHTML = "";
+            var i,j;
+            for (i=0; i <data.length;i++){  
+                var row = document.createElement('tr');
+                row.className = "border-bottom";
+         
+                for(j=0;j<3;j++){
+                    var cell = document.createElement('td');
+                    cell.className = "d";
+                    cell.style.fontWeight = "bold";
+                    switch(j){
+                        case 0:
+                            cell.style.color = "black";
+                            break;
+                        case 1:
+                            cell.style.color = "blue";
+                            break;
+                        case 2:
+                            cell.style.color = "green";
+                            break;
+                        default:
+                            cell.style.color = "black";
+                    }
+                    var text = document.createTextNode(data[i.toString()][j]);
+                    cell.appendChild(text);
+                    row.appendChild(cell);
+                }
+                ontodata.appendChild(row);
+            }
+          }
+        }
+      });
+
     synset = synset+1;
 }
+
 
 function prev(l,wl){
     
@@ -105,6 +153,51 @@ function prev(l,wl){
    
     gloss = document.getElementById('gloss').innerHTML = wl[synset-1][3][0];
     ex = document.getElementById('ex').innerHTML = wl[synset-1][3][1];
-    enGloss = document.getElementById('enGloss').innerHTML = wl[synset-1][4];   
+    enGloss = document.getElementById('enGloss').innerHTML = wl[synset-1][4];
+    
+    $.ajax({
+        url: 'fetch_onto',
+        data: {
+          'synset_id': wl[synset-1][0]
+        },
+        dataType: 'json',
+        success: function (data) {
+          if (data) {
+            var data = JSON.parse(data);
+            console.log(data);
+            ontodata = document.getElementById('onto_data');
+            ontodata.innerHTML = "";
+            var i,j;
+            for (i=0; i <data.length;i++){  
+                var row = document.createElement('tr');
+                row.className = "border-bottom";
+         
+                for(j=0;j<3;j++){
+                    var cell = document.createElement('td');
+                    cell.className = "d";
+                    cell.style.fontWeight = "bold";
+                    switch(j){
+                        case 0:
+                            cell.style.color = "black";
+                            break;
+                        case 1:
+                            cell.style.color = "blue";
+                            break;
+                        case 2:
+                            cell.style.color = "green";
+                            break;
+                        default:
+                            cell.style.color = "black";
+                    }
+                    var text = document.createTextNode(data[i.toString()][j]);
+                    cell.appendChild(text);
+                    row.appendChild(cell);
+                }
+                ontodata.appendChild(row);
+            }
+          }
+        }
+      });
+    
 }
 

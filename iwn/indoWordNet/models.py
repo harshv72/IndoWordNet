@@ -1215,7 +1215,7 @@ class TblNounSenseNum(models.Model):
 
 
 class TblOntoData(models.Model):
-    onto_id = models.IntegerField()
+    onto_id = models.IntegerField(primary_key=True)
     onto_data = models.CharField(max_length=250, blank=True, null=True)
     onto_desc = models.CharField(max_length=250, blank=True, null=True)
 
@@ -1225,7 +1225,7 @@ class TblOntoData(models.Model):
 
 
 class TblOntoMap(models.Model):
-    parent_id = models.IntegerField()
+    parent_id = models.IntegerField(primary_key=True)
     child_id = models.IntegerField()
 
     class Meta:
@@ -1234,7 +1234,7 @@ class TblOntoMap(models.Model):
 
 
 class TblOntoNodes(models.Model):
-    synset_id = models.IntegerField()
+    synset_id = models.IntegerField(primary_key=True)
     onto_nodes_id = models.IntegerField()
 
     class Meta:

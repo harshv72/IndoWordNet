@@ -115,22 +115,23 @@
                     <option value="18">oriya</option>
                 </select>
             </span>
-
+            <!--
             <span class="btn-group-vertical col ontoBtn">
                 <button type="button" class="btn btn-info btn-md" style="font-size: 1.2vw; text-align: center;">Synset</button>    
             </span>
-
-            <span class="btn-group-vertical col ontoBtn container-fluid">
-                <button type="button" class="btn btn-info btn-md" style="font-size: 1.2vw; text-align: center;">hypernymy</button>
-                <button type="button" class="btn btn-info btn-md" style="font-size: 1.2vw; text-align: center;">hyponymy</button>
-                <button type="button" class="btn btn-info btn-md" style="font-size: 1.2vw; text-align: center;">holonymy</button>
-                <button type="button" class="btn btn-info btn-md" style="font-size: 1.2vw; text-align: center;">meronymy</button>
-                <button type="button" class="btn btn-info btn-md" style="font-size: 1.2vw; text-align: center;">antonymy</button>
-                <button type="button" class="btn btn-info btn-md" style="font-size: 1.2vw; text-align: center;">Onto tree</button>
-                <button type="button" class="btn btn-info btn-md" style="font-size: 1.2vw; text-align: center;">noun relation</button>
-                <button type="button" class="btn btn-info btn-md" style="font-size: 1.2vw; text-align: center;">verb relation</button>
-                <button type="button" class="btn btn-info btn-md" style="font-size: 1.2vw; text-align: center;">derived from</button>
-                <button type="button" class="btn btn-info btn-md" style="font-size: 1.2vw; text-align: center;">modifies</button>
+            -->
+            <span id="aBtnGroup" class="btn-group-vertical col ontoBtn container-fluid" role="group">
+                <button type="button" class="btn btn-info btn-md ontoBtn" style="font-size: 1.2vw; text-align: center;">Synset</button>
+                <button type="button" class="btn btn-info btn-md ontoBtn" style="font-size: 1.2vw; text-align: center;">hypernymy</button>
+                <button type="button" class="btn btn-info btn-md ontoBtn" style="font-size: 1.2vw; text-align: center;">hyponymy</button>
+                <button type="button" class="btn btn-info btn-md ontoBtn" style="font-size: 1.2vw; text-align: center;">holonymy</button>
+                <button type="button" class="btn btn-info btn-md ontoBtn" style="font-size: 1.2vw; text-align: center;">meronymy</button>
+                <button type="button" class="btn btn-info btn-md ontoBtn" style="font-size: 1.2vw; text-align: center;">antonymy</button>
+                <button type="button" class="btn btn-info btn-md ontoBtn" style="font-size: 1.2vw; text-align: center;">Onto tree</button>
+                <button type="button" class="btn btn-info btn-md ontoBtn" style="font-size: 1.2vw; text-align: center;">noun relation</button>
+                <button type="button" class="btn btn-info btn-md ontoBtn" style="font-size: 1.2vw; text-align: center;">verb relation</button>
+                <button type="button" class="btn btn-info btn-md ontoBtn" style="font-size: 1.2vw; text-align: center;">derived from</button>
+                <button type="button" class="btn btn-info btn-md ontoBtn" style="font-size: 1.2vw; text-align: center;">modifies</button>
             </span>
         </div>
         
@@ -146,35 +147,19 @@
                 <table style="width: 100%;">
                     <tbody>
                         <tr class="border-bottom">
-                            <th class="d">Sid</th>
-                            <th class="d">Synonyms</th> 
-                            <th class="d">Gloss</th>
-                            <th class="d">Example</th>
+                            <th class="d">Onto Id</th> 
+                            <th class="d">Onto Label</th>
+                            <th class="d">Onto Description</th>
                         </tr>
+                        <tbody id="onto_data">
+                        {% for i in wordList.0.5 %}
                         <tr class="border-bottom">
-                            <td class="d">703</td>
-                            <td class="d">Carnivore</td>
-                            <td class="d">any animal that feeds on flesh</td>
-                            <td class="d">Tyrannosaurus Rex was a large carnivore</td>
+                            <td class="d" style="color: black;font-weight: bold;">{{ i.0 }}</td>
+                            <td class="d" style="color: blue;font-weight: bold;">{{ i.1 }}</td>
+                            <td class="d" style="color: green;font-weight: bold;">{{ i.2 }}</td>
                         </tr>
-                        <tr class="border-bottom">
-                            <td class="d">703</td>
-                            <td class="d">Carnivore</td>
-                            <td class="d">any animal that feeds on flesh</td>
-                            <td class="d">Tyrannosaurus Rex was a large carnivore</td>
-                        </tr>
-                        <tr class="border-bottom">
-                            <td class="d">703</td>
-                            <td class="d">Carnivore</td>
-                            <td class="d">any animal that feeds on flesh</td>
-                            <td class="d">Tyrannosaurus Rex was a large carnivore</td>
-                        </tr>
-                        <tr class="border-bottom">
-                            <td class="d">703</td>
-                            <td class="d">Carnivore</td>
-                            <td class="d">any animal that feeds on flesh</td>
-                            <td class="d">Tyrannosaurus Rex was a large carnivore</td>
-                        </tr>
+                        {% endfor %}
+                    </tbody>
                     </tbody>
                 </table>
             </span>
