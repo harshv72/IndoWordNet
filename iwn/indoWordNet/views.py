@@ -37,35 +37,12 @@ def wordnet(request):
             l.append('English Linkage Not Available')
         
         #Adding ontology data for synset
-        onto_data = ontology(str(i.synset_id))
-        l.append(onto_data)
+        #onto_data = ontology(str(i.synset_id))
+        #l.append(onto_data)
         
         wordList.append(l)
-    
+    #print(wordList)
     return render(request,'wordnet.html', {'query':word,'length':length,'wordList':wordList})
-
-def ontology(synset_id):
-    #Fetching node id
-    i = TblOntoNodes.objects.filter(synset_id= synset_id)[0].onto_nodes_id
-    
-    #Fetching Parent Ids
-    onto_ids=[]
-    while(i != 1):
-        onto_ids.append(i)
-        i = TblOntoMap.objects.filter(child_id = str(i))[0].parent_id
-    #print(onto_ids)
-
-    #Fetching description and data
-    data = []
-    for i in onto_ids:
-        l = []
-        onto_data = TblOntoData.objects.filter(onto_id= str(i))[0]
-        l.append(onto_data.onto_id)
-        l.append(onto_data.onto_data)
-        l.append(onto_data.onto_desc)
-        data.append(l)
-
-    return(data)
 
 def onto(request):
     synset_id = request.GET.get('synset_id',None)

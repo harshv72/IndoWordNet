@@ -5,8 +5,9 @@
   <title>Indowordnet</title>
   {% load static %}
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <script src="{% static 'assets/js/scripts.js' %}"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="{% static 'assets/js/scripts.js' %}"></script>
+  
  
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.slim.min.js"></script>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"></script>
@@ -121,17 +122,17 @@
             </span>
             -->
             <span id="aBtnGroup" class="btn-group-vertical col ontoBtn container-fluid" role="group">
-                <button type="button" class="btn btn-info btn-md ontoBtn" style="font-size: 1.2vw; text-align: center;">Synset</button>
-                <button type="button" class="btn btn-info btn-md ontoBtn" style="font-size: 1.2vw; text-align: center;">hypernymy</button>
-                <button type="button" class="btn btn-info btn-md ontoBtn" style="font-size: 1.2vw; text-align: center;">hyponymy</button>
-                <button type="button" class="btn btn-info btn-md ontoBtn" style="font-size: 1.2vw; text-align: center;">holonymy</button>
-                <button type="button" class="btn btn-info btn-md ontoBtn" style="font-size: 1.2vw; text-align: center;">meronymy</button>
-                <button type="button" class="btn btn-info btn-md ontoBtn" style="font-size: 1.2vw; text-align: center;">antonymy</button>
-                <button type="button" class="btn btn-info btn-md ontoBtn" style="font-size: 1.2vw; text-align: center;">Onto tree</button>
-                <button type="button" class="btn btn-info btn-md ontoBtn" style="font-size: 1.2vw; text-align: center;">noun relation</button>
-                <button type="button" class="btn btn-info btn-md ontoBtn" style="font-size: 1.2vw; text-align: center;">verb relation</button>
-                <button type="button" class="btn btn-info btn-md ontoBtn" style="font-size: 1.2vw; text-align: center;">derived from</button>
-                <button type="button" class="btn btn-info btn-md ontoBtn" style="font-size: 1.2vw; text-align: center;">modifies</button>
+                <button type="button" value="0" class="btn btn-outline-info btn-md ontoBtn" style="font-size: 1.2vw; text-align: center;">Synset</button>
+                <button type="button" value="1" class="btn btn-outline-info btn-md ontoBtn" style="font-size: 1.2vw; text-align: center;">hypernymy</button>
+                <button type="button" value="2" class="btn btn-outline-info btn-md ontoBtn" style="font-size: 1.2vw; text-align: center;">hyponymy</button>
+                <button type="button" value="3" class="btn btn-outline-info btn-md ontoBtn" style="font-size: 1.2vw; text-align: center;">holonymy</button>
+                <button type="button" value="4" class="btn btn-outline-info btn-md ontoBtn" style="font-size: 1.2vw; text-align: center;">meronymy</button>
+                <button type="button" value="5" class="btn btn-outline-info btn-md ontoBtn" style="font-size: 1.2vw; text-align: center;">antonymy</button>
+                <button type="button" value="6" class="btn btn-outline-info btn-md ontoBtn" style="font-size: 1.2vw; text-align: center;">Onto tree</button>
+                <button type="button" value="7" class="btn btn-outline-info btn-md ontoBtn" style="font-size: 1.2vw; text-align: center;">noun relation</button>
+                <button type="button" value="8" class="btn btn-outline-info btn-md ontoBtn" style="font-size: 1.2vw; text-align: center;">verb relation</button>
+                <button type="button" value="9" class="btn btn-outline-info btn-md ontoBtn" style="font-size: 1.2vw; text-align: center;">derived from</button>
+                <button type="button" value="10" class="btn btn-outline-info btn-md ontoBtn" style="font-size: 1.2vw; text-align: center;">modifies</button>
             </span>
         </div>
         
@@ -145,13 +146,13 @@
 
             <span>
                 <table style="width: 100%;">
-                    <tbody>
+                    <tbody id="onto_data">
                         <tr class="border-bottom">
                             <th class="d">Onto Id</th> 
                             <th class="d">Onto Label</th>
                             <th class="d">Onto Description</th>
                         </tr>
-                        <tbody id="onto_data">
+                        
                         {% for i in wordList.0.5 %}
                         <tr class="border-bottom">
                             <td class="d" style="color: black;font-weight: bold;">{{ i.0 }}</td>
@@ -159,10 +160,15 @@
                             <td class="d" style="color: green;font-weight: bold;">{{ i.2 }}</td>
                         </tr>
                         {% endfor %}
-                    </tbody>
+                    
                     </tbody>
                 </table>
             </span>
+            <script>
+                $(document).ready(function(){
+                    createOntoTbl({{wordList.0.0}},0);
+                });
+            </script>
         </div>
     </div>
   </div>

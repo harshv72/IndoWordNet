@@ -1,6 +1,4 @@
-
-  
-  function expand(thistag){
+function expand(thistag){
     //alert();
     var s = document.getElementById("lang");
        try{
@@ -18,29 +16,29 @@
    styleObj.display='';
    
 }
+
 function close1(thistag){
    styleObj=document.getElementById(thistag).style;
    styleObj.display='none';
 
 }
 
-    function toggle(thistag){
+function toggle(thistag){
    styleObj=document.getElementById(thistag).style;
    if (styleObj.display=='none')
         {expand(thistag);}
    else
        {close1(thistag);}
 
-       $(document).on("keypress", '#Search_Form', function (e) {  // Disabling the enter keypress submission, required for the 
-    var code = e.keyCode || e.which;					   // function to check word if its empty, the function is 
-    console.log(code);									   // called on 'click', hence disabling enter submission is necessary. - Diptesh 20/08/2014
-    if (code == 13) {
-        console.log('Inside');
-        e.preventDefault();
-        return false;
-    }
-});
-
+    $(document).on("keypress", '#Search_Form', function (e) {  // Disabling the enter keypress submission, required for the 
+        var code = e.keyCode || e.which;					   // function to check word if its empty, the function is 
+        console.log(code);									   // called on 'click', hence disabling enter submission is necessary. - Diptesh 20/08/2014
+        if (code == 13) {
+            console.log('Inside');
+            e.preventDefault();
+            return false;
+        }
+    });
 }
 
 function funct(w){
@@ -80,49 +78,7 @@ function next(l,wl)
     ex = document.getElementById('ex').innerHTML = wl[synset][3][1];
     enGloss = document.getElementById('enGloss').innerHTML = wl[synset][4];
     
-    $.ajax({
-        url: 'fetch_onto',
-        data: {
-          'synset_id': wl[synset][0]
-        },
-        dataType: 'json',
-        success: function (data) {
-          if (data) {
-            var data = JSON.parse(data);
-            console.log(data);
-            ontodata = document.getElementById('onto_data');
-            ontodata.innerHTML = "";
-            var i,j;
-            for (i=0; i <data.length;i++){  
-                var row = document.createElement('tr');
-                row.className = "border-bottom";
-         
-                for(j=0;j<3;j++){
-                    var cell = document.createElement('td');
-                    cell.className = "d";
-                    cell.style.fontWeight = "bold";
-                    switch(j){
-                        case 0:
-                            cell.style.color = "black";
-                            break;
-                        case 1:
-                            cell.style.color = "blue";
-                            break;
-                        case 2:
-                            cell.style.color = "green";
-                            break;
-                        default:
-                            cell.style.color = "black";
-                    }
-                    var text = document.createTextNode(data[i.toString()][j]);
-                    cell.appendChild(text);
-                    row.appendChild(cell);
-                }
-                ontodata.appendChild(row);
-            }
-          }
-        }
-      });
+    createOntoTbl(wl[synset][0],0);
 
     synset = synset+1;
 }
@@ -155,10 +111,17 @@ function prev(l,wl){
     ex = document.getElementById('ex').innerHTML = wl[synset-1][3][1];
     enGloss = document.getElementById('enGloss').innerHTML = wl[synset-1][4];
     
+    createOntoTbl(wl[synset-1][0],0);
+    
+}
+
+function createOntoTbl(synset_id,langno)
+{
     $.ajax({
         url: 'fetch_onto',
         data: {
-          'synset_id': wl[synset-1][0]
+          'synset_id': synset_id,
+          'langno': langno
         },
         dataType: 'json',
         success: function (data) {
@@ -167,9 +130,37 @@ function prev(l,wl){
             console.log(data);
             ontodata = document.getElementById('onto_data');
             ontodata.innerHTML = "";
+
+            //Adding Table Header
+            var row = document.createElement('tr');
+            row.className = "border-bottom";
+
+            var cell1 = document.createElement('th');
+            var cell2 = document.createElement('th');
+            var cell3 = document.createElement('th');
+
+            cell1.className = "d";
+            cell2.className = "d";
+            cell3.className = "d";
+
+            var text1 = document.createTextNode("Onto Id");
+            var text2 = document.createTextNode("Onto Label");
+            var text3 = document.createTextNode("Onto Description");
+
+            cell1.appendChild(text1);
+            cell2.appendChild(text2);
+            cell3.appendChild(text3);
+
+            row.appendChild(cell1);
+            row.appendChild(cell2);
+            row.appendChild(cell3);
+
+            ontodata.appendChild(row); // Table Header row added
+
+            //Adding Table Data Rows
             var i,j;
             for (i=0; i <data.length;i++){  
-                var row = document.createElement('tr');
+                row = document.createElement('tr');
                 row.className = "border-bottom";
          
                 for(j=0;j<3;j++){
@@ -198,6 +189,19 @@ function prev(l,wl){
           }
         }
       });
-    
 }
 
+$(document).ready(function(){
+    $("#aBtnGroup button").on('click',function(){
+        var thisBtn = $(this);
+
+        thisBtn.siblings().removeClass('btn-info').addClass('btn-outline-info');
+        thisBtn.removeClass('btn-outline-info').addClass('btn-info');
+       // alert(thisBtn.val());
+    });
+
+    $('#tlang').on('change',function(){
+        
+        alert($(this).val());
+    });
+});
