@@ -31,13 +31,27 @@
               </td>
               <td class="form-input ">
                 <div>
-                <input id="queryword" name="query" class="form-control "  placeholder="Search Word" type="text">
+                  <input id="queryword" name="query" class="form-control " placeholder="Search Word" type="text">
+                  <div id="autocomplete-list" class="autocomplete-items">
+                    <div id="l0" style="display: none;"><input type="hidden" value=""></div>
+                    <div id="l1" style="display: none;"><input type="hidden" value=""></div>
+                    <div id="l2" style="display: none;"><input type="hidden" value=""></div>
+                    <div id="l3" style="display: none;"><input type="hidden" value=""></div>
+                    <div id="l4" style="display: none;"><input type="hidden" value=""></div>
+                    <div id="l5" style="display: none;"><input type="hidden" value=""></div>
+                    <div id="l6" style="display: none;"><input type="hidden" value=""></div>
+                    <div id="l7" style="display: none;"><input type="hidden" value=""></div>
+                    <div id="l8" style="display: none;"><input type="hidden" value=""></div>
+                    <div id="l9" style="display: none;"><input type="hidden" value=""></div>
+
+                  </div>
                 </div>
+
               </td>
               
               <td class="form-button ">
                 <div>
-                <input class="btn btn-primary btn-sm form-control " type="submit"  ></button>
+                <input id="search_button" class="btn btn-primary btn-sm form-control " type="submit"  ></button>
                 </div>
               </td>
             </tr>
@@ -58,7 +72,7 @@
                 <input class="buttons" name="Button1" value="Space" onclick="queryword.value = queryword.value + ' ';search_button.focus();" type="button">
               </td>
               <td>
-                <input class="buttons" name="Button2" value="Backspace" onclick="queryword.value = queryword.value.substring(0,queryword.value.length*1 -1);search_button.focus();" type="button">              </td><td>    <input class="buttons" name="Button2" value="Reset" onclick="queryword.value = '';" type="button">
+                <input class="buttons" name="Button2" value="Backspace" onclick="queryword.value = queryword.value.substring(0,queryword.value.length*1 -1);search_button.focus();search();" type="button">              </td><td>    <input class="buttons" name="Button2" value="Reset" onclick="queryword.value = '';" type="button">
               </td>            
             </tr>
             <tr>

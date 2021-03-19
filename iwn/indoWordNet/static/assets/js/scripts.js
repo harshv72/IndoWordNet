@@ -41,17 +41,92 @@ function toggle(thistag){
     });
 }
 
+function autocomplete(inp, arr) {
+    var currentFocus;
+    console.log("1")
+    var a, b, i, val = inp.value;
+    currentFocus = -1;
+    // a = document.createElement("DIV");
+    // a.setAttribute("id", "autocomplete-list");
+    // a.setAttribute("class", "autocomplete-items ");
+    // inp.parentNode.appendChild(a);
+    if (arr.length == 0){
+        b = document.getElementById("l0").style.display = null; 
+        b.innerHTML = "<strong>Not Found </strong>";
+        b.addEventListener("click", function(e) {
+            inp.value = this.getElementsByTagName("input")[0].value;
+            closeAllLists();
+        });
+    
+    }
+    else{
+        for (i = 0; i < arr.length; i++) {
+            id = "l"+i.toString();
+            console.log(id)
+            b = document.getElementById(id)
+            b.innerHTML = "<strong>" + arr[i] + "</strong>";
+            b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
+            b.style.display = null
+            b.addEventListener("click", function(e) {
+                inp.value = this.getElementsByTagName("input")[0].value;
+                closeAllLists();
+            b.style.display = null
+            });
+        };
+        
+        }
+          
+    }
+    
+    function closeAllLists(elmnt) {
+      for (var i = 0; i < 10; i++) {
+            id = "l"+i.toString();
+            // console.log(id);
+            b = document.getElementById(id);
+            b.style.display = "none";
+        }
+      }
+    
+    document.addEventListener("click", function (e) {
+        closeAllLists(e.target);
+    });
+
+
+function search(){
+    q=$('#queryword').val()
+    langno = $('#lang').val()
+    console.log(q)
+    // alert(q)
+    $.ajax({
+        url: 'word',
+        data: {
+            'q' : q ,
+            'langno' : langno
+        },
+        dataType: 'json',
+        success: function(data){
+            word = JSON.parse(data);
+            // alert(word)
+            console.log(word)
+            // alert($(this).val());
+            autocomplete(document.getElementById('queryword'),word)
+        }
+
+     });
+}
+
 function funct(w){
     //alert(w);
     queryword = document.getElementById("queryword");
     search_button = document.getElementById("search_button");
 
     queryword.value = queryword.value + w;
+    // search()
     search_button.focus();
 }
 
 synset = 1
-function next(l,wl)
+function next(l,wl,ln)
 {
     document.getElementById('prev').style.display = null;
     if(l==(synset+1)){
@@ -66,9 +141,9 @@ function next(l,wl)
     var i;
     for (i=0; i <wl[synset][2].length;i++){   
         var tag = document.createElement('a')
-        text = "wordnet?query="+wl[synset][2][i];
+        text = "wordnet?langno="+ ln +"&query="+wl[synset][2][i];
         tag.setAttribute("href",text)
-        var textnode = document.createTextNode(wl[synset][2][i]+",")
+        var textnode = document.createTextNode(wl[synset][2][i]+", ")
         tag.appendChild(textnode);
         synonyms.appendChild(tag);
     }
@@ -78,13 +153,18 @@ function next(l,wl)
     ex = document.getElementById('ex').innerHTML = wl[synset][3][1];
     enGloss = document.getElementById('enGloss').innerHTML = wl[synset][4];
     
+    if(ln != '0'){
+        hindiGloss = document.getElementById('hindiGloss').innerHTML = wl[synset][5];
+    
+    }
+    
     createOntoTbl(wl[synset][0],0);
 
     synset = synset+1;
 }
 
 
-function prev(l,wl){
+function prev(l,wl,ln){
     
     document.getElementById('next').style.display = null;
     if((synset-2)==0){
@@ -100,9 +180,9 @@ function prev(l,wl){
     var i;
     for (i=0; i <wl[synset-1][2].length;i++){   
         var tag = document.createElement('a')
-        text = "wordnet?query="+wl[synset-1][2][i];
+        text = "wordnet?langno="+ ln +"&query="+wl[synset-1][2][i];
         tag.setAttribute("href",text)
-        var textnode = document.createTextNode(wl[synset-1][2][i]+",")
+        var textnode = document.createTextNode(wl[synset-1][2][i]+", ")
         tag.appendChild(textnode);
         synonyms.appendChild(tag);
     }
@@ -110,10 +190,16 @@ function prev(l,wl){
     gloss = document.getElementById('gloss').innerHTML = wl[synset-1][3][0];
     ex = document.getElementById('ex').innerHTML = wl[synset-1][3][1];
     enGloss = document.getElementById('enGloss').innerHTML = wl[synset-1][4];
+    if(ln != '0'){
+        hindiGloss = document.getElementById('hindiGloss').innerHTML = wl[synset-1][5];
+    
+    }
     
     createOntoTbl(wl[synset-1][0],0);
     
 }
+
+
 
 function createOntoTbl(synset_id,langno)
 {
@@ -191,10 +277,22 @@ function createOntoTbl(synset_id,langno)
       });
 }
 
+function getSynsetData(tlang){
+    var sId = document.getElementsByTagName("")
+}
+
+
+var word;
+
 $(document).ready(function(){
+    langno = document.getElementById("lang").value;
+   
     $("#aBtnGroup button").on('click',function(){
         var thisBtn = $(this);
-
+        var tlangno =  $("#tlang").val();
+        if(thisBtn.val() == '0'){
+            getSynsetData(tlangno)
+        }
         thisBtn.siblings().removeClass('btn-info').addClass('btn-outline-info');
         thisBtn.removeClass('btn-outline-info').addClass('btn-info');
        // alert(thisBtn.val());
@@ -204,4 +302,14 @@ $(document).ready(function(){
         
         alert($(this).val());
     });
+    
+      $('#queryword').on('change',function(){
+        // search();
+        // alert('value changed');
+    });
 });
+
+  
+
+
+

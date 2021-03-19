@@ -1740,7 +1740,7 @@ class TblAllGujaratiSynsetData(models.Model):
     synset_id = models.IntegerField(primary_key=True)
     head = models.CharField(max_length=100, blank=True, null=True)
     synset = models.TextField(blank=True, null=True)
-    gloss = models.TextField(blank=True, null=True)
+    gloss = models.BinaryField(blank=True, null=True)
     category = models.CharField(max_length=100, blank=True, null=True)
 
     class Meta:
@@ -1749,10 +1749,10 @@ class TblAllGujaratiSynsetData(models.Model):
 
 
 class TblAllHindiSynsetData(models.Model):
-    synset_id = models.IntegerField()
+    synset_id = models.IntegerField(primary_key=True)
     head = models.CharField(max_length=100, blank=True, null=True)
     synset = models.TextField(blank=True, null=True)
-    gloss = models.TextField(blank=True, null=True)
+    gloss = models.BinaryField(blank=True, null=True)
     category = models.CharField(max_length=100, blank=True, null=True)
 
     class Meta:
