@@ -50,7 +50,7 @@
                 <td class="b">:</td>
                 <td id="synonyms" class="c" colspan="4">
                     {% for i in wordList.0.2 %}
-                        <a href="wordnet?query={{i}}" > {{i}},</a>
+                        <a href="wordnet?langno={{langno}}&query={{i}}" > {{i}},</a>
                     {% endfor %}
                 </td>
             </tr>
@@ -64,6 +64,14 @@
                 <td class="b">:</td>
                 <td id="ex" class="c" colspan="4">{{wordList.0.3.1}}</td>
             </tr>     
+            {% if langno == '0' %}
+            {% else %}  
+                <tr class="border-bottom">
+                    <td class="a">Gloss in hindi</td>
+                    <td class="b">:</td>
+                    <td id="hindiGloss" class="c" colspan="4">{{wordList.0.5}}</td>
+                </tr>
+            {% endif %}
             <tr >
                 <td class="a">Gloss in English</td>
                 <td class="b">:</td>
@@ -76,8 +84,8 @@
                 <td colspan="6" align="center">
                     {% if length == 1 %}
                     {% else %}
-                        <button id="prev" class="btn-sm  btn-primary" onclick="prev({{length}},{{wordList}} );" style="display: none;">Previous</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <button id="next" class="btn-sm  btn-primary" onclick="next({{length}},{{wordList}} );">&nbsp;&nbsp;&nbsp;Next&nbsp;&nbsp;&nbsp;    </button>
+                        <button id="prev" class="btn-sm  btn-primary" onclick="prev({{length}},{{wordList}},{{langno}} );" style="display: none;">Previous</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <button id="next" class="btn-sm  btn-primary" onclick="next({{length}},{{wordList}},{{langno}} );">&nbsp;&nbsp;&nbsp;Next&nbsp;&nbsp;&nbsp;    </button>
                     {% endif %}
                 </td>
             </tr>
