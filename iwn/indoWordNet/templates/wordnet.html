@@ -8,7 +8,7 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
   <script src="{% static 'assets/js/scripts.js' %}"></script>
   
- 
+  
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.slim.min.js"></script>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
@@ -34,11 +34,12 @@
     <table style="width: 100%;">
         <tbody>
             <tr class="border-bottom">
+                
                 <th  class="c" colspan="3">Number of Synset for "{{query}}" : {{length}}</th>
                 <th class="a" colspan="3">Showing <b id="num">1</b>/{{length}}</th>
             </tr>
             <tr class="border-bottom">
-                <td class="a">Synset</td>
+                <td class="a">Synset ID</td>
                 <td class="b">:</td>
                 <td id="s_id" class="c">{{wordList.0.0}}</td>
                 <td class="a">POS</td>
@@ -129,32 +130,37 @@
                 <button type="button" class="btn btn-info btn-md" style="font-size: 1.2vw; text-align: center;">Synset</button>    
             </span>
             -->
-            <span id="aBtnGroup" class="btn-group-vertical col ontoBtn container-fluid" role="group">
-                <button type="button" value="0" class="btn btn-outline-info btn-md ontoBtn" style="font-size: 1.2vw; text-align: center;">Synset</button>
-                <button type="button" value="1" class="btn btn-outline-info btn-md ontoBtn" style="font-size: 1.2vw; text-align: center;">hypernymy</button>
-                <button type="button" value="2" class="btn btn-outline-info btn-md ontoBtn" style="font-size: 1.2vw; text-align: center;">hyponymy</button>
-                <button type="button" value="3" class="btn btn-outline-info btn-md ontoBtn" style="font-size: 1.2vw; text-align: center;">holonymy</button>
-                <button type="button" value="4" class="btn btn-outline-info btn-md ontoBtn" style="font-size: 1.2vw; text-align: center;">meronymy</button>
-                <button type="button" value="5" class="btn btn-outline-info btn-md ontoBtn" style="font-size: 1.2vw; text-align: center;">antonymy</button>
-                <button type="button" value="6" class="btn btn-outline-info btn-md ontoBtn" style="font-size: 1.2vw; text-align: center;">Onto tree</button>
-                <button type="button" value="7" class="btn btn-outline-info btn-md ontoBtn" style="font-size: 1.2vw; text-align: center;">noun relation</button>
-                <button type="button" value="8" class="btn btn-outline-info btn-md ontoBtn" style="font-size: 1.2vw; text-align: center;">verb relation</button>
-                <button type="button" value="9" class="btn btn-outline-info btn-md ontoBtn" style="font-size: 1.2vw; text-align: center;">derived from</button>
-                <button type="button" value="10" class="btn btn-outline-info btn-md ontoBtn" style="font-size: 1.2vw; text-align: center;">modifies</button>
+            <span id="aBtnGroup" class="btn-group-vertical col ontoBtn container-fluid" role="group" data-toggle="buttons">
+                <button type="button" name="button" value="0" class="btn btn-outline-info btn-md ontoBtn" style="font-size: 1.2vw; text-align: center;">Synset</button>
+                <button type="button" name="button" value="1" class="btn btn-outline-info btn-md ontoBtn" style="font-size: 1.2vw; text-align: center;">hypernymy</button>
+                <button type="button" name="button" value="2" class="btn btn-outline-info btn-md ontoBtn" style="font-size: 1.2vw; text-align: center;">hyponymy</button>
+                <button type="button" name="button" value="3" class="btn btn-outline-info btn-md ontoBtn" style="font-size: 1.2vw; text-align: center;">holonymy</button>
+                <button type="button" name="button" value="4" class="btn btn-outline-info btn-md ontoBtn" style="font-size: 1.2vw; text-align: center;">meronymy</button>
+                <button type="button" name="button" value="5" class="btn btn-outline-info btn-md ontoBtn" style="font-size: 1.2vw; text-align: center;">antonymy</button>
+                <button id="defaultButton" type="button" name="button" value="6" class="btn btn-outline-info btn-md ontoBtn" style="font-size: 1.2vw; text-align: center;">Onto tree</button>
+                <button type="button" name="button" value="7" class="btn btn-outline-info btn-md ontoBtn" style="font-size: 1.2vw; text-align: center;">noun relation</button>
+                <button type="button" name="button" value="8" class="btn btn-outline-info btn-md ontoBtn" style="font-size: 1.2vw; text-align: center;">verb relation</button>
+                <button type="button" name="button" value="9" class="btn btn-outline-info btn-md ontoBtn" style="font-size: 1.2vw; text-align: center;">derived from</button>
+                <button type="button" name="button" value="10" class="btn btn-outline-info btn-md ontoBtn" style="font-size: 1.2vw; text-align: center;">modifies</button>
             </span>
+            <script>
+                document.getElementById("defaultButton").classList.remove("btn-outline-info");
+                document.getElementById("defaultButton").classList.add("btn-info");
+                
+            </script>
         </div>
         
         <div class="col-9 dataspace container-fluid" >
             
             <span>
                 <div class="dataHead">
-                    Showing Ontology
+                    Showing <p id="tblLabel">Ontology</p>
                 </div>
             </span>
 
             <span>
                 <table style="width: 100%;">
-                    <tbody id="onto_data">
+                    <tbody id="tbl_data">
                         <tr class="border-bottom">
                             <th class="d">Onto Id</th> 
                             <th class="d">Onto Label</th>
@@ -174,7 +180,12 @@
             </span>
             <script>
                 $(document).ready(function(){
-                    createOntoTbl({{wordList.0.0}},0);
+                    
+                    var synset_id = document.getElementById("s_id").innerHTML;
+                    var tlangno=0;
+                    console.log("cre");
+                    console.log(synset_id);
+                    createOntoTbl(synset_id,tlangno);
                 });
             </script>
         </div>

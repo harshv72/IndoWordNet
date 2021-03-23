@@ -13,28 +13,47 @@ def index(request):
     return render(request,'index.html',context=None)
 
 
-def regionalData(allData,word):
+def regionalData(allData,word,tlang):
     wordList=[]
     length = 0
+    #print(type(allData))
     for i in allData:
-        if word in i.synset.decode('UTF-8').split(', '):
+        #print(type(i))
+        if tlang != "11":
+            synonuyms = i.synset.decode('UTF-8').split(', ')
+        else:
+            synonuyms = i.synset.split(',')
+        #print(synonuyms)
+        if word in synonuyms:
+            #print("word:" + word)
+            #print(synonuyms)
             length = length + 1
             l=[]
             l.append(str(i.synset_id))
             l.append(str(i.category))
-            synonuyms = i.synset.decode('UTF-8').split(', ')
+            
             l.append(synonuyms)
-            l.append(i.gloss.decode('UTF-8').split(';'))
+
+            if tlang in ['11','17','18']:
+                l.append(i.gloss.decode('UTF-8').split(':'))
+            else:
+                l.append(i.gloss.decode('UTF-8').split(';'))
+
             try:
                 enId = m.EnglishHindiIdMapping.objects.using('region').get(hindi_id = str(i.synset_id))
                 glossEN = m.EnglishSynsetData.objects.using('region').filter(synset_id = str(enId.english_id))[0]
                 l.append(str(glossEN.gloss))
             except m.EnglishHindiIdMapping.DoesNotExist:
                 l.append('English Linkage Not Available')
+                #print("in catch")
+            #print("after try")
             gloss = m.TblAllSynset.objects.filter(synset_id = str(i.synset_id))[0]
             l.append(gloss.gloss.decode('UTF-8').split(':')[0])
-               
+            
+            #print(l)   
             wordList.append(l)
+        #else:
+            #print("word na malyo")
     return wordList,length
     
 
@@ -88,72 +107,200 @@ def wordnet(request):
     
     elif lang == '2':
         data = m.TblAllAssameseSynsetData.objects.using('region').all()
-        wordList,length = regionalData(data,word)
+        wordList,length = regionalData(data,word,lang)
         
     elif lang == '3':
         data = m.TblAllBengaliSynsetData.objects.using('region').all()
-        wordList,length = regionalData(data,word)
+        wordList,length = regionalData(data,word,lang)
         
     elif lang == '4':
         data = m.TblAllBodoSynsetData.objects.using('region').all()
-        wordList,length = regionalData(data,word)
+        wordList,length = regionalData(data,word,lang)
     
     elif lang == '5':
         data = m.TblAllGujaratiSynsetData.objects.using('region').all()
-        wordList,length = regionalData(data,word)
+        wordList,length = regionalData(data,word,lang)
 
     elif lang == '6':
         data = m.TblAllKannadaSynsetData.objects.using('region').all()
-        wordList,length = regionalData(data,word)
+        wordList,length = regionalData(data,word,lang)
         
     elif lang == '7':
         data = m.TblAllKashmiriSynsetData.objects.using('region').all()
-        wordList,length = regionalData(data,word)
+        wordList,length = regionalData(data,word,lang)
     
     elif lang == '8':
         data = m.TblAllKonkaniSynsetData.objects.using('region').all()
-        wordList,length = regionalData(data,word)
+        wordList,length = regionalData(data,word,lang)
     
     elif lang == '9':
         data = m.TblAllMalayalamSynsetData.objects.using('region').all()
-        wordList,length = regionalData(data,word)
+        wordList,length = regionalData(data,word,lang)
     
     elif lang == '10':
         data = m.TblAllManipuriSynsetData.objects.using('region').all()
-        wordList,length = regionalData(data,word)
+        wordList,length = regionalData(data,word,lang)
     
     elif lang == '11':
         data = m.TblAllMarathiSynsetData.objects.using('region').all()
-        wordList,length = regionalData(data,word)
+        wordList,length = regionalData(data,word,lang)
     
     elif lang == '12':
         data = m.TblAllNepaliSynsetData.objects.using('region').all()
-        wordList,length = regionalData(data,word)
+        wordList,length = regionalData(data,word,lang)
     
     elif lang == '13':
         data = m.TblAllSanskritSynsetData.objects.using('region').all()
-        wordList,length = regionalData(data,word)
+        wordList,length = regionalData(data,word,lang)
     
     elif lang == '14':
         data = m.TblAllTamilSynsetData.objects.using('region').all()
-        wordList,length = regionalData(data,word)
+        wordList,length = regionalData(data,word,lang)
     
     elif lang == '15':
         data = m.TblAllTeluguSynsetData.objects.using('region').all()
-        wordList,length = regionalData(data,word)
+        wordList,length = regionalData(data,word,lang)
     
     elif lang == '16':
         data = m.TblAllPunjabiSynsetData.objects.using('region').all()
-        wordList,length = regionalData(data,word)
+        wordList,length = regionalData(data,word,lang)
     
     elif lang == '17':
         data = m.TblAllUrduSynsetData.objects.using('region').all()
-        wordList,length = regionalData(data,word)
+        wordList,length = regionalData(data,word,lang)
     
     elif lang == '18':
         data = m.TblAllOriyaSynsetData.objects.using('region').all()
-        wordList,length = regionalData(data,word)
+        wordList,length = regionalData(data,word,lang)
     return render(request,'wordnet.html', {'query':word,'langno':lang,'length':length,'wordList':wordList})
+
+def fetch_synset(request):
+    synset_id = request.GET.get('synset_id',None)
+    langno = request.GET.get('langno')
+
+    data = searchSynsetDataById(synset_id,langno)
+    
+    synset_data_json = json.dumps(data,ensure_ascii=False)
+    
+
+    return JsonResponse(synset_data_json,safe=False)
+
+def searchSynsetDataById(synset_id,lang):
+    
+    if lang == '0':
+        data={}
+        data["synset_id"]= str(synset_id)
+
+        s=[]
+        synonuyms = m.TblAllWords.objects.filter(synset_id = synset_id)
+        data["pos"] = str(synonuyms[0].pos)
+        for j in synonuyms:
+            s.append(str(j.word))
+        data["synonyms"] = s
+
+        gloss = m.TblAllSynset.objects.filter(synset_id = str(synset_id))[0]
+        data["gloss"] = gloss.gloss.decode('UTF-8').split(':')
+        
+        return data
+
+    elif lang == '1':
+        d = {}
+        d["synset_id"] = synset_id
+
+        english_id =  m.EnglishHindiIdMapping.objects.using('region').filter(hindi_id = str(synset_id))[0].english_id
+        if english_id is None:
+            return None
+        data = m.EnglishSynsetData.objects.using('region').filter(synset_id= str(english_id))[0]
+        #print(english_id)
+        d["pos"]=str(data.category)
+        synonuyms = data.synset_words.split(', ')
+        d["synonyms"]= synonuyms
+        d["gloss"]=data.gloss.split(';')
+        
+        return d
+    
+    elif lang == '2':
+        data = m.TblAllAssameseSynsetData.objects.using('region').filter(synset_id= synset_id)[0]
+        return fetch_regional_data(data,synset_id,lang)
+
+    elif lang == '3':
+        data = m.TblAllBengaliSynsetData.objects.using('region').filter(synset_id= synset_id)[0]
+        return fetch_regional_data(data,synset_id,lang)
+        
+    elif lang == '4':
+        data = m.TblAllBodoSynsetData.objects.using('region').filter(synset_id= synset_id)[0]
+        return fetch_regional_data(data,synset_id,lang)
+    
+    elif lang == '5':
+        data = m.TblAllGujaratiSynsetData.objects.using('region').filter(synset_id= synset_id)[0]
+        return fetch_regional_data(data,synset_id,lang)
+
+    elif lang == '6':
+        data = m.TblAllKannadaSynsetData.objects.using('region').filter(synset_id= synset_id)[0]
+        return fetch_regional_data(data,synset_id,lang)
+        
+    elif lang == '7':
+        data = m.TblAllKashmiriSynsetData.objects.using('region').filter(synset_id= synset_id)[0]
+        return fetch_regional_data(data,synset_id,lang)
+    
+    elif lang == '8':
+        data = m.TblAllKonkaniSynsetData.objects.using('region').filter(synset_id= synset_id)[0]
+        return fetch_regional_data(data,synset_id,lang)
+    
+    elif lang == '9':
+        data = m.TblAllMalayalamSynsetData.objects.using('region').filter(synset_id= synset_id)[0]
+        return fetch_regional_data(data,synset_id,lang)
+    
+    elif lang == '10':
+        data = m.TblAllManipuriSynsetData.objects.using('region').filter(synset_id= synset_id)[0]
+        return fetch_regional_data(data,synset_id,lang)
+    
+    elif lang == '11':
+        data = m.TblAllMarathiSynsetData.objects.using('region').filter(synset_id= synset_id)[0]
+        return fetch_regional_data(data,synset_id,lang)
+    
+    elif lang == '12':
+        data = m.TblAllNepaliSynsetData.objects.using('region').filter(synset_id= synset_id)[0]
+        return fetch_regional_data(data,synset_id,lang)
+    
+    elif lang == '13':
+        data = m.TblAllSanskritSynsetData.objects.using('region').filter(synset_id= synset_id)[0]
+        return fetch_regional_data(data,synset_id,lang)
+    
+    elif lang == '14':
+        data = m.TblAllTamilSynsetData.objects.using('region').filter(synset_id= synset_id)[0]
+        return fetch_regional_data(data,synset_id,lang)
+    
+    elif lang == '15':
+        data = m.TblAllTeluguSynsetData.objects.using('region').filter(synset_id= synset_id)[0]
+        return fetch_regional_data(data,synset_id,lang)
+    
+    elif lang == '16':
+        data = m.TblAllPunjabiSynsetData.objects.using('region').filter(synset_id= synset_id)[0]
+        return fetch_regional_data(data,synset_id,lang)
+    
+    elif lang == '17':
+        data = m.TblAllUrduSynsetData.objects.using('region').filter(synset_id= synset_id)[0]
+        return fetch_regional_data(data,synset_id,lang)
+    
+    elif lang == '18':
+        data = m.TblAllOriyaSynsetData.objects.using('region').filter(synset_id= synset_id)[0]
+        return fetch_regional_data(data,synset_id,lang)
+
+def fetch_regional_data(data,synset_id,lang):
+    d={}
+    d["synset_id"]=synset_id
+    d["pos"]=data.category
+    if lang == "11":
+        d["synonyms"] = data.synset.split(', ')
+    else:
+        d["synonyms"] = data.synset.decode('UTF-8').split(', ')
+    if tlang in ['11','17','18']:
+        d["gloss"]= data.gloss.decode('UTF-8').split(':')
+    else:
+        d["gloss"]= data.gloss.decode('UTF-8').split(';')
+    
+    return d
 
 def onto(request):
     synset_id = request.GET.get('synset_id',None)
@@ -184,8 +331,7 @@ def onto(request):
 
     return JsonResponse(onto_data_json,safe=False)
 
-def recomendation(langno):
-    
+
 
 
 def word(request):
