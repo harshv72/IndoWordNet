@@ -191,6 +191,82 @@ function createOntoTbl(synset_id,langno)
       });
 }
 
+function hypoTbl(synset_id,langno)
+{
+    $.ajax({
+        url: 'fetch_hypo',
+        data: {
+          'synset_id': synset_id,
+          'langno': langno
+        },
+        dataType: 'json',
+        success: function (data) {
+          if (data) {
+            var data = JSON.parse(data);
+            console.log(data);
+            hypodata = document.getElementById('hyp_data');
+            hypodata.innerHTML = "";
+
+            //Adding Table Header
+            var row = document.createElement('tr');
+            row.className = "border-bottom";
+
+            var cell1 = document.createElement('th');
+            var cell2 = document.createElement('th');
+            var cell3 = document.createElement('th');
+
+            cell1.className = "d";
+            cell2.className = "d";
+            cell3.className = "d";
+
+            var text1 = document.createTextNode("synset Id");
+            var text2 = document.createTextNode("synset Label");
+            var text3 = document.createTextNode("synset Description");
+
+            cell1.appendChild(text1);
+            cell2.appendChild(text2);
+            cell3.appendChild(text3);
+
+            row.appendChild(cell1);
+            row.appendChild(cell2);
+            row.appendChild(cell3);
+
+            hypodata.appendChild(row); // Table Header row added
+
+            //Adding Table Data Rows
+            var i,j;
+            for (i=0; i <data.length;i++){  
+                row = document.createElement('tr');
+                row.className = "border-bottom";
+         
+                for(j=0;j<3;j++){
+                    var cell = document.createElement('td');
+                    cell.className = "d";
+                    cell.style.fontWeight = "bold";
+                    switch(j){
+                        case 0:
+                            cell.style.color = "black";
+                            break;
+                        case 1:
+                            cell.style.color = "blue";
+                            break;
+                        case 2:
+                            cell.style.color = "green";
+                            break;
+                        default:
+                            cell.style.color = "black";
+                    }
+                    var text = document.createTextNode(data[i.toString()][j]);
+                    cell.appendChild(text);
+                    row.appendChild(cell);
+                }
+                hypodata.appendChild(row);
+            }
+          }
+        }
+      });
+}
+
 $(document).ready(function(){
     $("#aBtnGroup button").on('click',function(){
         var thisBtn = $(this);
