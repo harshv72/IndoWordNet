@@ -22,7 +22,9 @@ urlpatterns = [
     path('home',views.index,name='index'),
     path('home#contactUs',views.contactUs,name='contactUs'),
     path('home#feedBack',views.feedBack,name='feedBack'),
-    path('fetch_onto',views.onto,name='onto'),
     path('fetch_synset',views.fetch_synset,name='fetch_synset'),
+    path('fetch_hyper',views.hypernymy,name='hypernymy'),
+    path('fetch_hypo',views.hyponymy,name='hyponymy'),
+    path('fetch_onto',views.onto,name='onto'),
     path('word',views.word,name='word')
 ]
