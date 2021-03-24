@@ -235,7 +235,10 @@ function fetch_tbl_data(synset_id,tlangno,btnValue){
             getSynsetData(synset_id,tlangno);
             break;
         case "1":
-            console.log("ok");
+            createHyperTbl(synset_id,tlangno);
+            break;
+        case "2":
+            createHypoTbl(synset_id,tlangno);
             break;
         case "6":
             console.log("Fetching Ontology data");
@@ -321,6 +324,245 @@ function createOntoTbl(synset_id,tlangno)
                 }
                 ontodata.appendChild(row);
             }
+          }
+        }
+      });
+}
+
+function createHyperTbl(synset_id,tlangno)
+{
+    document.getElementById("tblLabel").innerHTML = "Hypernymy";
+    var pos = document.getElementById("pos").innerHTML.toLowerCase();
+    $.ajax({
+        url: 'fetch_hyper',
+        data: {
+          'synset_id': synset_id,
+          'langno': tlangno,
+          'pos':pos
+        },
+        dataType: 'json',
+        success: function (data) {
+          if (data) {
+            var data = JSON.parse(data);
+            console.log(data);
+            hyperdata = document.getElementById('tbl_data');
+            hyperdata.innerHTML = "";
+
+            //Adding Table Header
+            var row = document.createElement('tr');
+            row.className = "border-bottom";
+
+            var cell1 = document.createElement('th');
+            var cell2 = document.createElement('th');
+            var cell3 = document.createElement('th');
+            var cell4 = document.createElement('th');
+
+            cell1.className = "d";
+            cell2.className = "d";
+            cell3.className = "d";
+            cell4.className = "d";
+
+            var text1 = document.createTextNode("Hypernymy Id");
+            var text2 = document.createTextNode("Synonyms");
+            var text3 = document.createTextNode("Gloss");
+            var text4 = document.createTextNode("Example");
+
+            cell1.appendChild(text1);
+            cell2.appendChild(text2);
+            cell3.appendChild(text3);
+            cell4.appendChild(text4);
+
+            row.appendChild(cell1);
+            row.appendChild(cell2);
+            row.appendChild(cell3);
+            row.appendChild(cell4);
+
+            hyperdata.appendChild(row); // Table Header row added
+
+            //Adding Table Data Rows
+            var i,j;
+            for (i=0; i <data.length;i++){  
+                row = document.createElement('tr');
+                row.className = "border-bottom";
+         
+                for(j=0;j<4;j++){
+                    var cell = document.createElement('td');
+                    cell.style.wordBreak = "break-all";
+                    cell.className = "d";
+                    cell.style.fontWeight = "bold";
+                    switch(j){
+                        case 0:
+                            cell.style.color = "black";
+                            break;
+                        case 1:
+                            cell.style.color = "blue";
+                            break;
+                        case 2:
+                            cell.style.color = "red";
+                            break;
+                        case 3:
+                            cell.style.color = "green";
+                            break;
+                        default:
+                            cell.style.color = "black";
+                    }
+                    if(j == 1)
+                    {
+                        for(k=0;k<data[i.toString()][j].length;k++)
+                        {
+                            var a = document.createElement("a");
+                            a.textContent = " " + data[i.toString()][j][k] + ",";
+                            a.href = "wordnet?langno="+ tlangno +"&query=" + data[i.toString()][j][k];
+                            // a.appendChild(linkText);
+                            cell.appendChild(a);
+                        }
+                    }
+                    else
+                    {
+                        if(j == 2)
+                        {
+                            var text = document.createTextNode(data[i.toString()][2][0]);
+                            cell.appendChild(text);
+                        }
+                        else if(j == 3)
+                        {
+                            var text = document.createTextNode(data[i.toString()][2][1]);
+                            cell.appendChild(text);
+                        }
+                        else
+                        {
+                            var text = document.createTextNode(data[i.toString()][j]);
+                            cell.appendChild(text);
+                        }
+                    }
+                    
+                    row.appendChild(cell);
+                }
+                hyperdata.appendChild(row);
+            }
+          }
+          else{
+              console.log("No data");
+          }
+        }
+      });
+}
+
+function createHypoTbl(synset_id,tlangno)
+{
+    document.getElementById("tblLabel").innerHTML = "Hyponymy";
+    var pos = document.getElementById("pos").innerHTML.toLowerCase();
+    $.ajax({
+        url: 'fetch_hypo',
+        data: {
+          'synset_id': synset_id,
+          'langno': tlangno,
+          'pos':pos
+        },
+        dataType: 'json',
+        success: function (data) {
+          if (data) {
+            var data = JSON.parse(data);
+            console.log(data);
+            hypodata = document.getElementById('tbl_data');
+            hypodata.innerHTML = "";
+
+            //Adding Table Header
+            var row = document.createElement('tr');
+            row.className = "border-bottom";
+
+            var cell1 = document.createElement('th');
+            var cell2 = document.createElement('th');
+            var cell3 = document.createElement('th');
+            var cell4 = document.createElement('th');
+
+            cell1.className = "d";
+            cell2.className = "d";
+            cell3.className = "d";
+            cell4.className = "d";
+
+            var text1 = document.createTextNode("Hyponymy Id");
+            var text2 = document.createTextNode("Synonyms");
+            var text3 = document.createTextNode("Gloss");
+            var text4 = document.createTextNode("Example");
+
+            cell1.appendChild(text1);
+            cell2.appendChild(text2);
+            cell3.appendChild(text3);
+            cell4.appendChild(text4);
+
+            row.appendChild(cell1);
+            row.appendChild(cell2);
+            row.appendChild(cell3);
+            row.appendChild(cell4);
+
+            hypodata.appendChild(row); // Table Header row added
+
+            //Adding Table Data Rows
+            var i,j;
+            for (i=0; i <data.length;i++){  
+                row = document.createElement('tr');
+                row.className = "border-bottom";
+         
+                for(j=0;j<4;j++){
+                    var cell = document.createElement('td');
+                    cell.style.wordBreak = "break-all";
+                    cell.className = "d";
+                    cell.style.fontWeight = "bold";
+                    switch(j){
+                        case 0:
+                            cell.style.color = "black";
+                            break;
+                        case 1:
+                            cell.style.color = "blue";
+                            break;
+                        case 2:
+                            cell.style.color = "red";
+                            break;
+                        case 3:
+                            cell.style.color = "green";
+                            break;
+                        default:
+                            cell.style.color = "black";
+                    }
+                    if(j == 1)
+                    {
+                        for(k=0;k<data[i.toString()][j].length;k++)
+                        {
+                            var a = document.createElement("a");
+                            a.textContent = " " + data[i.toString()][j][k] + ",";
+                            a.href = "wordnet?langno="+ tlangno +"&query=" + data[i.toString()][j][k];
+                            // a.appendChild(linkText);
+                            cell.appendChild(a);
+                        }
+                    }
+                    else
+                    {
+                        if(j == 2)
+                        {
+                            var text = document.createTextNode(data[i.toString()][2][0]);
+                            cell.appendChild(text);
+                        }
+                        else if(j == 3)
+                        {
+                            var text = document.createTextNode(data[i.toString()][2][1]);
+                            cell.appendChild(text);
+                        }
+                        else
+                        {
+                            var text = document.createTextNode(data[i.toString()][j]);
+                            cell.appendChild(text);
+                        }
+                        
+                    }
+                    
+                    row.appendChild(cell);
+                }
+                hypodata.appendChild(row);
+            }
+          }
+          else{
+              console.log("No data");
           }
         }
       });

@@ -1095,7 +1095,7 @@ class TblNounHoloStuffObject(models.Model):
 
 
 class TblNounHypernymy(models.Model):
-    synset_id = models.IntegerField()
+    synset_id = models.IntegerField(primary_key=True)
     hypernymy_id = models.IntegerField(blank=True, null=True)
 
     class Meta:
@@ -1104,7 +1104,7 @@ class TblNounHypernymy(models.Model):
 
 
 class TblNounHyponymy(models.Model):
-    synset_id = models.IntegerField()
+    synset_id = models.IntegerField(primary_key=True)
     hyponymy_id = models.IntegerField(blank=True, null=True)
 
     class Meta:
@@ -1585,7 +1585,7 @@ class TblVerbGradTime(models.Model):
 
 
 class TblVerbHypernymy(models.Model):
-    synset_id = models.IntegerField()
+    synset_id = models.IntegerField(primary_key=True)
     hypernymy_id = models.IntegerField(blank=True, null=True)
 
     class Meta:
