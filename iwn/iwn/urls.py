@@ -26,3 +26,4 @@ urlpatterns = [
     path('fetch_synset',views.fetch_synset,name='fetch_synset'),
     path('word',views.word,name='word')
 ]
+

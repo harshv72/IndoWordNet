@@ -43,77 +43,64 @@ function toggle(thistag){
 
 function autocomplete(inp, arr) {
     var currentFocus;
-    console.log("1")
-    var a, b, i, val = inp.value;
-    currentFocus = -1;
-    // a = document.createElement("DIV");
-    // a.setAttribute("id", "autocomplete-list");
-    // a.setAttribute("class", "autocomplete-items ");
-    // inp.parentNode.appendChild(a);
-    if (arr.length == 0){
-        b = document.getElementById("l0").style.display = null; 
-        b.innerHTML = "<strong>Not Found </strong>";
-        b.addEventListener("click", function(e) {
-            inp.value = this.getElementsByTagName("input")[0].value;
-            closeAllLists();
-        });
-    
-    }
-    else{
-        for (i = 0; i < arr.length; i++) {
-            id = "l"+i.toString();
-            console.log(id)
-            b = document.getElementById(id)
-            b.innerHTML = "<strong>" + arr[i] + "</strong>";
-            b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
-            b.style.display = null
+    // console.log("1")
+    // inp.addEventListener("input", function(e) {
+        var a, b, i, val = inp.value;
+        currentFocus = -1;
+        a = document.createElement("DIV");
+        var x = document.getElementsByClassName("autocomplete-items");
+        for (var i = 0; i < x.length; i++) {
+            x[i].parentNode.removeChild(x[i]);
+        }
+        a.setAttribute("id", "autocomplete-list");
+        a.setAttribute("class", "autocomplete-items ");
+        inp.parentNode.appendChild(a);
+        if(arr.length == 0){
+            b = document.createElement("DIV");
+            b.innerHTML = "<strong> Not Found </strong>";
             b.addEventListener("click", function(e) {
                 inp.value = this.getElementsByTagName("input")[0].value;
                 closeAllLists();
-            b.style.display = null
             });
-        };
-        
+            a.appendChild(b);
         }
-          
-    }
-    
-    function closeAllLists(elmnt) {
-      for (var i = 0; i < 10; i++) {
-            id = "l"+i.toString();
-            // console.log(id);
-            b = document.getElementById(id);
-            b.style.display = "none";
+        else{
+            for (i = 0; i < arr.length; i++) {
+                b = document.createElement("DIV");
+                b.innerHTML = "<strong>" + arr[i].substr(0, val.length) + "</strong>";
+                b.innerHTML += arr[i].substr(val.length);
+                b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
+                b.addEventListener("click", function(e) {
+                    inp.value = this.getElementsByTagName("input")[0].value;
+                    closeAllLists();
+                });
+                a.appendChild(b);
+            }
+            
         }
-      }
-    
-    document.addEventListener("click", function (e) {
-        closeAllLists(e.target);
-    });
+    // });
 
+  
 
-function search(){
-    q=$('#queryword').val()
-    tlangno = $('#lang').val()
-    console.log(q)
-    // alert(q)
-    $.ajax({
-        url: 'word',
-        data: {
-            'q' : q ,
-            'langno' : tlangno
-        },
-        dataType: 'json',
-        success: function(data){
-            word = JSON.parse(data);
-            // alert(word)
-            console.log(word)
-            // alert($(this).val());
-            autocomplete(document.getElementById('queryword'),word)
-        }
-
-     });
 }
+    
+
+
+function closeAllLists(elmnt) {
+    var x = document.getElementsByClassName("autocomplete-items");
+    for (var i = 0; i < x.length; i++) {
+      if (elmnt != x[i]) {
+        x[i].parentNode.removeChild(x[i]);
+      }
+    }
+}
+    
+document.addEventListener("click", function (e) {
+    closeAllLists(e.target);
+});
+
+
+
 
 function funct(w){
     //alert(w);
@@ -122,6 +109,10 @@ function funct(w){
 
     queryword.value = queryword.value + w;
     // search()
+    var word = $("#queryword").val();
+    var lang = $("#lang").val();
+    // alert('value changed');
+    fetchRecomendationData(word,lang);
     search_button.focus();
 }
 
@@ -482,7 +473,29 @@ function getSynsetData(synset_id,tlangno){
 }
 
 
-var word;
+
+function fetchRecomendationData(word,lang){
+    var currentRequest = null;
+    currentRequest = $.ajax({
+        url: 'word',
+        data: {
+          'q': word,
+          'langno': lang
+        },
+        dataType: 'json',
+        
+        success: function (data) {
+            if (data) {
+                var data = JSON.parse(data);
+                console.log(word)
+                console.log(data);
+                var inp = document.getElementById("queryword");
+                autocomplete(inp,data)
+            }
+        }
+    });
+}
+
 
 $(document).ready(function(){
     langno = document.getElementById("lang").value;
@@ -513,9 +526,12 @@ $(document).ready(function(){
         //alert($(this).val());
     });
     
-      $('#queryword').on('change',function(){
-        // search();
+      $('#queryword').bind('input DOMSubtreeModified',function(){
+        console.log($(this).val());
+        var word = $(this).val();
+        var lang = $("#lang").val();
         // alert('value changed');
+        fetchRecomendationData(word,lang);
     });
 });
 
