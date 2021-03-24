@@ -28,3 +28,4 @@ urlpatterns = [
     path('fetch_onto',views.onto,name='onto'),
     path('word',views.word,name='word')
 ]
+

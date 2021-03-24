@@ -44,7 +44,7 @@
                 <td id="s_id" class="c">{{wordList.0.0}}</td>
                 <td class="a">POS</td>
                 <td class="b" style="width: 14px;">:</td>
-                <td id="pos" class="c">{{wordList.0.1}}</td>
+                <td id="pos" class="c" style="text-transform: uppercase;">{{wordList.0.1}}</td>
             </tr>
             <tr class="border-bottom">
                 <td class="a">Synonyms</td>
@@ -179,6 +179,7 @@
                 </table>
             </span>
             <script>
+                
                 $(document).ready(function(){
                     
                     var synset_id = document.getElementById("s_id").innerHTML;
