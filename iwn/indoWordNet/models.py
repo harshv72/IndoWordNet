@@ -1095,8 +1095,8 @@ class TblNounHoloStuffObject(models.Model):
 
 
 class TblNounHypernymy(models.Model):
-    synset_id = models.IntegerField()
-    hypernymy_id = models.IntegerField(primary_key=True)
+    synset_id = models.IntegerField(primary_key=True)
+    hypernymy_id = models.IntegerField(blank=True, null=True)
 
     class Meta:
         managed = False
@@ -1104,8 +1104,8 @@ class TblNounHypernymy(models.Model):
 
 
 class TblNounHyponymy(models.Model):
-    synset_id = models.IntegerField()
-    hyponymy_id = models.IntegerField(primary_key=True)
+    synset_id = models.IntegerField(primary_key=True)
+    hyponymy_id = models.IntegerField(blank=True, null=True)
 
     class Meta:
         managed = False
@@ -1585,8 +1585,8 @@ class TblVerbGradTime(models.Model):
 
 
 class TblVerbHypernymy(models.Model):
-    synset_id = models.IntegerField()
-    hypernymy_id = models.IntegerField(primary_key=True)
+    synset_id = models.IntegerField(primary_key=True)
+    hypernymy_id = models.IntegerField(blank=True, null=True)
 
     class Meta:
         managed = False
@@ -1833,7 +1833,7 @@ class TblAllManipuriSynsetData(models.Model):
 
 
 class TblAllMarathiSynsetData(models.Model):
-    synset_id = models.IntegerField(primary_key=True)
+    synset_id = models.IntegerField(primary_key = True)
     head = models.CharField(max_length=100, blank=True, null=True)
     synset = models.CharField(max_length=250, blank=True, null=True)
     gloss = models.TextField(blank=True, null=True)

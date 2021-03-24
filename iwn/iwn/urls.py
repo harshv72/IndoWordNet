@@ -22,13 +22,14 @@ urlpatterns = [
     path('home',views.index,name='index'),
     path('home#contactUs',views.contactUs,name='contactUs'),
     path('home#feedBack',views.feedBack,name='feedBack'),
-    path('fetch_onto',views.onto,name='onto'),
     path('fetch_synset',views.fetch_synset,name='fetch_synset'),
-    path('word',views.word,name='word'),
-    path('fetch_hypo',views.hyponymy,name='Hypo'),
-    path('fetch_hyper',views.hypernymy,name='Hyper'),
     path('fetch_derived',views.derivedform,name='derivedfrom'),
     path('fetch_modifiers',views.modifies,name='modifies'),
     path('fetch_holonymy',views.holonymy,name='holonymy'),
     path('fetch_meronymy',views.meronymy,name='meronymy'),
+    path('fetch_hyper',views.hypernymy,name='hypernymy'),
+    path('fetch_hypo',views.hyponymy,name='hyponymy'),
+    path('fetch_onto',views.onto,name='onto'),
+    path('word',views.word,name='word')
 ]
+

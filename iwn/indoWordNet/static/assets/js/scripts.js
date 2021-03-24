@@ -43,77 +43,64 @@ function toggle(thistag){
 
 function autocomplete(inp, arr) {
     var currentFocus;
-    console.log("1")
-    var a, b, i, val = inp.value;
-    currentFocus = -1;
-    // a = document.createElement("DIV");
-    // a.setAttribute("id", "autocomplete-list");
-    // a.setAttribute("class", "autocomplete-items ");
-    // inp.parentNode.appendChild(a);
-    if (arr.length == 0){
-        b = document.getElementById("l0").style.display = null; 
-        b.innerHTML = "<strong>Not Found </strong>";
-        b.addEventListener("click", function(e) {
-            inp.value = this.getElementsByTagName("input")[0].value;
-            closeAllLists();
-        });
-    
-    }
-    else{
-        for (i = 0; i < arr.length; i++) {
-            id = "l"+i.toString();
-            console.log(id)
-            b = document.getElementById(id)
-            b.innerHTML = "<strong>" + arr[i] + "</strong>";
-            b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
-            b.style.display = null
+    // console.log("1")
+    // inp.addEventListener("input", function(e) {
+        var a, b, i, val = inp.value;
+        currentFocus = -1;
+        a = document.createElement("DIV");
+        var x = document.getElementsByClassName("autocomplete-items");
+        for (var i = 0; i < x.length; i++) {
+            x[i].parentNode.removeChild(x[i]);
+        }
+        a.setAttribute("id", "autocomplete-list");
+        a.setAttribute("class", "autocomplete-items ");
+        inp.parentNode.appendChild(a);
+        if(arr.length == 0){
+            b = document.createElement("DIV");
+            b.innerHTML = "<strong> Not Found </strong>";
             b.addEventListener("click", function(e) {
                 inp.value = this.getElementsByTagName("input")[0].value;
                 closeAllLists();
-            b.style.display = null
             });
-        };
-        
+            a.appendChild(b);
         }
-          
-    }
-    
-    function closeAllLists(elmnt) {
-      for (var i = 0; i < 10; i++) {
-            id = "l"+i.toString();
-            // console.log(id);
-            b = document.getElementById(id);
-            b.style.display = "none";
+        else{
+            for (i = 0; i < arr.length; i++) {
+                b = document.createElement("DIV");
+                b.innerHTML = "<strong>" + arr[i].substr(0, val.length) + "</strong>";
+                b.innerHTML += arr[i].substr(val.length);
+                b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
+                b.addEventListener("click", function(e) {
+                    inp.value = this.getElementsByTagName("input")[0].value;
+                    closeAllLists();
+                });
+                a.appendChild(b);
+            }
+            
         }
-      }
-    
-    document.addEventListener("click", function (e) {
-        closeAllLists(e.target);
-    });
+    // });
 
+  
 
-function search(){
-    q=$('#queryword').val()
-    tlangno = $('#lang').val()
-    console.log(q)
-    // alert(q)
-    $.ajax({
-        url: 'word',
-        data: {
-            'q' : q ,
-            'langno' : tlangno
-        },
-        dataType: 'json',
-        success: function(data){
-            word = JSON.parse(data);
-            // alert(word)
-            console.log(word)
-            // alert($(this).val());
-            autocomplete(document.getElementById('queryword'),word)
-        }
-
-     });
 }
+    
+
+
+function closeAllLists(elmnt) {
+    var x = document.getElementsByClassName("autocomplete-items");
+    for (var i = 0; i < x.length; i++) {
+      if (elmnt != x[i]) {
+        x[i].parentNode.removeChild(x[i]);
+      }
+    }
+}
+    
+document.addEventListener("click", function (e) {
+    closeAllLists(e.target);
+});
+
+
+
 
 function funct(w){
     //alert(w);
@@ -122,6 +109,10 @@ function funct(w){
 
     queryword.value = queryword.value + w;
     // search()
+    var word = $("#queryword").val();
+    var lang = $("#lang").val();
+    // alert('value changed');
+    fetchRecomendationData(word,lang);
     search_button.focus();
 }
 
@@ -235,7 +226,10 @@ function fetch_tbl_data(synset_id,tlangno,btnValue){
             getSynsetData(synset_id,tlangno);
             break;
         case "1":
-            console.log("ok");
+            createHyperTbl(synset_id,tlangno);
+            break;
+        case "2":
+            createHypoTbl(synset_id,tlangno);
             break;
         case "6":
             console.log("Fetching Ontology data");
@@ -321,6 +315,245 @@ function createOntoTbl(synset_id,tlangno)
                 }
                 ontodata.appendChild(row);
             }
+          }
+        }
+      });
+}
+
+function createHyperTbl(synset_id,tlangno)
+{
+    document.getElementById("tblLabel").innerHTML = "Hypernymy";
+    var pos = document.getElementById("pos").innerHTML.toLowerCase();
+    $.ajax({
+        url: 'fetch_hyper',
+        data: {
+          'synset_id': synset_id,
+          'langno': tlangno,
+          'pos':pos
+        },
+        dataType: 'json',
+        success: function (data) {
+          if (data) {
+            var data = JSON.parse(data);
+            console.log(data);
+            hyperdata = document.getElementById('tbl_data');
+            hyperdata.innerHTML = "";
+
+            //Adding Table Header
+            var row = document.createElement('tr');
+            row.className = "border-bottom";
+
+            var cell1 = document.createElement('th');
+            var cell2 = document.createElement('th');
+            var cell3 = document.createElement('th');
+            var cell4 = document.createElement('th');
+
+            cell1.className = "d";
+            cell2.className = "d";
+            cell3.className = "d";
+            cell4.className = "d";
+
+            var text1 = document.createTextNode("Hypernymy Id");
+            var text2 = document.createTextNode("Synonyms");
+            var text3 = document.createTextNode("Gloss");
+            var text4 = document.createTextNode("Example");
+
+            cell1.appendChild(text1);
+            cell2.appendChild(text2);
+            cell3.appendChild(text3);
+            cell4.appendChild(text4);
+
+            row.appendChild(cell1);
+            row.appendChild(cell2);
+            row.appendChild(cell3);
+            row.appendChild(cell4);
+
+            hyperdata.appendChild(row); // Table Header row added
+
+            //Adding Table Data Rows
+            var i,j;
+            for (i=0; i <data.length;i++){  
+                row = document.createElement('tr');
+                row.className = "border-bottom";
+         
+                for(j=0;j<4;j++){
+                    var cell = document.createElement('td');
+                    cell.style.wordBreak = "break-all";
+                    cell.className = "d";
+                    cell.style.fontWeight = "bold";
+                    switch(j){
+                        case 0:
+                            cell.style.color = "black";
+                            break;
+                        case 1:
+                            cell.style.color = "blue";
+                            break;
+                        case 2:
+                            cell.style.color = "red";
+                            break;
+                        case 3:
+                            cell.style.color = "green";
+                            break;
+                        default:
+                            cell.style.color = "black";
+                    }
+                    if(j == 1)
+                    {
+                        for(k=0;k<data[i.toString()][j].length;k++)
+                        {
+                            var a = document.createElement("a");
+                            a.textContent = " " + data[i.toString()][j][k] + ",";
+                            a.href = "wordnet?langno="+ tlangno +"&query=" + data[i.toString()][j][k];
+                            // a.appendChild(linkText);
+                            cell.appendChild(a);
+                        }
+                    }
+                    else
+                    {
+                        if(j == 2)
+                        {
+                            var text = document.createTextNode(data[i.toString()][2][0]);
+                            cell.appendChild(text);
+                        }
+                        else if(j == 3)
+                        {
+                            var text = document.createTextNode(data[i.toString()][2][1]);
+                            cell.appendChild(text);
+                        }
+                        else
+                        {
+                            var text = document.createTextNode(data[i.toString()][j]);
+                            cell.appendChild(text);
+                        }
+                    }
+                    
+                    row.appendChild(cell);
+                }
+                hyperdata.appendChild(row);
+            }
+          }
+          else{
+              console.log("No data");
+          }
+        }
+      });
+}
+
+function createHypoTbl(synset_id,tlangno)
+{
+    document.getElementById("tblLabel").innerHTML = "Hyponymy";
+    var pos = document.getElementById("pos").innerHTML.toLowerCase();
+    $.ajax({
+        url: 'fetch_hypo',
+        data: {
+          'synset_id': synset_id,
+          'langno': tlangno,
+          'pos':pos
+        },
+        dataType: 'json',
+        success: function (data) {
+          if (data) {
+            var data = JSON.parse(data);
+            console.log(data);
+            hypodata = document.getElementById('tbl_data');
+            hypodata.innerHTML = "";
+
+            //Adding Table Header
+            var row = document.createElement('tr');
+            row.className = "border-bottom";
+
+            var cell1 = document.createElement('th');
+            var cell2 = document.createElement('th');
+            var cell3 = document.createElement('th');
+            var cell4 = document.createElement('th');
+
+            cell1.className = "d";
+            cell2.className = "d";
+            cell3.className = "d";
+            cell4.className = "d";
+
+            var text1 = document.createTextNode("Hyponymy Id");
+            var text2 = document.createTextNode("Synonyms");
+            var text3 = document.createTextNode("Gloss");
+            var text4 = document.createTextNode("Example");
+
+            cell1.appendChild(text1);
+            cell2.appendChild(text2);
+            cell3.appendChild(text3);
+            cell4.appendChild(text4);
+
+            row.appendChild(cell1);
+            row.appendChild(cell2);
+            row.appendChild(cell3);
+            row.appendChild(cell4);
+
+            hypodata.appendChild(row); // Table Header row added
+
+            //Adding Table Data Rows
+            var i,j;
+            for (i=0; i <data.length;i++){  
+                row = document.createElement('tr');
+                row.className = "border-bottom";
+         
+                for(j=0;j<4;j++){
+                    var cell = document.createElement('td');
+                    cell.style.wordBreak = "break-all";
+                    cell.className = "d";
+                    cell.style.fontWeight = "bold";
+                    switch(j){
+                        case 0:
+                            cell.style.color = "black";
+                            break;
+                        case 1:
+                            cell.style.color = "blue";
+                            break;
+                        case 2:
+                            cell.style.color = "red";
+                            break;
+                        case 3:
+                            cell.style.color = "green";
+                            break;
+                        default:
+                            cell.style.color = "black";
+                    }
+                    if(j == 1)
+                    {
+                        for(k=0;k<data[i.toString()][j].length;k++)
+                        {
+                            var a = document.createElement("a");
+                            a.textContent = " " + data[i.toString()][j][k] + ",";
+                            a.href = "wordnet?langno="+ tlangno +"&query=" + data[i.toString()][j][k];
+                            // a.appendChild(linkText);
+                            cell.appendChild(a);
+                        }
+                    }
+                    else
+                    {
+                        if(j == 2)
+                        {
+                            var text = document.createTextNode(data[i.toString()][2][0]);
+                            cell.appendChild(text);
+                        }
+                        else if(j == 3)
+                        {
+                            var text = document.createTextNode(data[i.toString()][2][1]);
+                            cell.appendChild(text);
+                        }
+                        else
+                        {
+                            var text = document.createTextNode(data[i.toString()][j]);
+                            cell.appendChild(text);
+                        }
+                        
+                    }
+                    
+                    row.appendChild(cell);
+                }
+                hypodata.appendChild(row);
+            }
+          }
+          else{
+              console.log("No data");
           }
         }
       });
@@ -482,7 +715,29 @@ function getSynsetData(synset_id,tlangno){
 }
 
 
-var word;
+
+function fetchRecomendationData(word,lang){
+    var currentRequest = null;
+    currentRequest = $.ajax({
+        url: 'word',
+        data: {
+          'q': word,
+          'langno': lang
+        },
+        dataType: 'json',
+        
+        success: function (data) {
+            if (data) {
+                var data = JSON.parse(data);
+                console.log(word)
+                console.log(data);
+                var inp = document.getElementById("queryword");
+                autocomplete(inp,data)
+            }
+        }
+    });
+}
+
 
 $(document).ready(function(){
     langno = document.getElementById("lang").value;
@@ -513,9 +768,12 @@ $(document).ready(function(){
         //alert($(this).val());
     });
     
-      $('#queryword').on('change',function(){
-        // search();
+      $('#queryword').bind('input DOMSubtreeModified',function(){
+        console.log($(this).val());
+        var word = $(this).val();
+        var lang = $("#lang").val();
         // alert('value changed');
+        fetchRecomendationData(word,lang);
     });
 });
 
