@@ -94,14 +94,14 @@ function autocomplete(inp, arr) {
 
 function search(){
     q=$('#queryword').val()
-    langno = $('#lang').val()
+    tlangno = $('#lang').val()
     console.log(q)
     // alert(q)
     $.ajax({
         url: 'word',
         data: {
             'q' : q ,
-            'langno' : langno
+            'langno' : tlangno
         },
         dataType: 'json',
         success: function(data){
@@ -133,7 +133,7 @@ function next(l,wl,ln)
         document.getElementById('next').style.display = "none"; 
     }
     num = document.getElementById('num').innerHTML = synset+1;
-    s_id = document.getElementById('s_id').innerHTML = wl[synset][0];
+    synset_id = document.getElementById('s_id').innerHTML = wl[synset][0];
 
     pos = document.getElementById('pos').innerHTML = wl[synset][1];
     synonyms = document.getElementById('synonyms');
@@ -158,7 +158,21 @@ function next(l,wl,ln)
     
     }
     
-    createOntoTbl(wl[synset][0],0);
+    var tlangno = document.getElementById("tlang").value;
+    //var ele = document.getElementsByName('button');
+    var ele = document.getElementById("aBtnGroup").children;
+    
+    //console.log(ele);
+    for(i = 0; i < ele.length; i++) { 
+        //console.log(ele[i].className)
+        if(ele[i].className.includes("btn-info")){
+            //console.log(ele[i].value)
+            fetch_tbl_data(synset_id,tlangno,ele[i].value);
+            
+            break; 
+        }
+    } 
+    //createOntoTbl(wl[synset][0],0);
 
     synset = synset+1;
 }
@@ -172,7 +186,7 @@ function prev(l,wl,ln){
     }
     synset = synset-1;
     num = document.getElementById('num').innerHTML = synset;
-    s_id = document.getElementById('s_id').innerHTML = wl[synset-1][0];
+    synset_id = document.getElementById('s_id').innerHTML = wl[synset-1][0];
     pos = document.getElementById('pos').innerHTML = wl[synset-1][1];
    
     synonyms = document.getElementById('synonyms');
@@ -195,27 +209,61 @@ function prev(l,wl,ln){
     
     }
     
-    createOntoTbl(wl[synset-1][0],0);
+    var tlangno = document.getElementById("tlang").value;
+    //var ele = document.getElementsByName('button');
+    var ele = document.getElementById("aBtnGroup").children;
+    
+    //console.log(ele);
+    for(i = 0; i < ele.length; i++) { 
+        //console.log(ele[i].className)
+        if(ele[i].className.includes("btn-info")){
+            //console.log(ele[i].value)
+            fetch_tbl_data(synset_id,tlangno,ele[i].value);
+            
+            break; 
+        }
+    }
     
 }
 
+function fetch_tbl_data(synset_id,tlangno,btnValue){
+    console.log(synset_id)
+    console.log(tlangno)
+    console.log(btnValue)
+    switch(btnValue){
+        case "0":
+            getSynsetData(synset_id,tlangno);
+            break;
+        case "1":
+            console.log("ok");
+            break;
+        case "6":
+            console.log("Fetching Ontology data");
+            createOntoTbl(synset_id,tlangno);
+            console.log("Fetched Ontology data");
+            break;
+        default:
+            console.log("default case in fetch_tbl_data");
+            break;
+    }
+}
 
-
-function createOntoTbl(synset_id,langno)
+function createOntoTbl(synset_id,tlangno)
 {
-    // console.log(exm)
+    document.getElementById("tblLabel").innerHTML = "Ontology";
+    //var synset_id = document.getElementById("s_id").innerHTML;
     $.ajax({
         url: 'fetch_onto',
         data: {
           'synset_id': synset_id,
-          'langno': langno
+          'langno': tlangno
         },
         dataType: 'json',
         success: function (data) {
           if (data) {
             var data = JSON.parse(data);
             console.log(data);
-            ontodata = document.getElementById('onto_data');
+            ontodata = document.getElementById('tbl_data');
             ontodata.innerHTML = "";
 
             //Adding Table Header
@@ -278,8 +326,159 @@ function createOntoTbl(synset_id,langno)
       });
 }
 
-function getSynsetData(tlang){
-    var sId = document.getElementsByTagName("")
+function getSynsetData(synset_id,tlangno){
+
+    var langText = fetch_tbl_synset_title(tlangno);
+    document.getElementById("tblLabel").innerHTML = langText;
+    //var synset_id = document.getElementById("s_id").innerHTML;
+    $.ajax({
+        url: 'fetch_synset',
+        data: {
+          'synset_id': synset_id,
+          'langno': tlangno
+        },
+        dataType: 'json',
+        success: function (data) {
+          if (data) {
+            var data = JSON.parse(data);
+            console.log(data);
+            
+            syndata = document.getElementById('tbl_data');
+            syndata.innerHTML = "";
+
+            var row1 = document.createElement('tr');
+            row1.className = "border-bottom";
+            var cell1 = document.createElement('td');
+            var cell2 = document.createElement('td');
+            var cell3 = document.createElement('td');
+            var cell4 = document.createElement('td');
+            var cell5 = document.createElement('td');
+            var cell6 = document.createElement('td');
+
+            cell1.className = "a";
+            var text1 = document.createTextNode("Synset ID");
+            cell1.appendChild(text1);
+            
+            cell2.className = "b";
+            var text2 = document.createTextNode(":");
+            cell2.appendChild(text2);
+            
+            cell3.className = "c";
+            var text3 = document.createTextNode(data["synset_id"]);
+            cell3.appendChild(text3);
+
+            cell4.className = "a";
+            var text4 = document.createTextNode("POS");
+            cell4.appendChild(text4);
+            
+            cell5.className = "b";
+            cell5.style.width = "14px";
+            var text5 = document.createTextNode(":");
+            cell5.appendChild(text5);
+            
+            cell6.className = "c";
+            var text6 = document.createTextNode(data["pos"]);
+            cell6.appendChild(text6);
+            
+            row1.appendChild(cell1);
+            row1.appendChild(cell2);
+            row1.appendChild(cell3);
+            row1.appendChild(cell4);
+            row1.appendChild(cell5);
+            row1.appendChild(cell6);
+            syndata.appendChild(row1);
+
+            /////////////////////////////
+
+            var row2 = document.createElement('tr');
+            row2.className = "border-bottom";
+            cell1 = document.createElement('td');
+            cell2 = document.createElement('td');
+            cell3 = document.createElement('td');
+
+            cell1.className = "a";
+            text1 = document.createTextNode("Synonyms");
+            cell1.appendChild(text1);
+            
+            cell2.className = "b";
+            text2 = document.createTextNode(":");
+            cell2.appendChild(text2);
+            
+            cell3.className = "c";
+            cell3.colSpan = "4";
+            console.log(data["synonyms"].length)
+            for(i=0;i<data["synonyms"].length;i++)
+            {
+                var a = document.createElement("a");
+                a.textContent = " " + data["synonyms"][i] + ",";
+                a.href = "wordnet?langno="+ tlang +"&query=" + data["synonyms"][i];
+               // a.appendChild(linkText);
+                cell3.appendChild(a);
+            }
+            
+            row2.appendChild(cell1);
+            row2.appendChild(cell2);
+            row2.appendChild(cell3);
+            syndata.appendChild(row2);
+
+            ////////////////////////
+
+            var row3 = document.createElement('tr');
+            row3.className = "border-bottom";
+            cell1 = document.createElement('td');
+            cell2 = document.createElement('td');
+            cell3 = document.createElement('td');
+
+            cell1.className = "a";
+            text1 = document.createTextNode("Gloss");
+            cell1.appendChild(text1);
+            
+            cell2.className = "b";
+            text2 = document.createTextNode(":");
+            cell2.appendChild(text2);
+            
+            cell3.className = "c";
+            cell3.colSpan = "4";
+            text3 = document.createTextNode(data["gloss"][0]);
+            cell3.appendChild(text3);
+            
+            row3.appendChild(cell1);
+            row3.appendChild(cell2);
+            row3.appendChild(cell3);
+            syndata.appendChild(row3);
+
+            ///////////////////
+
+            var row4 = document.createElement('tr');
+            row4.className = "border-bottom";
+            cell1 = document.createElement('td');
+            cell2 = document.createElement('td');
+            cell3 = document.createElement('td');
+
+            cell1.className = "a";
+            text1 = document.createTextNode("Example Statement");
+            cell1.appendChild(text1);
+            
+            cell2.className = "b";
+            text2 = document.createTextNode(":");
+            cell2.appendChild(text2);
+            
+            cell3.className = "c";
+            cell3.colSpan = "4";
+            text3 = document.createTextNode(data["gloss"][1]);
+            cell3.appendChild(text3);
+            
+            row4.appendChild(cell1);
+            row4.appendChild(cell2);
+            row4.appendChild(cell3);
+            syndata.appendChild(row4);
+
+          }
+          else{
+              console.log("No data found");
+          }
+        }
+      });
 }
 
 
@@ -290,18 +489,28 @@ $(document).ready(function(){
    
     $("#aBtnGroup button").on('click',function(){
         var thisBtn = $(this);
+        var btnValue = thisBtn.val();
         var tlangno =  $("#tlang").val();
-        if(thisBtn.val() == '0'){
-            getSynsetData(tlangno)
-        }
+        var synset_id = $("#s_id").text();
+        
+        fetch_tbl_data(synset_id,tlangno,btnValue);
+        // if(thisBtn.val() == '0'){
+        //     getSynsetData(tlangno)
+        // }
+        thisBtn.siblings().removeClass('active');
+        thisBtn.addClass('active');
         thisBtn.siblings().removeClass('btn-info').addClass('btn-outline-info');
         thisBtn.removeClass('btn-outline-info').addClass('btn-info');
-       // alert(thisBtn.val());
+       //alert(thisBtn.val());
     });
 
     $('#tlang').on('change',function(){
-        
-        alert($(this).val());
+        var tlang = $(this);
+        var tlangno = tlang.val();
+        var btnValue = $("button.btn-info").val();
+        var synset_id = $("#s_id").text();
+        fetch_tbl_data(synset_id,tlangno,btnValue);
+        //alert($(this).val());
     });
     
       $('#queryword').on('change',function(){
@@ -310,7 +519,70 @@ $(document).ready(function(){
     });
 });
 
-  
+function fetch_tbl_synset_title(tlang){
+    switch(tlang) {
+        case "0":
+            return "Regional Synset : Hindi";
+            break;
+        case "1":
+            return "Regional Synset : English";
+            break;
+        case "2":
+            return "Regional Synset : Assamese";
+            break;
+        case "3":
+            return "Regional Synset : Bengali";
+            break;
+        case "4":
+            return "Regional Synset : Bodo";
+            break;
+        case "5":
+            return "Regional Synset : Gujarati";
+            break;
+        case "6":
+            return "Regional Synset : Kannada";
+            break;
+        case "7":
+            return "Regional Synset : Kashmiri";
+            break;
+        case "8":
+            return "Regional Synset : Konkani";
+            break;
+        case "9":
+            return "Regional Synset : Malyalam";
+            break;
+        case "10":
+            return "Regional Synset : Manipuri";
+            break;
+        case "11":
+            return "Regional Synset : Marathi";
+            break;
+        case "12":
+            return "Regional Synset : Nepali";
+            break;
+        case "13":
+            return "Regional Synset : Sanskrit";
+            break;
+        case "14":
+            return "Regional Synset : Tamil";
+            break;
+        case "15":
+            return "Regional Synset : Telugu";
+            break;
+        case "16":
+            return "Regional Synset : Punjabi";
+            break;
+        case "17":
+            return "Regional Synset : Urdu";
+            break;
+        case "18":
+            return "Regional Synset : Oriya";
+            break;
+        default:
+            return "Regional Synset";
+            break;
+      } 
+}  
 
 
 
