@@ -1833,7 +1833,7 @@ class TblAllManipuriSynsetData(models.Model):
 
 
 class TblAllMarathiSynsetData(models.Model):
-    synset_id = models.IntegerField()
+    synset_id = models.IntegerField(primary_key = True)
     head = models.CharField(max_length=100, blank=True, null=True)
     synset = models.CharField(max_length=250, blank=True, null=True)
     gloss = models.TextField(blank=True, null=True)

@@ -203,6 +203,7 @@ function prev(l,wl,ln){
 
 function createOntoTbl(synset_id,langno)
 {
+    // console.log(exm)
     $.ajax({
         url: 'fetch_onto',
         data: {

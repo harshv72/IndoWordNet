@@ -13,18 +13,28 @@ def index(request):
     return render(request,'index.html',context=None)
 
 
-def regionalData(allData,word):
+def regionalData(allData,word,lang):
     wordList=[]
     length = 0
     for i in allData:
-        if word in i.synset.decode('UTF-8').split(', '):
+        if lang == '11':
+            li = i.synset.split(',')
+        else:
+            li = i.synset.decode('UTF-8').split(', ')
+
+        if word in li:
             length = length + 1
             l=[]
             l.append(str(i.synset_id))
             l.append(str(i.category))
-            synonuyms = i.synset.decode('UTF-8').split(', ')
+            
+            synonuyms = li
             l.append(synonuyms)
-            l.append(i.gloss.decode('UTF-8').split(';'))
+            if lang in ['11','17','18']:
+                l.append(i.gloss.decode('UTF-8').split(':'))
+            else:
+                l.append(i.gloss.decode('UTF-8').split(';'))
+
             try:
                 enId = m.EnglishHindiIdMapping.objects.using('region').get(hindi_id = str(i.synset_id))
                 glossEN = m.EnglishSynsetData.objects.using('region').filter(synset_id = str(enId.english_id))[0]
@@ -44,7 +54,7 @@ def wordnet(request):
     lang = str(request.GET.get('langno'))
     length = 0
     wordList=[]
-     
+  
     if lang == '0':
         synset = m.TblAllWords.objects.filter(word = word)
         length = len(synset)
@@ -88,71 +98,72 @@ def wordnet(request):
     
     elif lang == '2':
         data = m.TblAllAssameseSynsetData.objects.using('region').all()
-        wordList,length = regionalData(data,word)
+        wordList,length = regionalData(data,word,lang)
         
     elif lang == '3':
         data = m.TblAllBengaliSynsetData.objects.using('region').all()
-        wordList,length = regionalData(data,word)
+        wordList,length = regionalData(data,word,lang)
         
     elif lang == '4':
         data = m.TblAllBodoSynsetData.objects.using('region').all()
-        wordList,length = regionalData(data,word)
+        wordList,length = regionalData(data,word,lang)
     
     elif lang == '5':
         data = m.TblAllGujaratiSynsetData.objects.using('region').all()
-        wordList,length = regionalData(data,word)
+        wordList,length = regionalData(data,word,lang)
 
     elif lang == '6':
         data = m.TblAllKannadaSynsetData.objects.using('region').all()
-        wordList,length = regionalData(data,word)
+        wordList,length = regionalData(data,word,lang)
         
     elif lang == '7':
         data = m.TblAllKashmiriSynsetData.objects.using('region').all()
-        wordList,length = regionalData(data,word)
+        wordList,length = regionalData(data,word,lang)
     
     elif lang == '8':
         data = m.TblAllKonkaniSynsetData.objects.using('region').all()
-        wordList,length = regionalData(data,word)
+        wordList,length = regionalData(data,word,lang)
     
     elif lang == '9':
         data = m.TblAllMalayalamSynsetData.objects.using('region').all()
-        wordList,length = regionalData(data,word)
+        wordList,length = regionalData(data,word,lang)
     
     elif lang == '10':
         data = m.TblAllManipuriSynsetData.objects.using('region').all()
-        wordList,length = regionalData(data,word)
+        wordList,length = regionalData(data,word,lang)
     
     elif lang == '11':
         data = m.TblAllMarathiSynsetData.objects.using('region').all()
-        wordList,length = regionalData(data,word)
+        wordList,length = regionalData(data,word,lang)
     
     elif lang == '12':
         data = m.TblAllNepaliSynsetData.objects.using('region').all()
-        wordList,length = regionalData(data,word)
+        wordList,length = regionalData(data,word,lang)
     
     elif lang == '13':
         data = m.TblAllSanskritSynsetData.objects.using('region').all()
-        wordList,length = regionalData(data,word)
+        wordList,length = regionalData(data,word,lang)
     
     elif lang == '14':
         data = m.TblAllTamilSynsetData.objects.using('region').all()
-        wordList,length = regionalData(data,word)
+        wordList,length = regionalData(data,word,lang)
     
     elif lang == '15':
         data = m.TblAllTeluguSynsetData.objects.using('region').all()
-        wordList,length = regionalData(data,word)
+        wordList,length = regionalData(data,word,lang)
     
     elif lang == '16':
         data = m.TblAllPunjabiSynsetData.objects.using('region').all()
-        wordList,length = regionalData(data,word)
+        wordList,length = regionalData(data,word,lang)
     
     elif lang == '17':
         data = m.TblAllUrduSynsetData.objects.using('region').all()
-        wordList,length = regionalData(data,word)
+        wordList,length = regionalData(data,word,lang)
     
     elif lang == '18':
         data = m.TblAllOriyaSynsetData.objects.using('region').all()
-        wordList,length = regionalData(data,word)
+        wordList,length = regionalData(data,word,lang)
+
     return render(request,'wordnet.html', {'query':word,'langno':lang,'length':length,'wordList':wordList})
 
 def onto(request):
@@ -184,7 +195,7 @@ def onto(request):
 
     return JsonResponse(onto_data_json,safe=False)
 
-def recomendation(langno):
+# def recomendation(langn):
     
 
 
