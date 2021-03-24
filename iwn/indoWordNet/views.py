@@ -383,6 +383,283 @@ def onto(request):
 
     return JsonResponse(onto_data_json,safe=False)
 
+
+def derivedform(request):
+    synset_id=request.GET.get('synset_id',None)
+    pos=m.TblAllSynset.objects.filter(synset_id=synset_id).values('category')[0]['category']
+    der_id=None
+
+    # geting derived_from_id based on pos
+    if(pos=='noun'):
+        der_id=m.TblNounDerivedFrom.objects.filter(synset_id=synset_id).values('derived_from_id')[0]['derived_from_id']
+    elif(pos=='adverb'):
+        der_id=m.TblAdverbDerivedFrom.objects.filter(synset_id=synset_id).values('derived_from_id')[0]['derived_from_id']
+    elif(pos=='verb'):
+        der_id=m.TblVerbDerivedFrom.objects.filter(synset_id=synset_id).values('derived_from_id')[0]['derived_from_id']
+    elif(pos=='adjective'):
+        der_id=m.TblAdjectiveDerivedFrom.objects.filter(synset_id=synset_id).values('derived_from_id')[0]['derived_from_id']
+    else:
+        der_id=None
+    
+    #fetching data
+    l=[]
+    s=[]
+    l.append(der_id)
+    synonuyms = m.TblAllWords.objects.filter(synset_id = der_id)
+    gloss = m.TblAllSynset.objects.filter(synset_id = der_id)[0]
+    for k in synonuyms:
+        s.append(str(k.word))
+    l.append(s)
+    data = gloss.gloss
+    data = data.decode('UTF-8')
+    data = data.split(':')
+    l.append(data)
+
+    print(l)
+    derived_data_json=json.dumps(l,ensure_ascii=False)
+
+    return JsonResponse(derived_data_json,safe=False)
+
+def modifies(request):
+    synset_id=request.GET.get('synset_id',None)
+    pos=m.TblAllSynset.objects.filter(synset_id=synset_id).values('category')[0]['category']
+    flag=None
+    mod_id=[]
+    data_list=[]
+
+    print("hii")
+
+    if(pos=='adjective'):
+        id_i=m.TblAdjectiveModifiesNoun.objects.filter(synset_id=synset_id).values()
+        flag="modifies_noun_id"
+    elif(pos=='adverb'):
+        id_i=m.TblAdverbModifiesVerb.objects.filter(synset_id=synset_id).values()
+        flag="modifies_verb_id"
+    else:
+        id_i=[]
+    
+    if(len(id_i)>0):
+        for i in id_i:
+            mod_id.append(i[flag])
+    
+    for j in mod_id:
+        l=[]
+        s=[]
+        l.append(j)
+        l.append(flag[:-3])
+        synonuyms = m.TblAllWords.objects.filter(synset_id = j)
+        gloss = m.TblAllSynset.objects.filter(synset_id = j)[0]
+        for k in synonuyms:
+            s.append(str(k.word))
+        l.append(s)
+        data = gloss.gloss
+        data = data.decode('UTF-8')
+        data = data.split(':')
+        l.append(data)
+        data_list.append(l)
+    print("data_list",data_list)
+    modifies_data_json=json.dumps(data_list,ensure_ascii=False)
+
+    return JsonResponse(modifies_data_json,safe=False)
+
+def holonymy(request):
+    synset_id=request.GET.get('synset_id',None)
+    holo_lis=[]
+    data_lis=[]
+    com_id=m.TblNounHoloComponentObject.objects.filter(synset_id=synset_id).values()
+    feat_id=m.TblNounHoloFeatureActivity.objects.filter(synset_id=synset_id).values()
+    mem_col=m.TblNounHoloMemberCollection.objects.filter(synset_id=synset_id).values()
+    ph_state=m.TblNounHoloPhaseState.objects.filter(synset_id=synset_id).values()
+    pl_ar=m.TblNounHoloPlaceArea.objects.filter(synset_id=synset_id).values()
+    por_mas=m.TblNounHoloPortionMass.objects.filter(synset_id=synset_id).values()
+    pos_area=m.TblNounHoloPositionArea.objects.filter(synset_id=synset_id).values()
+    res_pro=m.TblNounHoloResourceProcess.objects.filter(synset_id=synset_id).values()
+    st_ob=m.TblNounHoloStuffObject.objects.filter(synset_id=synset_id).values()
+
+    if(len(com_id)>0):
+        for i in com_id:
+            temp=[]
+            temp.append(i['holo_component_object_id'])
+            temp.append('holonymy component_object')
+            holo_lis.append(temp)
+    
+    if(len(feat_id)>0):
+        for i in feat_id:
+            temp=[]
+            temp.append(i['holo_feature_activity_id'])
+            temp.append('holonymy feature_activity')
+            holo_lis.append(temp)
+    
+    if(len(mem_col)>0):
+        for i in mem_col:
+            temp=[]
+            temp.append(i['holo_member_collection_id'])
+            temp.append('holonymy member_collection')
+            holo_lis.append(temp)
+    
+    if(len(ph_state)>0):
+        for i in ph_state:
+            temp=[]
+            temp.append(i['holo_phase_state_id'])
+            temp.append('holonymy phase_state')
+            holo_lis.append(temp)
+    
+    if(len(pl_ar)>0):
+        for i in pl_ar:
+            temp=[]
+            temp.append(i['holo_place_area_id'])
+            temp.append('holonymy place_area')
+            holo_lis.append(temp)
+    
+    if(len(por_mas)>0):
+        for i in por_mas:
+            temp=[]
+            temp.append(i['holo_portion_mass_id'])
+            temp.append('holonymy portion_mass')
+            holo_lis.append(temp)
+    
+    if(len(pos_area)>0):
+        for i in pos_area:
+            temp=[]
+            temp.append(i['holo_position_area_id'])
+            temp.append('holonymy position_area')
+            holo_lis.append(temp)
+
+    if(len(res_pro)>0):
+        for i in res_pro:
+            temp=[]
+            temp.append(i['holo_resource_process_id'])
+            temp.append('holonymy resource_process')
+            holo_lis.append(temp)
+    
+    if(len(st_ob)>0):
+        for i in st_ob:
+            temp=[]
+            temp.append(i['holo_stuff_object_id'])
+            temp.append('holonymy stuff_object')
+            holo_lis.append(temp)
+    
+    for j in holo_lis:
+        l=[]
+        s=[]
+        l.append(j[0])
+        l.append(j[1])
+        synonuyms = m.TblAllWords.objects.filter(synset_id = j[0])
+        gloss = m.TblAllSynset.objects.filter(synset_id = j[0])[0]
+        for k in synonuyms:
+            s.append(str(k.word))
+        l.append(s)
+        data = gloss.gloss
+        data = data.decode('UTF-8')
+        data = data.split(':')
+        l.append(data)
+        data_lis.append(l)
+    print("data_list",data_lis)
+    holonymy_data_json=json.dumps(data_lis,ensure_ascii=False)
+
+    return JsonResponse(holonymy_data_json,safe=False)
+
+def meronymy(request):
+    synset_id=request.GET.get('synset_id',None)
+    mero_lis=[]
+    data_lis=[]
+    com_id=m.TblNounMeroComponentObject.objects.filter(synset_id=synset_id).values()
+    feat_id=m.TblNounMeroFeatureActivity.objects.filter(synset_id=synset_id).values()
+    mem_col=m.TblNounMeroMemberCollection.objects.filter(synset_id=synset_id).values()
+    ph_state=m.TblNounMeroPhaseState.objects.filter(synset_id=synset_id).values()
+    pl_ar=m.TblNounMeroPlaceArea.objects.filter(synset_id=synset_id).values()
+    por_mas=m.TblNounMeroPortionMass.objects.filter(synset_id=synset_id).values()
+    pos_area=m.TblNounMeroPositionArea.objects.filter(synset_id=synset_id).values()
+    res_pro=m.TblNounMeroResourceProcess.objects.filter(synset_id=synset_id).values()
+    st_ob=m.TblNounMeroStuffObject.objects.filter(synset_id=synset_id).values()
+
+    if(len(com_id)>0):
+        for i in com_id:
+            temp=[]
+            temp.append(i['mero_component_object_id'])
+            temp.append('meronymy component_object')
+            mero_lis.append(temp)
+    
+    if(len(feat_id)>0):
+        for i in feat_id:
+            temp=[]
+            temp.append(i['mero_feature_activity_id'])
+            temp.append('meronymy feature_activity')
+            mero_lis.append(temp)
+    
+    if(len(mem_col)>0):
+        for i in mem_col:
+            temp=[]
+            temp.append(i['mero_member_collection_id'])
+            temp.append('meronymy member_collection')
+            mero_lis.append(temp)
+    
+    if(len(ph_state)>0):
+        for i in ph_state:
+            temp=[]
+            temp.append(i['mero_phase_state_id'])
+            temp.append('meronymy phase_state')
+            mero_lis.append(temp)
+    
+    if(len(pl_ar)>0):
+        for i in pl_ar:
+            temp=[]
+            temp.append(i['mero_place_area_id'])
+            temp.append('meronymy place_area')
+            mero_lis.append(temp)
+    
+    if(len(por_mas)>0):
+        for i in por_mas:
+            temp=[]
+            temp.append(i['mero_portion_mass_id'])
+            temp.append('meronymy portion_mass')
+            mero_lis.append(temp)
+    
+    if(len(pos_area)>0):
+        for i in pos_area:
+            temp=[]
+            temp.append(i['mero_position_area_id'])
+            temp.append('meronymy position_area')
+            mero_lis.append(temp)
+
+    if(len(res_pro)>0):
+        for i in res_pro:
+            temp=[]
+            temp.append(i['mero_resource_process_id'])
+            temp.append('meronymy resource_process')
+            mero_lis.append(temp)
+    
+    if(len(st_ob)>0):
+        for i in st_ob:
+            temp=[]
+            temp.append(i['mero_stuff_object_id'])
+            temp.append('meronymy stuff_object')
+            mero_lis.append(temp)
+    
+    for j in mero_lis:
+        l=[]
+        s=[]
+        l.append(j[0])
+        l.append(j[1])
+        synonuyms = m.TblAllWords.objects.filter(synset_id = j[0])
+        gloss = m.TblAllSynset.objects.filter(synset_id = j[0])[0]
+        for k in synonuyms:
+            s.append(str(k.word))
+        l.append(s)
+        data = gloss.gloss
+        data = data.decode('UTF-8')
+        data = data.split(':')
+        l.append(data)
+        data_lis.append(l)
+    print("data_list",data_lis)
+    meronymy_data_json=json.dumps(data_lis,ensure_ascii=False)
+
+    return JsonResponse(meronymy_data_json,safe=False)
+
+
+
+
+
 def recomendation(q,lang):
     wordList = []
     j = 0
@@ -523,83 +800,6 @@ def hypernymy(request):
 
     # return JsonResponse(hyper_data_json,safe=False)
 
-def derivedform(request):
-    synset_id=request.GET.get('synset_id',None)
-    pos=TblAllSynset.objects.filter(synset_id=synset_id).values('category')[0]['category']
-    der_id=None
-
-    # geting derived_from_id based on pos
-    if(pos=='noun'):
-        der_id=TblNounDerivedFrom.objects.filter(synset_id=synset_id).values('derived_from_id')[0]['derived_from_id']
-    elif(pos=='adverb'):
-        der_id=TblAdverbDerivedFrom.objects.filter(synset_id=synset_id).values('derived_from_id')[0]['derived_from_id']
-    elif(pos=='verb'):
-        der_id=TblVerbDerivedFrom.objects.filter(synset_id=synset_id).values('derived_from_id')[0]['derived_from_id']
-    elif(pos=='adjective'):
-        der_id=TblAdjectiveDerivedFrom.objects.filter(synset_id=synset_id).values('derived_from_id')[0]['derived_from_id']
-    else:
-        der_id=None
-    
-    #fetching data
-    l=[]
-    s=[]
-    l.append(der_id)
-    synonuyms = TblAllWords.objects.filter(synset_id = der_id)
-    gloss = TblAllSynset.objects.filter(synset_id = der_id)[0]
-    for k in synonuyms:
-        s.append(str(k.word))
-    l.append(s)
-    data = gloss.gloss
-    data = data.decode('UTF-8')
-    data = data.split(':')
-    l.append(data)
-
-    print(l)
-    derived_data_json=json.dumps(l,ensure_ascii=False)
-
-    return JsonResponse(derived_data_json,safe=False)
-
-def modifies(request):
-    synset_id=request.GET.get('synset_id',None)
-    pos=TblAllSynset.objects.filter(synset_id=synset_id).values('category')[0]['category']
-    flag=None
-    mod_id=[]
-    data_list=[]
-
-    print("hii")
-
-    if(pos=='adjective'):
-        id_i=TblAdjectiveModifiesNoun.objects.filter(synset_id=synset_id).values()
-        flag="modifies_noun_id"
-    elif(pos=='adverb'):
-        id_i=TblAdverbModifiesVerb.objects.filter(synset_id=synset_id).values()
-        flag="modifies_verb_id"
-    else:
-        id_i=[]
-    
-    if(len(id_i)>0):
-        for i in id_i:
-            mod_id.append(i[flag])
-    
-    for j in mod_id:
-        l=[]
-        s=[]
-        l.append(j)
-        l.append(flag[:-3])
-        synonuyms = TblAllWords.objects.filter(synset_id = j)
-        gloss = TblAllSynset.objects.filter(synset_id = j)[0]
-        for k in synonuyms:
-            s.append(str(k.word))
-        l.append(s)
-        data = gloss.gloss
-        data = data.decode('UTF-8')
-        data = data.split(':')
-        l.append(data)
-        data_list.append(l)
-    print("data_list",data_list)
-    modifies_data_json=json.dumps(data_list,ensure_ascii=False)
-
-    return JsonResponse(modifies_data_json,safe=False)
 
 
 

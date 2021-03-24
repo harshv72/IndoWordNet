@@ -160,7 +160,7 @@ class TblAdjectiveAntoTime(models.Model):
 
 
 class TblAdjectiveDerivedFrom(models.Model):
-    synset_id = models.IntegerField()
+    synset_id = models.IntegerField(primary_key=True)
     synset_word = models.CharField(max_length=100, blank=True, null=True)
     derived_from_id = models.IntegerField(blank=True, null=True)
     derived_from_word = models.CharField(max_length=100, blank=True, null=True)
@@ -301,7 +301,7 @@ class TblAdjectiveGradTime(models.Model):
 
 
 class TblAdjectiveModifiesNoun(models.Model):
-    synset_id = models.IntegerField()
+    synset_id = models.IntegerField(primary_key=True)
     modifies_noun_id = models.IntegerField(blank=True, null=True)
 
     class Meta:
@@ -481,7 +481,7 @@ class TblAdverbAntoTime(models.Model):
 
 
 class TblAdverbDerivedFrom(models.Model):
-    synset_id = models.IntegerField()
+    synset_id = models.IntegerField(primary_key=True)
     synset_word = models.CharField(max_length=100, blank=True, null=True)
     derived_from_id = models.IntegerField(blank=True, null=True)
     derived_from_word = models.CharField(max_length=100, blank=True, null=True)
@@ -622,7 +622,7 @@ class TblAdverbGradTime(models.Model):
 
 
 class TblAdverbModifiesVerb(models.Model):
-    synset_id = models.IntegerField()
+    synset_id = models.IntegerField(primary_key=True)
     modifies_verb_id = models.IntegerField(blank=True, null=True)
 
     class Meta:
@@ -864,7 +864,7 @@ class TblNounCompound(models.Model):
 
 
 class TblNounDerivedFrom(models.Model):
-    synset_id = models.IntegerField()
+    synset_id = models.IntegerField(primary_key=True)
     synset_word = models.CharField(max_length=100, blank=True, null=True)
     derived_from_id = models.IntegerField(blank=True, null=True)
     derived_from_word = models.CharField(max_length=100, blank=True, null=True)
@@ -1435,7 +1435,7 @@ class TblVerbConjunction(models.Model):
 
 
 class TblVerbDerivedFrom(models.Model):
-    synset_id = models.IntegerField()
+    synset_id = models.IntegerField(primary_key=True)
     synset_word = models.CharField(max_length=100, blank=True, null=True)
     derived_from_id = models.IntegerField(blank=True, null=True)
     derived_from_word = models.CharField(max_length=100, blank=True, null=True)
