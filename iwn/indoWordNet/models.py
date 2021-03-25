@@ -1014,7 +1014,7 @@ class TblNounGradTime(models.Model):
 
 
 class TblNounHoloComponentObject(models.Model):
-    synset_id = models.IntegerField()
+    synset_id = models.IntegerField(primary_key=True)
     holo_component_object_id = models.IntegerField(blank=True, null=True)
 
     class Meta:
@@ -1023,7 +1023,7 @@ class TblNounHoloComponentObject(models.Model):
 
 
 class TblNounHoloFeatureActivity(models.Model):
-    synset_id = models.IntegerField()
+    synset_id = models.IntegerField(primary_key=True)
     holo_feature_activity_id = models.IntegerField(blank=True, null=True)
 
     class Meta:
@@ -1032,7 +1032,7 @@ class TblNounHoloFeatureActivity(models.Model):
 
 
 class TblNounHoloMemberCollection(models.Model):
-    synset_id = models.IntegerField()
+    synset_id = models.IntegerField(primary_key=True)
     holo_member_collection_id = models.IntegerField(blank=True, null=True)
 
     class Meta:
@@ -1041,7 +1041,7 @@ class TblNounHoloMemberCollection(models.Model):
 
 
 class TblNounHoloPhaseState(models.Model):
-    synset_id = models.IntegerField()
+    synset_id = models.IntegerField(primary_key=True)
     holo_phase_state_id = models.IntegerField(blank=True, null=True)
 
     class Meta:
@@ -1050,7 +1050,7 @@ class TblNounHoloPhaseState(models.Model):
 
 
 class TblNounHoloPlaceArea(models.Model):
-    synset_id = models.IntegerField()
+    synset_id = models.IntegerField(primary_key=True)
     holo_place_area_id = models.IntegerField(blank=True, null=True)
 
     class Meta:
@@ -1059,7 +1059,7 @@ class TblNounHoloPlaceArea(models.Model):
 
 
 class TblNounHoloPortionMass(models.Model):
-    synset_id = models.IntegerField()
+    synset_id = models.IntegerField(primary_key=True)
     holo_portion_mass_id = models.IntegerField(blank=True, null=True)
 
     class Meta:
@@ -1068,7 +1068,7 @@ class TblNounHoloPortionMass(models.Model):
 
 
 class TblNounHoloPositionArea(models.Model):
-    synset_id = models.IntegerField()
+    synset_id = models.IntegerField(primary_key=True)
     holo_position_area_id = models.IntegerField(blank=True, null=True)
 
     class Meta:
@@ -1077,7 +1077,7 @@ class TblNounHoloPositionArea(models.Model):
 
 
 class TblNounHoloResourceProcess(models.Model):
-    synset_id = models.IntegerField()
+    synset_id = models.IntegerField(primary_key=True)
     holo_resource_process_id = models.IntegerField(blank=True, null=True)
 
     class Meta:
@@ -1086,7 +1086,7 @@ class TblNounHoloResourceProcess(models.Model):
 
 
 class TblNounHoloStuffObject(models.Model):
-    synset_id = models.IntegerField()
+    synset_id = models.IntegerField(primary_key=True)
     holo_stuff_object_id = models.IntegerField(blank=True, null=True)
 
     class Meta:
@@ -1113,7 +1113,7 @@ class TblNounHyponymy(models.Model):
 
 
 class TblNounMeroComponentObject(models.Model):
-    synset_id = models.IntegerField()
+    synset_id = models.IntegerField(primary_key=True)
     mero_component_object_id = models.IntegerField(blank=True, null=True)
 
     class Meta:
@@ -1122,7 +1122,7 @@ class TblNounMeroComponentObject(models.Model):
 
 
 class TblNounMeroFeatureActivity(models.Model):
-    synset_id = models.IntegerField()
+    synset_id = models.IntegerField(primary_key=True)
     mero_feature_activity_id = models.IntegerField(blank=True, null=True)
 
     class Meta:
@@ -1131,7 +1131,7 @@ class TblNounMeroFeatureActivity(models.Model):
 
 
 class TblNounMeroMemberCollection(models.Model):
-    synset_id = models.IntegerField()
+    synset_id = models.IntegerField(primary_key=True)
     mero_member_collection_id = models.IntegerField(blank=True, null=True)
 
     class Meta:
@@ -1140,7 +1140,7 @@ class TblNounMeroMemberCollection(models.Model):
 
 
 class TblNounMeroPhaseState(models.Model):
-    synset_id = models.IntegerField()
+    synset_id = models.IntegerField(primary_key=True)
     mero_phase_state_id = models.IntegerField(blank=True, null=True)
 
     class Meta:
@@ -1149,7 +1149,7 @@ class TblNounMeroPhaseState(models.Model):
 
 
 class TblNounMeroPlaceArea(models.Model):
-    synset_id = models.IntegerField()
+    synset_id = models.IntegerField(primary_key=True)
     mero_place_area_id = models.IntegerField(blank=True, null=True)
 
     class Meta:
@@ -1158,7 +1158,7 @@ class TblNounMeroPlaceArea(models.Model):
 
 
 class TblNounMeroPortionMass(models.Model):
-    synset_id = models.IntegerField()
+    synset_id = models.IntegerField(primary_key=True)
     mero_portion_mass_id = models.IntegerField(blank=True, null=True)
 
     class Meta:
@@ -1167,7 +1167,7 @@ class TblNounMeroPortionMass(models.Model):
 
 
 class TblNounMeroPositionArea(models.Model):
-    synset_id = models.IntegerField()
+    synset_id = models.IntegerField(primary_key=True)
     mero_position_area_id = models.IntegerField(blank=True, null=True)
 
     class Meta:
@@ -1176,7 +1176,7 @@ class TblNounMeroPositionArea(models.Model):
 
 
 class TblNounMeroResourceProcess(models.Model):
-    synset_id = models.IntegerField()
+    synset_id = models.IntegerField(primary_key=True)
     mero_resource_process_id = models.IntegerField(blank=True, null=True)
 
     class Meta:
@@ -1185,7 +1185,7 @@ class TblNounMeroResourceProcess(models.Model):
 
 
 class TblNounMeroStuffObject(models.Model):
-    synset_id = models.IntegerField()
+    synset_id = models.IntegerField(primary_key=True)
     mero_stuff_object_id = models.IntegerField(blank=True, null=True)
 
     class Meta:
