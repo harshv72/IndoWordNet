@@ -386,84 +386,130 @@ def onto(request):
 
 def derivedform(request):
     synset_id=request.GET.get('synset_id',None)
-    pos=m.TblAllSynset.objects.filter(synset_id=synset_id).values('category')[0]['category']
+    langno = request.GET.get('langno',None)
+    pos = request.GET.get('pos',None)
+    #pos=m.TblAllSynset.objects.filter(synset_id=synset_id).values('category')[0]['category']
     der_id=None
 
     # geting derived_from_id based on pos
     if(pos=='noun'):
-        der_id=m.TblNounDerivedFrom.objects.filter(synset_id=synset_id).values('derived_from_id')[0]['derived_from_id']
+        der_id=m.TblNounDerivedFrom.objects.filter(synset_id=synset_id).values('derived_from_id')
+        # [0]['derived_from_id']
     elif(pos=='adverb'):
-        der_id=m.TblAdverbDerivedFrom.objects.filter(synset_id=synset_id).values('derived_from_id')[0]['derived_from_id']
+        der_id=m.TblAdverbDerivedFrom.objects.filter(synset_id=synset_id).values('derived_from_id')
     elif(pos=='verb'):
-        der_id=m.TblVerbDerivedFrom.objects.filter(synset_id=synset_id).values('derived_from_id')[0]['derived_from_id']
+        print("in verb")
+        der_id=m.TblVerbDerivedFrom.objects.filter(synset_id=synset_id).values('derived_from_id')
     elif(pos=='adjective'):
-        der_id=m.TblAdjectiveDerivedFrom.objects.filter(synset_id=synset_id).values('derived_from_id')[0]['derived_from_id']
+        der_id=m.TblAdjectiveDerivedFrom.objects.filter(synset_id=synset_id).values('derived_from_id')
     else:
         der_id=None
-    
+    print(der_id, langno)
+    data={}
+    j=0
     #fetching data
-    l=[]
-    s=[]
-    l.append(der_id)
-    synonuyms = m.TblAllWords.objects.filter(synset_id = der_id)
-    gloss = m.TblAllSynset.objects.filter(synset_id = der_id)[0]
-    for k in synonuyms:
-        s.append(str(k.word))
-    l.append(s)
-    data = gloss.gloss
-    data = data.decode('UTF-8')
-    data = data.split(':')
-    l.append(data)
+    for k in der_id:
+        l=[]
+        synset = searchSynsetDataById(k["derived_from_id"],langno)
+        l.append(synset["synset_id"])
+        l.append(synset["synonyms"])
+        print(synset["gloss"])
+        l.append(synset["gloss"])
+        # l.append(synset["gloss"][1])
+        l.append(synset["pos"])
+        data[j]=l
+        j = j+1
 
-    print(l)
-    derived_data_json=json.dumps(l,ensure_ascii=False)
+    data["length"]=j
+    derived_data_json = json.dumps(data,ensure_ascii=False)
+
+    #fetching data
+    # l=[]
+    # s=[]
+    # l.append(der_id)
+    # synonuyms = m.TblAllWords.objects.filter(synset_id = der_id)
+    # gloss = m.TblAllSynset.objects.filter(synset_id = der_id)[0]
+    # for k in synonuyms:
+    #     s.append(str(k.word))
+    # l.append(s)
+    # data = gloss.gloss
+    # data = data.decode('UTF-8')
+    # data = data.split(':')
+    # l.append(data)
+
+    # print(l)
+    # derived_data_json=json.dumps(l,ensure_ascii=False)
 
     return JsonResponse(derived_data_json,safe=False)
 
 def modifies(request):
     synset_id=request.GET.get('synset_id',None)
-    pos=m.TblAllSynset.objects.filter(synset_id=synset_id).values('category')[0]['category']
+    langno = request.GET.get('langno',None)
+    pos = request.GET.get('pos',None)
+    
+    # pos=m.TblAllSynset.objects.filter(synset_id=synset_id).values('category')[0]['category']
     flag=None
     mod_id=[]
     data_list=[]
 
-    print("hii")
-
+    # print("hii")
+    text=""
     if(pos=='adjective'):
         id_i=m.TblAdjectiveModifiesNoun.objects.filter(synset_id=synset_id).values()
         flag="modifies_noun_id"
-    elif(pos=='adverb'):
+        text = "Modifies noun"
+    elif(pos=="adverb"):
         id_i=m.TblAdverbModifiesVerb.objects.filter(synset_id=synset_id).values()
         flag="modifies_verb_id"
+        text = "Modifies verb"
     else:
         id_i=[]
     
     if(len(id_i)>0):
         for i in id_i:
             mod_id.append(i[flag])
-    
-    for j in mod_id:
+    #print(mod_id)
+    data={}
+    j=0
+    #fetching data
+    for k in mod_id:
         l=[]
-        s=[]
-        l.append(j)
-        l.append(flag[:-3])
-        synonuyms = m.TblAllWords.objects.filter(synset_id = j)
-        gloss = m.TblAllSynset.objects.filter(synset_id = j)[0]
-        for k in synonuyms:
-            s.append(str(k.word))
-        l.append(s)
-        data = gloss.gloss
-        data = data.decode('UTF-8')
-        data = data.split(':')
-        l.append(data)
-        data_list.append(l)
-    print("data_list",data_list)
-    modifies_data_json=json.dumps(data_list,ensure_ascii=False)
+        synset = searchSynsetDataById(k,langno)
+        l.append(synset["synset_id"])
+        l.append(synset["synonyms"])
+        print(synset["gloss"])
+        l.append(synset["gloss"])
+        # l.append(synset["gloss"][1])
+        l.append(synset["pos"])
+        l.append(text)
+        data[j]=l
+        j = j+1
+
+    data["length"]=j
+    modifies_data_json = json.dumps(data,ensure_ascii=False)
+    # for j in mod_id:
+    #     l=[]
+    #     s=[]
+    #     l.append(j)
+    #     l.append(flag[:-3])
+    #     synonuyms = m.TblAllWords.objects.filter(synset_id = j)
+    #     gloss = m.TblAllSynset.objects.filter(synset_id = j)[0]
+    #     for k in synonuyms:
+    #         s.append(str(k.word))
+    #     l.append(s)
+    #     data = gloss.gloss
+    #     data = data.decode('UTF-8')
+    #     data = data.split(':')
+    #     l.append(data)
+    #     data_list.append(l)
+    # print("data_list",data_list)
+    # modifies_data_json=json.dumps(data_list,ensure_ascii=False)
 
     return JsonResponse(modifies_data_json,safe=False)
 
 def holonymy(request):
     synset_id=request.GET.get('synset_id',None)
+    langno = request.GET.get('langno',None)
     holo_lis=[]
     data_lis=[]
     com_id=m.TblNounHoloComponentObject.objects.filter(synset_id=synset_id).values()
@@ -539,28 +585,47 @@ def holonymy(request):
             temp.append('holonymy stuff_object')
             holo_lis.append(temp)
     
-    for j in holo_lis:
+    data={}
+    j=0
+    #fetching data
+    for k in holo_lis:
         l=[]
-        s=[]
-        l.append(j[0])
-        l.append(j[1])
-        synonuyms = m.TblAllWords.objects.filter(synset_id = j[0])
-        gloss = m.TblAllSynset.objects.filter(synset_id = j[0])[0]
-        for k in synonuyms:
-            s.append(str(k.word))
-        l.append(s)
-        data = gloss.gloss
-        data = data.decode('UTF-8')
-        data = data.split(':')
-        l.append(data)
-        data_lis.append(l)
-    print("data_list",data_lis)
-    holonymy_data_json=json.dumps(data_lis,ensure_ascii=False)
+        synset = searchSynsetDataById(k[0],langno)
+        l.append(k[1])
+        l.append(synset["synonyms"])
+        print(synset["gloss"])
+        l.append(synset["gloss"])
+        # l.append(synset["gloss"][1])
+        l.append(synset["synset_id"])
+        l.append(synset["pos"])
+        data[j]=l
+        j = j+1
+
+    data["length"]=j
+    holonymy_data_json = json.dumps(data,ensure_ascii=False)
+    # for j in holo_lis:
+    #     l=[]
+    #     s=[]
+    #     l.append(j[0])
+    #     l.append(j[1])
+    #     synonuyms = m.TblAllWords.objects.filter(synset_id = j[0])
+    #     gloss = m.TblAllSynset.objects.filter(synset_id = j[0])[0]
+    #     for k in synonuyms:
+    #         s.append(str(k.word))
+    #     l.append(s)
+    #     data = gloss.gloss
+    #     data = data.decode('UTF-8')
+    #     data = data.split(':')
+    #     l.append(data)
+    #     data_lis.append(l)
+    # print("data_list",data_lis)
+    # holonymy_data_json=json.dumps(data_lis,ensure_ascii=False)
 
     return JsonResponse(holonymy_data_json,safe=False)
 
 def meronymy(request):
     synset_id=request.GET.get('synset_id',None)
+    langno = request.GET.get('langno',None)
     mero_lis=[]
     data_lis=[]
     com_id=m.TblNounMeroComponentObject.objects.filter(synset_id=synset_id).values()
@@ -636,23 +701,41 @@ def meronymy(request):
             temp.append('meronymy stuff_object')
             mero_lis.append(temp)
     
-    for j in mero_lis:
+    data={}
+    j=0
+    #fetching data
+    for k in mero_lis:
         l=[]
-        s=[]
-        l.append(j[0])
-        l.append(j[1])
-        synonuyms = m.TblAllWords.objects.filter(synset_id = j[0])
-        gloss = m.TblAllSynset.objects.filter(synset_id = j[0])[0]
-        for k in synonuyms:
-            s.append(str(k.word))
-        l.append(s)
-        data = gloss.gloss
-        data = data.decode('UTF-8')
-        data = data.split(':')
-        l.append(data)
-        data_lis.append(l)
-    print("data_list",data_lis)
-    meronymy_data_json=json.dumps(data_lis,ensure_ascii=False)
+        synset = searchSynsetDataById(k[0],langno)
+        l.append(k[1])
+        l.append(synset["synonyms"])
+        print(synset["gloss"])
+        l.append(synset["gloss"])
+        # l.append(synset["gloss"][1])
+        l.append(synset["synset_id"])
+        l.append(synset["pos"])
+        data[j]=l
+        j = j+1
+
+    data["length"]=j
+    meronymy_data_json = json.dumps(data,ensure_ascii=False)
+    # for j in mero_lis:
+    #     l=[]
+    #     s=[]
+    #     l.append(j[0])
+    #     l.append(j[1])
+    #     synonuyms = m.TblAllWords.objects.filter(synset_id = j[0])
+    #     gloss = m.TblAllSynset.objects.filter(synset_id = j[0])[0]
+    #     for k in synonuyms:
+    #         s.append(str(k.word))
+    #     l.append(s)
+    #     data = gloss.gloss
+    #     data = data.decode('UTF-8')
+    #     data = data.split(':')
+    #     l.append(data)
+    #     data_lis.append(l)
+    # print("data_list",data_lis)
+    # meronymy_data_json=json.dumps(data_lis,ensure_ascii=False)
 
     return JsonResponse(meronymy_data_json,safe=False)
 

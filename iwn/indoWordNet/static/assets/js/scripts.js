@@ -231,10 +231,31 @@ function fetch_tbl_data(synset_id,tlangno,btnValue){
         case "2":
             createHypoTbl(synset_id,tlangno);
             break;
+        case "3":
+            createHoloTbl(synset_id,tlangno);
+            break;
+        case "4":
+            createMeroTbl(synset_id,tlangno);
+            break;
+        case "5":
+            createHypoTbl(synset_id,tlangno);
+            break;
         case "6":
             console.log("Fetching Ontology data");
             createOntoTbl(synset_id,tlangno);
             console.log("Fetched Ontology data");
+            break;
+        case "7":
+            createNounRelationTbl(synset_id,tlangno);
+            break;
+        case "8":
+            createVerbRelationTbl(synset_id,tlangno);
+            break;
+        case "9":
+            createDerivedFromTbl(synset_id,tlangno);
+            break;
+        case "10":
+            createModifiesTbl(synset_id,tlangno);
             break;
         default:
             console.log("default case in fetch_tbl_data");
@@ -242,12 +263,13 @@ function fetch_tbl_data(synset_id,tlangno,btnValue){
     }
 }
 
-function createOntoTbl(synset_id,tlangno)
-{
-    document.getElementById("tblLabel").innerHTML = "Ontology";
+function getSynsetData(synset_id,tlangno){
+
+    var langText = fetch_tbl_synset_title(tlangno);
+    document.getElementById("tblLabel").innerHTML = langText;
     //var synset_id = document.getElementById("s_id").innerHTML;
     $.ajax({
-        url: 'fetch_onto',
+        url: 'fetch_synset',
         data: {
           'synset_id': synset_id,
           'langno': tlangno
@@ -257,64 +279,140 @@ function createOntoTbl(synset_id,tlangno)
           if (data) {
             var data = JSON.parse(data);
             console.log(data);
-            ontodata = document.getElementById('tbl_data');
-            ontodata.innerHTML = "";
+            
+            syndata = document.getElementById('tbl_data');
+            syndata.innerHTML = "";
 
-            //Adding Table Header
-            var row = document.createElement('tr');
-            row.className = "border-bottom";
+            var row1 = document.createElement('tr');
+            row1.className = "border-bottom";
+            var cell1 = document.createElement('td');
+            var cell2 = document.createElement('td');
+            var cell3 = document.createElement('td');
+            var cell4 = document.createElement('td');
+            var cell5 = document.createElement('td');
+            var cell6 = document.createElement('td');
 
-            var cell1 = document.createElement('th');
-            var cell2 = document.createElement('th');
-            var cell3 = document.createElement('th');
-
-            cell1.className = "d";
-            cell2.className = "d";
-            cell3.className = "d";
-
-            var text1 = document.createTextNode("Onto Id");
-            var text2 = document.createTextNode("Onto Label");
-            var text3 = document.createTextNode("Onto Description");
-
+            cell1.className = "a";
+            var text1 = document.createTextNode("Synset ID");
             cell1.appendChild(text1);
+            
+            cell2.className = "b";
+            var text2 = document.createTextNode(":");
             cell2.appendChild(text2);
+            
+            cell3.className = "c";
+            var text3 = document.createTextNode(data["synset_id"]);
             cell3.appendChild(text3);
 
-            row.appendChild(cell1);
-            row.appendChild(cell2);
-            row.appendChild(cell3);
+            cell4.className = "a";
+            var text4 = document.createTextNode("POS");
+            cell4.appendChild(text4);
+            
+            cell5.className = "b";
+            cell5.style.width = "14px";
+            var text5 = document.createTextNode(":");
+            cell5.appendChild(text5);
+            
+            cell6.className = "c";
+            var text6 = document.createTextNode(data["pos"]);
+            cell6.appendChild(text6);
+            
+            row1.appendChild(cell1);
+            row1.appendChild(cell2);
+            row1.appendChild(cell3);
+            row1.appendChild(cell4);
+            row1.appendChild(cell5);
+            row1.appendChild(cell6);
+            syndata.appendChild(row1);
 
-            ontodata.appendChild(row); // Table Header row added
+            /////////////////////////////
 
-            //Adding Table Data Rows
-            var i,j;
-            for (i=0; i <data.length;i++){  
-                row = document.createElement('tr');
-                row.className = "border-bottom";
-         
-                for(j=0;j<3;j++){
-                    var cell = document.createElement('td');
-                    cell.className = "d";
-                    cell.style.fontWeight = "bold";
-                    switch(j){
-                        case 0:
-                            cell.style.color = "black";
-                            break;
-                        case 1:
-                            cell.style.color = "blue";
-                            break;
-                        case 2:
-                            cell.style.color = "green";
-                            break;
-                        default:
-                            cell.style.color = "black";
-                    }
-                    var text = document.createTextNode(data[i.toString()][j]);
-                    cell.appendChild(text);
-                    row.appendChild(cell);
-                }
-                ontodata.appendChild(row);
+            var row2 = document.createElement('tr');
+            row2.className = "border-bottom";
+            cell1 = document.createElement('td');
+            cell2 = document.createElement('td');
+            cell3 = document.createElement('td');
+
+            cell1.className = "a";
+            text1 = document.createTextNode("Synonyms");
+            cell1.appendChild(text1);
+            
+            cell2.className = "b";
+            text2 = document.createTextNode(":");
+            cell2.appendChild(text2);
+            
+            cell3.className = "c";
+            cell3.colSpan = "4";
+            console.log(data["synonyms"].length)
+            for(i=0;i<data["synonyms"].length;i++)
+            {
+                var a = document.createElement("a");
+                a.textContent = " " + data["synonyms"][i] + ",";
+                a.href = "wordnet?langno="+ tlang +"&query=" + data["synonyms"][i];
+               // a.appendChild(linkText);
+                cell3.appendChild(a);
             }
+            
+            row2.appendChild(cell1);
+            row2.appendChild(cell2);
+            row2.appendChild(cell3);
+            syndata.appendChild(row2);
+
+            ////////////////////////
+
+            var row3 = document.createElement('tr');
+            row3.className = "border-bottom";
+            cell1 = document.createElement('td');
+            cell2 = document.createElement('td');
+            cell3 = document.createElement('td');
+
+            cell1.className = "a";
+            text1 = document.createTextNode("Gloss");
+            cell1.appendChild(text1);
+            
+            cell2.className = "b";
+            text2 = document.createTextNode(":");
+            cell2.appendChild(text2);
+            
+            cell3.className = "c";
+            cell3.colSpan = "4";
+            text3 = document.createTextNode(data["gloss"][0]);
+            cell3.appendChild(text3);
+            
+            row3.appendChild(cell1);
+            row3.appendChild(cell2);
+            row3.appendChild(cell3);
+            syndata.appendChild(row3);
+
+            ///////////////////
+
+            var row4 = document.createElement('tr');
+            row4.className = "border-bottom";
+            cell1 = document.createElement('td');
+            cell2 = document.createElement('td');
+            cell3 = document.createElement('td');
+
+            cell1.className = "a";
+            text1 = document.createTextNode("Example Statement");
+            cell1.appendChild(text1);
+            
+            cell2.className = "b";
+            text2 = document.createTextNode(":");
+            cell2.appendChild(text2);
+            
+            cell3.className = "c";
+            cell3.colSpan = "4";
+            text3 = document.createTextNode(data["gloss"][1]);
+            cell3.appendChild(text3);
+            
+            row4.appendChild(cell1);
+            row4.appendChild(cell2);
+            row4.appendChild(cell3);
+            syndata.appendChild(row4);
+
+          }
+          else{
+              console.log("No data found");
           }
         }
       });
@@ -559,13 +657,369 @@ function createHypoTbl(synset_id,tlangno)
       });
 }
 
-function getSynsetData(synset_id,tlangno){
+function createHoloTbl(synset_id,tlangno)
+{
+    document.getElementById("tblLabel").innerHTML = "Holonymy";
+    var pos = document.getElementById("pos").innerHTML.toLowerCase();
+    $.ajax({
+        url: 'fetch_holonymy',
+        data: {
+          'synset_id': synset_id,
+          'langno': tlangno,
+          'pos':pos
+        },
+        dataType: 'json',
+        success: function (data) {
+          if (data) {
+            var data = JSON.parse(data);
+            console.log(data);
+            hyperdata = document.getElementById('tbl_data');
+            hyperdata.innerHTML = "";
 
-    var langText = fetch_tbl_synset_title(tlangno);
-    document.getElementById("tblLabel").innerHTML = langText;
+            //Adding Table Header
+            var row = document.createElement('tr');
+            row.className = "border-bottom";
+
+            var cell1 = document.createElement('th');
+            var cell2 = document.createElement('th');
+            var cell3 = document.createElement('th');
+            var cell4 = document.createElement('th');
+
+            cell1.className = "d";
+            cell2.className = "d";
+            cell3.className = "d";
+            cell4.className = "d";
+
+            var text1 = document.createTextNode("Holonymy Id");
+            var text2 = document.createTextNode("Synonyms");
+            var text3 = document.createTextNode("Gloss");
+            var text4 = document.createTextNode("Example");
+
+            cell1.appendChild(text1);
+            cell2.appendChild(text2);
+            cell3.appendChild(text3);
+            cell4.appendChild(text4);
+
+            row.appendChild(cell1);
+            row.appendChild(cell2);
+            row.appendChild(cell3);
+            row.appendChild(cell4);
+
+            hyperdata.appendChild(row); // Table Header row added
+
+            //Adding Table Data Rows
+            var i,j;
+            for (i=0; i <data.length;i++){  
+                row = document.createElement('tr');
+                row.className = "border-bottom";
+         
+                for(j=0;j<4;j++){
+                    var cell = document.createElement('td');
+                    cell.style.wordBreak = "break-all";
+                    cell.className = "d";
+                    cell.style.fontWeight = "bold";
+                    switch(j){
+                        case 0:
+                            cell.style.color = "black";
+                            break;
+                        case 1:
+                            cell.style.color = "blue";
+                            break;
+                        case 2:
+                            cell.style.color = "red";
+                            break;
+                        case 3:
+                            cell.style.color = "green";
+                            break;
+                        default:
+                            cell.style.color = "black";
+                    }
+                    if(j == 1)
+                    {
+                        for(k=0;k<data[i.toString()][j].length;k++)
+                        {
+                            var a = document.createElement("a");
+                            a.textContent = " " + data[i.toString()][j][k] + ",";
+                            a.href = "wordnet?langno="+ tlangno +"&query=" + data[i.toString()][j][k];
+                            // a.appendChild(linkText);
+                            cell.appendChild(a);
+                        }
+                    }
+                    else
+                    {
+                        if(j == 2)
+                        {
+                            var text = document.createTextNode(data[i.toString()][2][0]);
+                            cell.appendChild(text);
+                        }
+                        else if(j == 3)
+                        {
+                            var text = document.createTextNode(data[i.toString()][2][1]);
+                            cell.appendChild(text);
+                        }
+                        else
+                        {
+                            var text = document.createTextNode(data[i.toString()][j]);
+                            cell.appendChild(text);
+                        }
+                    }
+                    
+                    row.appendChild(cell);
+                }
+                hyperdata.appendChild(row);
+            }
+          }
+          else{
+              console.log("No data");
+          }
+        }
+      });
+}
+
+function createMeroTbl(synset_id,tlangno)
+{
+    document.getElementById("tblLabel").innerHTML = "Meronymy";
+    var pos = document.getElementById("pos").innerHTML.toLowerCase();
+    $.ajax({
+        url: 'fetch_meronymy',
+        data: {
+          'synset_id': synset_id,
+          'langno': tlangno,
+          'pos':pos
+        },
+        dataType: 'json',
+        success: function (data) {
+          if (data) {
+            var data = JSON.parse(data);
+            console.log(data);
+            hyperdata = document.getElementById('tbl_data');
+            hyperdata.innerHTML = "";
+
+            //Adding Table Header
+            var row = document.createElement('tr');
+            row.className = "border-bottom";
+
+            var cell1 = document.createElement('th');
+            var cell2 = document.createElement('th');
+            var cell3 = document.createElement('th');
+            var cell4 = document.createElement('th');
+
+            cell1.className = "d";
+            cell2.className = "d";
+            cell3.className = "d";
+            cell4.className = "d";
+
+            var text1 = document.createTextNode("Meronymy Id");
+            var text2 = document.createTextNode("Synonyms");
+            var text3 = document.createTextNode("Gloss");
+            var text4 = document.createTextNode("Example");
+
+            cell1.appendChild(text1);
+            cell2.appendChild(text2);
+            cell3.appendChild(text3);
+            cell4.appendChild(text4);
+
+            row.appendChild(cell1);
+            row.appendChild(cell2);
+            row.appendChild(cell3);
+            row.appendChild(cell4);
+
+            hyperdata.appendChild(row); // Table Header row added
+
+            //Adding Table Data Rows
+            var i,j;
+            for (i=0; i <data.length;i++){  
+                row = document.createElement('tr');
+                row.className = "border-bottom";
+         
+                for(j=0;j<4;j++){
+                    var cell = document.createElement('td');
+                    cell.style.wordBreak = "break-all";
+                    cell.className = "d";
+                    cell.style.fontWeight = "bold";
+                    switch(j){
+                        case 0:
+                            cell.style.color = "black";
+                            break;
+                        case 1:
+                            cell.style.color = "blue";
+                            break;
+                        case 2:
+                            cell.style.color = "red";
+                            break;
+                        case 3:
+                            cell.style.color = "green";
+                            break;
+                        default:
+                            cell.style.color = "black";
+                    }
+                    if(j == 1)
+                    {
+                        for(k=0;k<data[i.toString()][j].length;k++)
+                        {
+                            var a = document.createElement("a");
+                            a.textContent = " " + data[i.toString()][j][k] + ",";
+                            a.href = "wordnet?langno="+ tlangno +"&query=" + data[i.toString()][j][k];
+                            // a.appendChild(linkText);
+                            cell.appendChild(a);
+                        }
+                    }
+                    else
+                    {
+                        if(j == 2)
+                        {
+                            var text = document.createTextNode(data[i.toString()][2][0]);
+                            cell.appendChild(text);
+                        }
+                        else if(j == 3)
+                        {
+                            var text = document.createTextNode(data[i.toString()][2][1]);
+                            cell.appendChild(text);
+                        }
+                        else
+                        {
+                            var text = document.createTextNode(data[i.toString()][j]);
+                            cell.appendChild(text);
+                        }
+                    }
+                    
+                    row.appendChild(cell);
+                }
+                hyperdata.appendChild(row);
+            }
+          }
+          else{
+              console.log("No data");
+          }
+        }
+      });
+}
+
+function createAntoTbl(synset_id,tlangno)
+{
+    document.getElementById("tblLabel").innerHTML = "Antonymy";
+    var pos = document.getElementById("pos").innerHTML.toLowerCase();
+    $.ajax({
+        url: 'fetch_meronymy',
+        data: {
+          'synset_id': synset_id,
+          'langno': tlangno,
+          'pos':pos
+        },
+        dataType: 'json',
+        success: function (data) {
+          if (data) {
+            var data = JSON.parse(data);
+            console.log(data);
+            hyperdata = document.getElementById('tbl_data');
+            hyperdata.innerHTML = "";
+
+            //Adding Table Header
+            var row = document.createElement('tr');
+            row.className = "border-bottom";
+
+            var cell1 = document.createElement('th');
+            var cell2 = document.createElement('th');
+            var cell3 = document.createElement('th');
+            var cell4 = document.createElement('th');
+
+            cell1.className = "d";
+            cell2.className = "d";
+            cell3.className = "d";
+            cell4.className = "d";
+
+            var text1 = document.createTextNode("Hypernymy Id");
+            var text2 = document.createTextNode("Synonyms");
+            var text3 = document.createTextNode("Gloss");
+            var text4 = document.createTextNode("Example");
+
+            cell1.appendChild(text1);
+            cell2.appendChild(text2);
+            cell3.appendChild(text3);
+            cell4.appendChild(text4);
+
+            row.appendChild(cell1);
+            row.appendChild(cell2);
+            row.appendChild(cell3);
+            row.appendChild(cell4);
+
+            hyperdata.appendChild(row); // Table Header row added
+
+            //Adding Table Data Rows
+            var i,j;
+            for (i=0; i <data.length;i++){  
+                row = document.createElement('tr');
+                row.className = "border-bottom";
+         
+                for(j=0;j<4;j++){
+                    var cell = document.createElement('td');
+                    cell.style.wordBreak = "break-all";
+                    cell.className = "d";
+                    cell.style.fontWeight = "bold";
+                    switch(j){
+                        case 0:
+                            cell.style.color = "black";
+                            break;
+                        case 1:
+                            cell.style.color = "blue";
+                            break;
+                        case 2:
+                            cell.style.color = "red";
+                            break;
+                        case 3:
+                            cell.style.color = "green";
+                            break;
+                        default:
+                            cell.style.color = "black";
+                    }
+                    if(j == 1)
+                    {
+                        for(k=0;k<data[i.toString()][j].length;k++)
+                        {
+                            var a = document.createElement("a");
+                            a.textContent = " " + data[i.toString()][j][k] + ",";
+                            a.href = "wordnet?langno="+ tlangno +"&query=" + data[i.toString()][j][k];
+                            // a.appendChild(linkText);
+                            cell.appendChild(a);
+                        }
+                    }
+                    else
+                    {
+                        if(j == 2)
+                        {
+                            var text = document.createTextNode(data[i.toString()][2][0]);
+                            cell.appendChild(text);
+                        }
+                        else if(j == 3)
+                        {
+                            var text = document.createTextNode(data[i.toString()][2][1]);
+                            cell.appendChild(text);
+                        }
+                        else
+                        {
+                            var text = document.createTextNode(data[i.toString()][j]);
+                            cell.appendChild(text);
+                        }
+                    }
+                    
+                    row.appendChild(cell);
+                }
+                hyperdata.appendChild(row);
+            }
+          }
+          else{
+              console.log("No data");
+          }
+        }
+      });
+}
+
+function createOntoTbl(synset_id,tlangno)
+{
+    document.getElementById("tblLabel").innerHTML = "Ontology";
     //var synset_id = document.getElementById("s_id").innerHTML;
     $.ajax({
-        url: 'fetch_synset',
+        url: 'fetch_onto',
         data: {
           'synset_id': synset_id,
           'langno': tlangno
@@ -575,146 +1029,306 @@ function getSynsetData(synset_id,tlangno){
           if (data) {
             var data = JSON.parse(data);
             console.log(data);
-            
-            syndata = document.getElementById('tbl_data');
-            syndata.innerHTML = "";
+            ontodata = document.getElementById('tbl_data');
+            ontodata.innerHTML = "";
 
-            var row1 = document.createElement('tr');
-            row1.className = "border-bottom";
-            var cell1 = document.createElement('td');
-            var cell2 = document.createElement('td');
-            var cell3 = document.createElement('td');
-            var cell4 = document.createElement('td');
-            var cell5 = document.createElement('td');
-            var cell6 = document.createElement('td');
+            //Adding Table Header
+            var row = document.createElement('tr');
+            row.className = "border-bottom";
 
-            cell1.className = "a";
-            var text1 = document.createTextNode("Synset ID");
+            var cell1 = document.createElement('th');
+            var cell2 = document.createElement('th');
+            var cell3 = document.createElement('th');
+
+            cell1.className = "d";
+            cell2.className = "d";
+            cell3.className = "d";
+
+            var text1 = document.createTextNode("Onto Id");
+            var text2 = document.createTextNode("Onto Label");
+            var text3 = document.createTextNode("Onto Description");
+
             cell1.appendChild(text1);
-            
-            cell2.className = "b";
-            var text2 = document.createTextNode(":");
             cell2.appendChild(text2);
-            
-            cell3.className = "c";
-            var text3 = document.createTextNode(data["synset_id"]);
             cell3.appendChild(text3);
 
-            cell4.className = "a";
-            var text4 = document.createTextNode("POS");
-            cell4.appendChild(text4);
-            
-            cell5.className = "b";
-            cell5.style.width = "14px";
-            var text5 = document.createTextNode(":");
-            cell5.appendChild(text5);
-            
-            cell6.className = "c";
-            var text6 = document.createTextNode(data["pos"]);
-            cell6.appendChild(text6);
-            
-            row1.appendChild(cell1);
-            row1.appendChild(cell2);
-            row1.appendChild(cell3);
-            row1.appendChild(cell4);
-            row1.appendChild(cell5);
-            row1.appendChild(cell6);
-            syndata.appendChild(row1);
+            row.appendChild(cell1);
+            row.appendChild(cell2);
+            row.appendChild(cell3);
 
-            /////////////////////////////
+            ontodata.appendChild(row); // Table Header row added
 
-            var row2 = document.createElement('tr');
-            row2.className = "border-bottom";
-            cell1 = document.createElement('td');
-            cell2 = document.createElement('td');
-            cell3 = document.createElement('td');
-
-            cell1.className = "a";
-            text1 = document.createTextNode("Synonyms");
-            cell1.appendChild(text1);
-            
-            cell2.className = "b";
-            text2 = document.createTextNode(":");
-            cell2.appendChild(text2);
-            
-            cell3.className = "c";
-            cell3.colSpan = "4";
-            console.log(data["synonyms"].length)
-            for(i=0;i<data["synonyms"].length;i++)
-            {
-                var a = document.createElement("a");
-                a.textContent = " " + data["synonyms"][i] + ",";
-                a.href = "wordnet?langno="+ tlang +"&query=" + data["synonyms"][i];
-               // a.appendChild(linkText);
-                cell3.appendChild(a);
+            //Adding Table Data Rows
+            var i,j;
+            for (i=0; i <data.length;i++){  
+                row = document.createElement('tr');
+                row.className = "border-bottom";
+         
+                for(j=0;j<3;j++){
+                    var cell = document.createElement('td');
+                    cell.className = "d";
+                    cell.style.fontWeight = "bold";
+                    switch(j){
+                        case 0:
+                            cell.style.color = "black";
+                            break;
+                        case 1:
+                            cell.style.color = "blue";
+                            break;
+                        case 2:
+                            cell.style.color = "green";
+                            break;
+                        default:
+                            cell.style.color = "black";
+                    }
+                    var text = document.createTextNode(data[i.toString()][j]);
+                    cell.appendChild(text);
+                    row.appendChild(cell);
+                }
+                ontodata.appendChild(row);
             }
-            
-            row2.appendChild(cell1);
-            row2.appendChild(cell2);
-            row2.appendChild(cell3);
-            syndata.appendChild(row2);
-
-            ////////////////////////
-
-            var row3 = document.createElement('tr');
-            row3.className = "border-bottom";
-            cell1 = document.createElement('td');
-            cell2 = document.createElement('td');
-            cell3 = document.createElement('td');
-
-            cell1.className = "a";
-            text1 = document.createTextNode("Gloss");
-            cell1.appendChild(text1);
-            
-            cell2.className = "b";
-            text2 = document.createTextNode(":");
-            cell2.appendChild(text2);
-            
-            cell3.className = "c";
-            cell3.colSpan = "4";
-            text3 = document.createTextNode(data["gloss"][0]);
-            cell3.appendChild(text3);
-            
-            row3.appendChild(cell1);
-            row3.appendChild(cell2);
-            row3.appendChild(cell3);
-            syndata.appendChild(row3);
-
-            ///////////////////
-
-            var row4 = document.createElement('tr');
-            row4.className = "border-bottom";
-            cell1 = document.createElement('td');
-            cell2 = document.createElement('td');
-            cell3 = document.createElement('td');
-
-            cell1.className = "a";
-            text1 = document.createTextNode("Example Statement");
-            cell1.appendChild(text1);
-            
-            cell2.className = "b";
-            text2 = document.createTextNode(":");
-            cell2.appendChild(text2);
-            
-            cell3.className = "c";
-            cell3.colSpan = "4";
-            text3 = document.createTextNode(data["gloss"][1]);
-            cell3.appendChild(text3);
-            
-            row4.appendChild(cell1);
-            row4.appendChild(cell2);
-            row4.appendChild(cell3);
-            syndata.appendChild(row4);
-
-          }
-          else{
-              console.log("No data found");
           }
         }
       });
 }
 
+function createDerivedFromTbl(synset_id,tlangno)
+{
+    document.getElementById("tblLabel").innerHTML = "Derived From";
+    var pos = document.getElementById("pos").innerHTML.toLowerCase();
+    $.ajax({
+        url: 'fetch_derived',
+        data: {
+          'synset_id': synset_id,
+          'langno': tlangno,
+          'pos':pos
+        },
+        dataType: 'json',
+        success: function (data) {
+          if (data) {
+            var data = JSON.parse(data);
+            console.log(data);
+            hyperdata = document.getElementById('tbl_data');
+            hyperdata.innerHTML = "";
 
+            //Adding Table Header
+            var row = document.createElement('tr');
+            row.className = "border-bottom";
+
+            var cell1 = document.createElement('th');
+            var cell2 = document.createElement('th');
+            var cell3 = document.createElement('th');
+            var cell4 = document.createElement('th');
+
+            cell1.className = "d";
+            cell2.className = "d";
+            cell3.className = "d";
+            cell4.className = "d";
+
+            var text1 = document.createTextNode("Derived From");
+            var text2 = document.createTextNode("Synonyms");
+            var text3 = document.createTextNode("Gloss");
+            var text4 = document.createTextNode("Example");
+
+            cell1.appendChild(text1);
+            cell2.appendChild(text2);
+            cell3.appendChild(text3);
+            cell4.appendChild(text4);
+
+            row.appendChild(cell1);
+            row.appendChild(cell2);
+            row.appendChild(cell3);
+            row.appendChild(cell4);
+
+            hyperdata.appendChild(row); // Table Header row added
+
+            //Adding Table Data Rows
+            var i,j;
+            for (i=0; i <data.length;i++){  
+                row = document.createElement('tr');
+                row.className = "border-bottom";
+         
+                for(j=0;j<4;j++){
+                    var cell = document.createElement('td');
+                    cell.style.wordBreak = "break-all";
+                    cell.className = "d";
+                    cell.style.fontWeight = "bold";
+                    switch(j){
+                        case 0:
+                            cell.style.color = "black";
+                            break;
+                        case 1:
+                            cell.style.color = "blue";
+                            break;
+                        case 2:
+                            cell.style.color = "red";
+                            break;
+                        case 3:
+                            cell.style.color = "green";
+                            break;
+                        default:
+                            cell.style.color = "black";
+                    }
+                    if(j == 1)
+                    {
+                        for(k=0;k<data[i.toString()][j].length;k++)
+                        {
+                            var a = document.createElement("a");
+                            a.textContent = " " + data[i.toString()][j][k] + ",";
+                            a.href = "wordnet?langno="+ tlangno +"&query=" + data[i.toString()][j][k];
+                            // a.appendChild(linkText);
+                            cell.appendChild(a);
+                        }
+                    }
+                    else
+                    {
+                        if(j == 2)
+                        {
+                            var text = document.createTextNode(data[i.toString()][2][0]);
+                            cell.appendChild(text);
+                        }
+                        else if(j == 3)
+                        {
+                            var text = document.createTextNode(data[i.toString()][2][1]);
+                            cell.appendChild(text);
+                        }
+                        else
+                        {
+                            var text = document.createTextNode(data[i.toString()][j]);
+                            cell.appendChild(text);
+                        }
+                    }
+                    
+                    row.appendChild(cell);
+                }
+                hyperdata.appendChild(row);
+            }
+          }
+          else{
+              console.log("No data");
+          }
+        }
+      });
+}
+
+function createModifiesTbl(synset_id,tlangno)
+{
+    document.getElementById("tblLabel").innerHTML = "Modifies";
+    var pos = document.getElementById("pos").innerHTML.toLowerCase();
+    $.ajax({
+        url: 'fetch_modifies',
+        data: {
+          'synset_id': synset_id,
+          'langno': tlangno,
+          'pos':pos
+        },
+        dataType: 'json',
+        success: function (data) {
+          if (data) {
+            var data = JSON.parse(data);
+            console.log(data);
+            hyperdata = document.getElementById('tbl_data');
+            hyperdata.innerHTML = "";
+
+            //Adding Table Header
+            var row = document.createElement('tr');
+            row.className = "border-bottom";
+
+            var cell1 = document.createElement('th');
+            var cell2 = document.createElement('th');
+            var cell3 = document.createElement('th');
+            var cell4 = document.createElement('th');
+
+            cell1.className = "d";
+            cell2.className = "d";
+            cell3.className = "d";
+            cell4.className = "d";
+            
+            var text1 = document.createTextNode(data[0][4]);
+            var text2 = document.createTextNode("Synonyms");
+            var text3 = document.createTextNode("Gloss");
+            var text4 = document.createTextNode("Example");
+
+            cell1.appendChild(text1);
+            cell2.appendChild(text2);
+            cell3.appendChild(text3);
+            cell4.appendChild(text4);
+
+            row.appendChild(cell1);
+            row.appendChild(cell2);
+            row.appendChild(cell3);
+            row.appendChild(cell4);
+
+            hyperdata.appendChild(row); // Table Header row added
+
+            //Adding Table Data Rows
+            var i,j;
+            for (i=0; i <data.length;i++){  
+                row = document.createElement('tr');
+                row.className = "border-bottom";
+         
+                for(j=0;j<4;j++){
+                    var cell = document.createElement('td');
+                    cell.style.wordBreak = "break-all";
+                    cell.className = "d";
+                    cell.style.fontWeight = "bold";
+                    switch(j){
+                        case 0:
+                            cell.style.color = "black";
+                            break;
+                        case 1:
+                            cell.style.color = "blue";
+                            break;
+                        case 2:
+                            cell.style.color = "red";
+                            break;
+                        case 3:
+                            cell.style.color = "green";
+                            break;
+                        default:
+                            cell.style.color = "black";
+                    }
+                    if(j == 1)
+                    {
+                        for(k=0;k<data[i.toString()][j].length;k++)
+                        {
+                            var a = document.createElement("a");
+                            a.textContent = " " + data[i.toString()][j][k] + ",";
+                            a.href = "wordnet?langno="+ tlangno +"&query=" + data[i.toString()][j][k];
+                            // a.appendChild(linkText);
+                            cell.appendChild(a);
+                        }
+                    }
+                    else
+                    {
+                        if(j == 2)
+                        {
+                            var text = document.createTextNode(data[i.toString()][2][0]);
+                            cell.appendChild(text);
+                        }
+                        else if(j == 3)
+                        {
+                            var text = document.createTextNode(data[i.toString()][2][1]);
+                            cell.appendChild(text);
+                        }
+                        else
+                        {
+                            var text = document.createTextNode(data[i.toString()][j]);
+                            cell.appendChild(text);
+                        }
+                    }
+                    
+                    row.appendChild(cell);
+                }
+                hyperdata.appendChild(row);
+            }
+          }
+          else{
+              console.log("No data");
+          }
+        }
+      });
+}
 
 function fetchRecomendationData(word,lang){
     var currentRequest = null;
