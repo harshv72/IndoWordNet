@@ -27,10 +27,21 @@
   <div>&nbsp;</div>
   <div>&nbsp;</div>
   <div>&nbsp;</div>
+  
+  {% if not found %}
+  <div class="error_div alert alert-danger alert-dismissible" role="alert">
+    <button type="button" class="close" data-dismiss="alert">
+      <span aria-hidden="true">X</span>
+      <span class="sr-only">Close</span>
+    </button>
+    Word <span style="color: blue;">{{query}}</span> not found in wordnet
+
+  </div>
+  {% else %}
   <div>&nbsp;</div>
   <div>&nbsp;</div>
   
-  
+  {% endif %}
   
   {% include 'searchbox.html' %}
   <div>&nbsp;</div>

@@ -10,7 +10,7 @@ import base64
 # Create your views here.
 
 def index(request):
-    return render(request,'index.html',context=None)
+    return render(request,'index.html',{'found':True})
 
 def getReginalAllData(lang):
     if lang == '0':
@@ -116,24 +116,25 @@ def wordnet(request):
     if lang == '0':
         synset = m.TblAllWords.objects.filter(word = word)
         length = len(synset)
-        for i in synset:
-            l=[]
-            s=[]
-            l.append(str(i.synset_id))
-            l.append(str(i.pos))
-            synonuyms = m.TblAllWords.objects.filter(synset_id = str(i.synset_id))
-            gloss = m.TblAllSynset.objects.filter(synset_id = str(i.synset_id))[0]
-            for j in synonuyms:
-                s.append(str(j.word))
-            l.append(s)
-            l.append(gloss.gloss.decode('UTF-8').split(':'))
-            try:
-                enId = m.EnglishHindiIdMapping.objects.using('region').get(hindi_id = str(i.synset_id))
-                glossEN = m.EnglishSynsetData.objects.using('region').filter(synset_id = str(enId.english_id))[0]
-                l.append(str(glossEN.gloss))
-            except m.EnglishHindiIdMapping.DoesNotExist:
-                l.append('English Linkage Not Available')
-            wordList.append(l)
+        if length != 0:
+            for i in synset:
+                l=[]
+                s=[]
+                l.append(str(i.synset_id))
+                l.append(str(i.pos))
+                synonuyms = m.TblAllWords.objects.filter(synset_id = str(i.synset_id))
+                gloss = m.TblAllSynset.objects.filter(synset_id = str(i.synset_id))[0]
+                for j in synonuyms:
+                    s.append(str(j.word))
+                l.append(s)
+                l.append(gloss.gloss.decode('UTF-8').split(':'))
+                try:
+                    enId = m.EnglishHindiIdMapping.objects.using('region').get(hindi_id = str(i.synset_id))
+                    glossEN = m.EnglishSynsetData.objects.using('region').filter(synset_id = str(enId.english_id))[0]
+                    l.append(str(glossEN.gloss))
+                except m.EnglishHindiIdMapping.DoesNotExist:
+                    l.append('English Linkage Not Available')
+                wordList.append(l)
 
     elif lang == '1':
         data = m.EnglishSynsetData.objects.using('region').all()
@@ -222,6 +223,8 @@ def wordnet(request):
         data = m.TblAllOriyaSynsetData.objects.using('region').all()
         wordList,length = regionalData(data,word,lang)
 
+    if length == 0:
+        return render(request,'index.html',{'query':word,'found':False})
     return render(request,'wordnet.html', {'query':word,'langno':lang,'length':length,'wordList':wordList})
 
 def fetch_synset(request):

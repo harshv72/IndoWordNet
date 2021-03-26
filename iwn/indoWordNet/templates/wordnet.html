@@ -159,7 +159,13 @@
             </span>
 
             <span>
-                <table style="width: 100%;table-layout: fixed;">
+
+                <div>
+                    <div class="container-fluid notFound  alert alert-danger ">
+                        No <span id="dataLabel" style="color: blue;">Test</span> data found
+                    </div>
+                </div>
+                <!-- <table style="width: 100%;table-layout: fixed;">
                     <tbody id="tbl_data">
                         <tr class="border-bottom">
                             <th class="d">Onto Id</th> 
@@ -176,9 +182,11 @@
                         {% endfor %}
                     
                     </tbody>
-                </table>
+                </table> -->
+
+
             </span>
-            <script>
+            <!-- <script>
                 
                 $(document).ready(function(){
                     
@@ -192,7 +200,7 @@
                     // createDerivedFromTbl(52,"0");
                      createOntoTbl(synset_id,tlangno);
                 });
-            </script>
+            </script> -->
         </div>
     </div>
   </div>
