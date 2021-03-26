@@ -227,7 +227,7 @@ def wordnet(request):
         return render(request,'index.html',{'query':word,'found':False})
     return render(request,'wordnet.html', {'query':word,'langno':lang,'length':length,'wordList':wordList})
 
-def fetch_synset(request):
+def fetchSynset(request):
     synset_id = request.GET.get('synset_id',None)
     langno = request.GET.get('langno')
 
@@ -357,7 +357,7 @@ def fetch_regional_data(data,synset_id,tlang):
     
     return d
 
-def onto(request):
+def ontonymy(request):
     synset_id = request.GET.get('synset_id',None)
     #Fetching node id
     i = m.TblOntoNodes.objects.filter(synset_id= synset_id)[0].onto_nodes_id
@@ -387,7 +387,7 @@ def onto(request):
     return JsonResponse(onto_data_json,safe=False)
 
 
-def derivedform(request):
+def derivedFrom(request):
     synset_id=request.GET.get('synset_id',None)
     langno = request.GET.get('langno',None)
     pos = request.GET.get('pos',None)
@@ -742,8 +742,179 @@ def meronymy(request):
 
     return JsonResponse(meronymy_data_json,safe=False)
 
+def antonymy(request):
+    synset_id=request.GET.get('synset_id',None)
+    langno = request.GET.get('langno',None)
+    pos = request.GET.get('pos',None)
+    antonymy_ids=[]
+    action_id = amount_id = colour_id = direction_id = gender_id = manner_id = personality_id = place_id = quality_id = size_id = state_id = time_id = []
+    if(pos == "noun"):
+        action_id=m.TblNounAntoAction.objects.filter(synset_id=synset_id).values()
+        amount_id=m.TblNounAntoAmount.objects.filter(synset_id=synset_id).values()
+        colour_id=m.TblNounAntoColour.objects.filter(synset_id=synset_id).values()
+        direction_id=m.TblNounAntoDirection.objects.filter(synset_id=synset_id).values()
+        gender_id=m.TblNounAntoGender.objects.filter(synset_id=synset_id).values()
+        manner_id=m.TblNounAntoManner.objects.filter(synset_id=synset_id).values()
+        personality_id=m.TblNounAntoPersonality.objects.filter(synset_id=synset_id).values()
+        place_id=m.TblNounAntoPlace.objects.filter(synset_id=synset_id).values()
+        quality_id=m.TblNounAntoQuality.objects.filter(synset_id=synset_id).values()
+        size_id=m.TblNounAntoSize.objects.filter(synset_id=synset_id).values()
+        state_id=m.TblNounAntoState.objects.filter(synset_id=synset_id).values()
+        time_id=m.TblNounAntoTime.objects.filter(synset_id=synset_id).values()
+    elif(pos == "adjective"):
+        action_id=m.TblAdjectiveAntoAction.objects.filter(synset_id=synset_id).values()
+        amount_id=m.TblAdjectiveAntoAmount.objects.filter(synset_id=synset_id).values()
+        colour_id=m.TblAdjectiveAntoColour.objects.filter(synset_id=synset_id).values()
+        direction_id=m.TblAdjectiveAntoDirection.objects.filter(synset_id=synset_id).values()
+        gender_id=m.TblAdjectiveAntoGender.objects.filter(synset_id=synset_id).values()
+        manner_id=m.TblAdjectiveAntoManner.objects.filter(synset_id=synset_id).values()
+        personality_id=m.TblAdjectiveAntoPersonality.objects.filter(synset_id=synset_id).values()
+        place_id=m.TblAdjectiveAntoPlace.objects.filter(synset_id=synset_id).values()
+        quality_id=m.TblAdjectiveAntoQuality.objects.filter(synset_id=synset_id).values()
+        size_id=m.TblAdjectiveAntoSize.objects.filter(synset_id=synset_id).values()
+        state_id=m.TblAdjectiveAntoState.objects.filter(synset_id=synset_id).values()
+        time_id=m.TblAdjectiveAntoTime.objects.filter(synset_id=synset_id).values()
+    elif(pos == "adverb"):
+        action_id=m.TblAdverbAntoAction.objects.filter(synset_id=synset_id).values()
+        amount_id=m.TblAdverbAntoAmount.objects.filter(synset_id=synset_id).values()
+        colour_id=m.TblAdverbAntoColour.objects.filter(synset_id=synset_id).values()
+        direction_id=m.TblAdverbAntoDirection.objects.filter(synset_id=synset_id).values()
+        gender_id=m.TblAdverbAntoGender.objects.filter(synset_id=synset_id).values()
+        manner_id=m.TblAdverbAntoManner.objects.filter(synset_id=synset_id).values()
+        personality_id=m.TblAdverbAntoPersonality.objects.filter(synset_id=synset_id).values()
+        place_id=m.TblAdverbAntoPlace.objects.filter(synset_id=synset_id).values()
+        quality_id=m.TblAdverbAntoQuality.objects.filter(synset_id=synset_id).values()
+        size_id=m.TblAdverbAntoSize.objects.filter(synset_id=synset_id).values()
+        state_id=m.TblAdverbAntoState.objects.filter(synset_id=synset_id).values()
+        time_id=m.TblAdverbAntoTime.objects.filter(synset_id=synset_id).values()
+    elif(pos == "verb"):
+        action_id=m.TblVerbAntoAction.objects.filter(synset_id=synset_id).values()
+        amount_id=m.TblVerbAntoAmount.objects.filter(synset_id=synset_id).values()
+        colour_id=m.TblVerbAntoColour.objects.filter(synset_id=synset_id).values()
+        direction_id=m.TblVerbAntoDirection.objects.filter(synset_id=synset_id).values()
+        gender_id=m.TblVerbAntoGender.objects.filter(synset_id=synset_id).values()
+        manner_id=m.TblVerbAntoManner.objects.filter(synset_id=synset_id).values()
+        personality_id=m.TblVerbAntoPersonality.objects.filter(synset_id=synset_id).values()
+        place_id=m.TblVerbAntoPlace.objects.filter(synset_id=synset_id).values()
+        quality_id=m.TblVerbAntoQuality.objects.filter(synset_id=synset_id).values()
+        size_id=m.TblVerbAntoSize.objects.filter(synset_id=synset_id).values()
+        state_id=m.TblVerbAntoState.objects.filter(synset_id=synset_id).values()
+        time_id=m.TblVerbAntoTime.objects.filter(synset_id=synset_id).values()
+    
+    if(len(action_id)>0):
+        for i in action_id:
+            temp=[]
+            temp.append(i['anto_action_id'])
+            temp.append('Antonymy - Action')
+            antonymy_ids.append(temp)
+    
+    if(len(amount_id)>0):
+        for i in amount_id:
+            temp=[]
+            temp.append(i['anto_amount_id'])
+            temp.append('Antonymy - Amount')
+            antonymy_ids.append(temp)
+    
+    if(len(colour_id)>0):
+        for i in colour_id:
+            temp=[]
+            temp.append(i['anto_colour_id'])
+            temp.append('Antonymy - Colour')
+            antonymy_ids.append(temp)
+    
+    if(len(direction_id)>0):
+        for i in direction_id:
+            temp=[]
+            temp.append(i['anto_direction_id'])
+            temp.append('Antonymy - Direction')
+            antonymy_ids.append(temp)
+    
+    if(len(gender_id)>0):
+        for i in gender_id:
+            temp=[]
+            temp.append(i['anto_gender_id'])
+            temp.append('Antonymy - Gender')
+            antonymy_ids.append(temp)
+    
+    if(len(manner_id)>0):
+        for i in manner_id:
+            temp=[]
+            temp.append(i['anto_manner_id'])
+            temp.append('Antonymy - Manner')
+            mero_lis.append(temp)
 
+    if(len(personality_id)>0):
+        for i in personality_id:
+            temp=[]
+            temp.append(i['anto_personality_id'])
+            temp.append('Antonymy - Personality')
+            antonymy_ids.append(temp)
+    
+    if(len(place_id)>0):
+        for i in place_id:
+            temp=[]
+            temp.append(i['anto_place_id'])
+            temp.append('Antonymy - Place')
+            antonymy_ids.append(temp)
+    
+    if(len(quality_id)>0):
+        for i in quality_id:
+            temp=[]
+            temp.append(i['anto_quality_id'])
+            temp.append('Antonymy - Quality')
+            antonymy_ids.append(temp)
+    
+    if(len(size_id)>0):
+        for i in size_id:
+            temp=[]
+            temp.append(i['anto_size_id'])
+            temp.append('Antonymy - Size')
+            antonymy_ids.append(temp)
 
+    if(len(state_id)>0):
+        for i in state_id:
+            temp=[]
+            temp.append(i['anto_state_id'])
+            temp.append('Antonymy - State')
+            antonymy_ids.append(temp)
+
+    if(len(time_id)>0):
+        for i in time_id:
+            temp=[]
+            temp.append(i['anto_time_id'])
+            temp.append('Antonymy - Time')
+            antonymy_ids.append(temp)
+    
+    ## Removing duplicate ids from Antonymy IDs
+    temp_id = []
+    temp = []
+    for k in antonymy_ids:
+        if k[0] not in temp_id:
+            temp_id.append(k[0])
+            temp.append(k)
+
+    antonymy_ids = temp
+
+    data={}
+    j=0
+    #fetching data
+    for k in antonymy_ids:
+        l=[]
+        synset = searchSynsetDataById(k[0],langno)
+        l.append(k[1])
+        l.append(synset["synonyms"])
+        print(synset["gloss"])
+        l.append(synset["gloss"])
+        # l.append(synset["gloss"][1])
+        l.append(synset["synset_id"])
+        l.append(synset["pos"])
+        data[j]=l
+        j = j+1
+
+    data["length"]=j
+    antonymy_data_json = json.dumps(data,ensure_ascii=False)
+
+    return JsonResponse(antonymy_data_json,safe=False)
 
 
 def recomendation(q,lang):

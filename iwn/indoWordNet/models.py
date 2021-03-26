@@ -28,7 +28,7 @@ class TblAdjectiveAlsoSee(models.Model):
 
 
 class TblAdjectiveAntoAction(models.Model):
-    synset_id = models.IntegerField()
+    synset_id = models.IntegerField(primary_key=True)
     synset_word = models.CharField(max_length=100, blank=True, null=True)
     anto_action_id = models.IntegerField(blank=True, null=True)
     anto_action_word = models.CharField(max_length=100, blank=True, null=True)
@@ -39,7 +39,7 @@ class TblAdjectiveAntoAction(models.Model):
 
 
 class TblAdjectiveAntoAmount(models.Model):
-    synset_id = models.IntegerField()
+    synset_id = models.IntegerField(primary_key=True)
     synset_word = models.CharField(max_length=100, blank=True, null=True)
     anto_amount_id = models.IntegerField(blank=True, null=True)
     anto_amount_word = models.CharField(max_length=100, blank=True, null=True)
@@ -50,7 +50,7 @@ class TblAdjectiveAntoAmount(models.Model):
 
 
 class TblAdjectiveAntoColour(models.Model):
-    synset_id = models.IntegerField()
+    synset_id = models.IntegerField(primary_key=True)
     synset_word = models.CharField(max_length=100, blank=True, null=True)
     anto_colour_id = models.IntegerField(blank=True, null=True)
     anto_colour_word = models.CharField(max_length=100, blank=True, null=True)
@@ -61,7 +61,7 @@ class TblAdjectiveAntoColour(models.Model):
 
 
 class TblAdjectiveAntoDirection(models.Model):
-    synset_id = models.IntegerField()
+    synset_id = models.IntegerField(primary_key=True)
     synset_word = models.CharField(max_length=100, blank=True, null=True)
     anto_direction_id = models.IntegerField(blank=True, null=True)
     anto_direction_word = models.CharField(max_length=100, blank=True, null=True)
@@ -72,7 +72,7 @@ class TblAdjectiveAntoDirection(models.Model):
 
 
 class TblAdjectiveAntoGender(models.Model):
-    synset_id = models.IntegerField()
+    synset_id = models.IntegerField(primary_key=True)
     synset_word = models.CharField(max_length=100, blank=True, null=True)
     anto_gender_id = models.IntegerField(blank=True, null=True)
     anto_gender_word = models.CharField(max_length=100, blank=True, null=True)
@@ -83,7 +83,7 @@ class TblAdjectiveAntoGender(models.Model):
 
 
 class TblAdjectiveAntoManner(models.Model):
-    synset_id = models.IntegerField()
+    synset_id = models.IntegerField(primary_key=True)
     synset_word = models.CharField(max_length=100, blank=True, null=True)
     anto_manner_id = models.IntegerField(blank=True, null=True)
     anto_manner_word = models.CharField(max_length=100, blank=True, null=True)
@@ -94,7 +94,7 @@ class TblAdjectiveAntoManner(models.Model):
 
 
 class TblAdjectiveAntoPersonality(models.Model):
-    synset_id = models.IntegerField()
+    synset_id = models.IntegerField(primary_key=True)
     synset_word = models.CharField(max_length=100, blank=True, null=True)
     anto_personality_id = models.IntegerField(blank=True, null=True)
     anto_personality_word = models.CharField(max_length=100, blank=True, null=True)
@@ -105,7 +105,7 @@ class TblAdjectiveAntoPersonality(models.Model):
 
 
 class TblAdjectiveAntoPlace(models.Model):
-    synset_id = models.IntegerField()
+    synset_id = models.IntegerField(primary_key=True)
     synset_word = models.CharField(max_length=100, blank=True, null=True)
     anto_place_id = models.IntegerField(blank=True, null=True)
     anto_place_word = models.CharField(max_length=100, blank=True, null=True)
@@ -116,7 +116,7 @@ class TblAdjectiveAntoPlace(models.Model):
 
 
 class TblAdjectiveAntoQuality(models.Model):
-    synset_id = models.IntegerField()
+    synset_id = models.IntegerField(primary_key=True)
     synset_word = models.CharField(max_length=100, blank=True, null=True)
     anto_quality_id = models.IntegerField(blank=True, null=True)
     anto_quality_word = models.CharField(max_length=100, blank=True, null=True)
@@ -127,7 +127,7 @@ class TblAdjectiveAntoQuality(models.Model):
 
 
 class TblAdjectiveAntoSize(models.Model):
-    synset_id = models.IntegerField()
+    synset_id = models.IntegerField(primary_key=True)
     synset_word = models.CharField(max_length=100, blank=True, null=True)
     anto_size_id = models.IntegerField(blank=True, null=True)
     anto_size_word = models.CharField(max_length=100, blank=True, null=True)
@@ -138,7 +138,7 @@ class TblAdjectiveAntoSize(models.Model):
 
 
 class TblAdjectiveAntoState(models.Model):
-    synset_id = models.IntegerField()
+    synset_id = models.IntegerField(primary_key=True)
     synset_word = models.CharField(max_length=100, blank=True, null=True)
     anto_state_id = models.IntegerField(blank=True, null=True)
     anto_state_word = models.CharField(max_length=100, blank=True, null=True)
@@ -149,7 +149,7 @@ class TblAdjectiveAntoState(models.Model):
 
 
 class TblAdjectiveAntoTime(models.Model):
-    synset_id = models.IntegerField()
+    synset_id = models.IntegerField(primary_key=True)
     synset_word = models.CharField(max_length=100, blank=True, null=True)
     anto_time_id = models.IntegerField(blank=True, null=True)
     anto_time_word = models.CharField(max_length=100, blank=True, null=True)
@@ -349,7 +349,7 @@ class TblAdverbAlsoSee(models.Model):
 
 
 class TblAdverbAntoAction(models.Model):
-    synset_id = models.IntegerField()
+    synset_id = models.IntegerField(primary_key=True)
     synset_word = models.CharField(max_length=100, blank=True, null=True)
     anto_action_id = models.IntegerField(blank=True, null=True)
     anto_action_word = models.CharField(max_length=100, blank=True, null=True)
@@ -360,7 +360,7 @@ class TblAdverbAntoAction(models.Model):
 
 
 class TblAdverbAntoAmount(models.Model):
-    synset_id = models.IntegerField()
+    synset_id = models.IntegerField(primary_key=True)
     synset_word = models.CharField(max_length=100, blank=True, null=True)
     anto_amount_id = models.IntegerField(blank=True, null=True)
     anto_amount_word = models.CharField(max_length=100, blank=True, null=True)
@@ -371,7 +371,7 @@ class TblAdverbAntoAmount(models.Model):
 
 
 class TblAdverbAntoColour(models.Model):
-    synset_id = models.IntegerField()
+    synset_id = models.IntegerField(primary_key=True)
     synset_word = models.CharField(max_length=100, blank=True, null=True)
     anto_colour_id = models.IntegerField(blank=True, null=True)
     anto_colour_word = models.CharField(max_length=100, blank=True, null=True)
@@ -382,7 +382,7 @@ class TblAdverbAntoColour(models.Model):
 
 
 class TblAdverbAntoDirection(models.Model):
-    synset_id = models.IntegerField()
+    synset_id = models.IntegerField(primary_key=True)
     synset_word = models.CharField(max_length=100, blank=True, null=True)
     anto_direction_id = models.IntegerField(blank=True, null=True)
     anto_direction_word = models.CharField(max_length=100, blank=True, null=True)
@@ -393,7 +393,7 @@ class TblAdverbAntoDirection(models.Model):
 
 
 class TblAdverbAntoGender(models.Model):
-    synset_id = models.IntegerField()
+    synset_id = models.IntegerField(primary_key=True)
     synset_word = models.CharField(max_length=100, blank=True, null=True)
     anto_gender_id = models.IntegerField(blank=True, null=True)
     anto_gender_word = models.CharField(max_length=100, blank=True, null=True)
@@ -404,7 +404,7 @@ class TblAdverbAntoGender(models.Model):
 
 
 class TblAdverbAntoManner(models.Model):
-    synset_id = models.IntegerField()
+    synset_id = models.IntegerField(primary_key=True)
     synset_word = models.CharField(max_length=100, blank=True, null=True)
     anto_manner_id = models.IntegerField(blank=True, null=True)
     anto_manner_word = models.CharField(max_length=100, blank=True, null=True)
@@ -415,7 +415,7 @@ class TblAdverbAntoManner(models.Model):
 
 
 class TblAdverbAntoPersonality(models.Model):
-    synset_id = models.IntegerField()
+    synset_id = models.IntegerField(primary_key=True)
     synset_word = models.CharField(max_length=100, blank=True, null=True)
     anto_personality_id = models.IntegerField(blank=True, null=True)
     anto_personality_word = models.CharField(max_length=100, blank=True, null=True)
@@ -426,7 +426,7 @@ class TblAdverbAntoPersonality(models.Model):
 
 
 class TblAdverbAntoPlace(models.Model):
-    synset_id = models.IntegerField()
+    synset_id = models.IntegerField(primary_key=True)
     synset_word = models.CharField(max_length=100, blank=True, null=True)
     anto_place_id = models.IntegerField(blank=True, null=True)
     anto_place_word = models.CharField(max_length=100, blank=True, null=True)
@@ -437,7 +437,7 @@ class TblAdverbAntoPlace(models.Model):
 
 
 class TblAdverbAntoQuality(models.Model):
-    synset_id = models.IntegerField()
+    synset_id = models.IntegerField(primary_key=True)
     synset_word = models.CharField(max_length=100, blank=True, null=True)
     anto_quality_id = models.IntegerField(blank=True, null=True)
     anto_quality_word = models.CharField(max_length=100, blank=True, null=True)
@@ -448,7 +448,7 @@ class TblAdverbAntoQuality(models.Model):
 
 
 class TblAdverbAntoSize(models.Model):
-    synset_id = models.IntegerField()
+    synset_id = models.IntegerField(primary_key=True)
     synset_word = models.CharField(max_length=100, blank=True, null=True)
     anto_size_id = models.IntegerField(blank=True, null=True)
     anto_size_word = models.CharField(max_length=100, blank=True, null=True)
@@ -459,7 +459,7 @@ class TblAdverbAntoSize(models.Model):
 
 
 class TblAdverbAntoState(models.Model):
-    synset_id = models.IntegerField()
+    synset_id = models.IntegerField(primary_key=True)
     synset_word = models.CharField(max_length=100, blank=True, null=True)
     anto_state_id = models.IntegerField(blank=True, null=True)
     anto_state_word = models.CharField(max_length=100, blank=True, null=True)
@@ -470,7 +470,7 @@ class TblAdverbAntoState(models.Model):
 
 
 class TblAdverbAntoTime(models.Model):
-    synset_id = models.IntegerField()
+    synset_id = models.IntegerField(primary_key=True)
     synset_word = models.CharField(max_length=100, blank=True, null=True)
     anto_time_id = models.IntegerField(blank=True, null=True)
     anto_time_word = models.CharField(max_length=100, blank=True, null=True)
@@ -703,7 +703,7 @@ class TblNounAbilityVerb(models.Model):
 
 
 class TblNounAntoAction(models.Model):
-    synset_id = models.IntegerField()
+    synset_id = models.IntegerField(primary_key=True)
     synset_word = models.CharField(max_length=100, blank=True, null=True)
     anto_action_id = models.IntegerField(blank=True, null=True)
     anto_action_word = models.CharField(max_length=100, blank=True, null=True)
@@ -714,7 +714,7 @@ class TblNounAntoAction(models.Model):
 
 
 class TblNounAntoAmount(models.Model):
-    synset_id = models.IntegerField()
+    synset_id = models.IntegerField(primary_key=True)
     synset_word = models.CharField(max_length=100, blank=True, null=True)
     anto_amount_id = models.IntegerField(blank=True, null=True)
     anto_amount_word = models.CharField(max_length=100, blank=True, null=True)
@@ -725,7 +725,7 @@ class TblNounAntoAmount(models.Model):
 
 
 class TblNounAntoColour(models.Model):
-    synset_id = models.IntegerField()
+    synset_id = models.IntegerField(primary_key=True)
     synset_word = models.CharField(max_length=100, blank=True, null=True)
     anto_colour_id = models.IntegerField(blank=True, null=True)
     anto_colour_word = models.CharField(max_length=100, blank=True, null=True)
@@ -736,7 +736,7 @@ class TblNounAntoColour(models.Model):
 
 
 class TblNounAntoDirection(models.Model):
-    synset_id = models.IntegerField()
+    synset_id = models.IntegerField(primary_key=True)
     synset_word = models.CharField(max_length=100, blank=True, null=True)
     anto_direction_id = models.IntegerField(blank=True, null=True)
     anto_direction_word = models.CharField(max_length=100, blank=True, null=True)
@@ -747,7 +747,7 @@ class TblNounAntoDirection(models.Model):
 
 
 class TblNounAntoGender(models.Model):
-    synset_id = models.IntegerField()
+    synset_id = models.IntegerField(primary_key=True)
     synset_word = models.CharField(max_length=100, blank=True, null=True)
     anto_gender_id = models.IntegerField(blank=True, null=True)
     anto_gender_word = models.CharField(max_length=100, blank=True, null=True)
@@ -758,7 +758,7 @@ class TblNounAntoGender(models.Model):
 
 
 class TblNounAntoManner(models.Model):
-    synset_id = models.IntegerField()
+    synset_id = models.IntegerField(primary_key=True)
     synset_word = models.CharField(max_length=100, blank=True, null=True)
     anto_manner_id = models.IntegerField(blank=True, null=True)
     anto_manner_word = models.CharField(max_length=100, blank=True, null=True)
@@ -769,7 +769,7 @@ class TblNounAntoManner(models.Model):
 
 
 class TblNounAntoPersonality(models.Model):
-    synset_id = models.IntegerField()
+    synset_id = models.IntegerField(primary_key=True)
     synset_word = models.CharField(max_length=100, blank=True, null=True)
     anto_personality_id = models.IntegerField(blank=True, null=True)
     anto_personality_word = models.CharField(max_length=100, blank=True, null=True)
@@ -780,7 +780,7 @@ class TblNounAntoPersonality(models.Model):
 
 
 class TblNounAntoPlace(models.Model):
-    synset_id = models.IntegerField()
+    synset_id = models.IntegerField(primary_key=True)
     synset_word = models.CharField(max_length=100, blank=True, null=True)
     anto_place_id = models.IntegerField(blank=True, null=True)
     anto_place_word = models.CharField(max_length=100, blank=True, null=True)
@@ -791,7 +791,7 @@ class TblNounAntoPlace(models.Model):
 
 
 class TblNounAntoQuality(models.Model):
-    synset_id = models.IntegerField()
+    synset_id = models.IntegerField(primary_key=True)
     synset_word = models.CharField(max_length=100, blank=True, null=True)
     anto_quality_id = models.IntegerField(blank=True, null=True)
     anto_quality_word = models.CharField(max_length=100, blank=True, null=True)
@@ -802,7 +802,7 @@ class TblNounAntoQuality(models.Model):
 
 
 class TblNounAntoSize(models.Model):
-    synset_id = models.IntegerField()
+    synset_id = models.IntegerField(primary_key=True)
     synset_word = models.CharField(max_length=100, blank=True, null=True)
     anto_size_id = models.IntegerField(blank=True, null=True)
     anto_size_word = models.CharField(max_length=100, blank=True, null=True)
@@ -813,7 +813,7 @@ class TblNounAntoSize(models.Model):
 
 
 class TblNounAntoState(models.Model):
-    synset_id = models.IntegerField()
+    synset_id = models.IntegerField(primary_key=True)
     synset_word = models.CharField(max_length=100, blank=True, null=True)
     anto_state_id = models.IntegerField(blank=True, null=True)
     anto_state_word = models.CharField(max_length=100, blank=True, null=True)
@@ -824,7 +824,7 @@ class TblNounAntoState(models.Model):
 
 
 class TblNounAntoTime(models.Model):
-    synset_id = models.IntegerField()
+    synset_id = models.IntegerField(primary_key=True)
     synset_word = models.CharField(max_length=100, blank=True, null=True)
     anto_time_id = models.IntegerField(blank=True, null=True)
     anto_time_word = models.CharField(max_length=100, blank=True, null=True)
@@ -1272,7 +1272,7 @@ class TblVerbAlsoSee(models.Model):
 
 
 class TblVerbAntoAction(models.Model):
-    synset_id = models.IntegerField()
+    synset_id = models.IntegerField(primary_key=True)
     synset_word = models.CharField(max_length=100, blank=True, null=True)
     anto_action_id = models.IntegerField(blank=True, null=True)
     anto_action_word = models.CharField(max_length=100, blank=True, null=True)
@@ -1283,7 +1283,7 @@ class TblVerbAntoAction(models.Model):
 
 
 class TblVerbAntoAmount(models.Model):
-    synset_id = models.IntegerField()
+    synset_id = models.IntegerField(primary_key=True)
     synset_word = models.CharField(max_length=100, blank=True, null=True)
     anto_amount_id = models.IntegerField(blank=True, null=True)
     anto_amount_word = models.CharField(max_length=100, blank=True, null=True)
@@ -1294,7 +1294,7 @@ class TblVerbAntoAmount(models.Model):
 
 
 class TblVerbAntoColour(models.Model):
-    synset_id = models.IntegerField()
+    synset_id = models.IntegerField(primary_key=True)
     synset_word = models.CharField(max_length=100, blank=True, null=True)
     anto_colour_id = models.IntegerField(blank=True, null=True)
     anto_colour_word = models.CharField(max_length=100, blank=True, null=True)
@@ -1305,7 +1305,7 @@ class TblVerbAntoColour(models.Model):
 
 
 class TblVerbAntoDirection(models.Model):
-    synset_id = models.IntegerField()
+    synset_id = models.IntegerField(primary_key=True)
     synset_word = models.CharField(max_length=100, blank=True, null=True)
     anto_direction_id = models.IntegerField(blank=True, null=True)
     anto_direction_word = models.CharField(max_length=100, blank=True, null=True)
@@ -1316,7 +1316,7 @@ class TblVerbAntoDirection(models.Model):
 
 
 class TblVerbAntoGender(models.Model):
-    synset_id = models.IntegerField()
+    synset_id = models.IntegerField(primary_key=True)
     synset_word = models.CharField(max_length=100, blank=True, null=True)
     anto_gender_id = models.IntegerField(blank=True, null=True)
     anto_gender_word = models.CharField(max_length=100, blank=True, null=True)
@@ -1327,7 +1327,7 @@ class TblVerbAntoGender(models.Model):
 
 
 class TblVerbAntoManner(models.Model):
-    synset_id = models.IntegerField()
+    synset_id = models.IntegerField(primary_key=True)
     synset_word = models.CharField(max_length=100, blank=True, null=True)
     anto_manner_id = models.IntegerField(blank=True, null=True)
     anto_manner_word = models.CharField(max_length=100, blank=True, null=True)
@@ -1338,7 +1338,7 @@ class TblVerbAntoManner(models.Model):
 
 
 class TblVerbAntoPersonality(models.Model):
-    synset_id = models.IntegerField()
+    synset_id = models.IntegerField(primary_key=True)
     synset_word = models.CharField(max_length=100, blank=True, null=True)
     anto_personality_id = models.IntegerField(blank=True, null=True)
     anto_personality_word = models.CharField(max_length=100, blank=True, null=True)
@@ -1349,7 +1349,7 @@ class TblVerbAntoPersonality(models.Model):
 
 
 class TblVerbAntoPlace(models.Model):
-    synset_id = models.IntegerField()
+    synset_id = models.IntegerField(primary_key=True)
     synset_word = models.CharField(max_length=100, blank=True, null=True)
     anto_place_id = models.IntegerField(blank=True, null=True)
     anto_place_word = models.CharField(max_length=100, blank=True, null=True)
@@ -1360,7 +1360,7 @@ class TblVerbAntoPlace(models.Model):
 
 
 class TblVerbAntoQuality(models.Model):
-    synset_id = models.IntegerField()
+    synset_id = models.IntegerField(primary_key=True)
     synset_word = models.CharField(max_length=100, blank=True, null=True)
     anto_quality_id = models.IntegerField(blank=True, null=True)
     anto_quality_word = models.CharField(max_length=100, blank=True, null=True)
@@ -1371,7 +1371,7 @@ class TblVerbAntoQuality(models.Model):
 
 
 class TblVerbAntoSize(models.Model):
-    synset_id = models.IntegerField()
+    synset_id = models.IntegerField(primary_key=True)
     synset_word = models.CharField(max_length=100, blank=True, null=True)
     anto_size_id = models.IntegerField(blank=True, null=True)
     anto_size_word = models.CharField(max_length=100, blank=True, null=True)
@@ -1382,7 +1382,7 @@ class TblVerbAntoSize(models.Model):
 
 
 class TblVerbAntoState(models.Model):
-    synset_id = models.IntegerField()
+    synset_id = models.IntegerField(primary_key=True)
     synset_word = models.CharField(max_length=100, blank=True, null=True)
     anto_state_id = models.IntegerField(blank=True, null=True)
     anto_state_word = models.CharField(max_length=100, blank=True, null=True)
@@ -1393,7 +1393,7 @@ class TblVerbAntoState(models.Model):
 
 
 class TblVerbAntoTime(models.Model):
-    synset_id = models.IntegerField()
+    synset_id = models.IntegerField(primary_key=True)
     synset_word = models.CharField(max_length=100, blank=True, null=True)
     anto_time_id = models.IntegerField(blank=True, null=True)
     anto_time_word = models.CharField(max_length=100, blank=True, null=True)

@@ -153,20 +153,21 @@
         <div class="col-9 dataspace container-fluid" >
             
             <span>
-                <div class="dataHead">
-                    Showing <p id="tblLabel">Ontology</p>
+                <div id="tblTitle" class="dataHead">
+                    Showing Ontology
                 </div>
             </span>
 
             <span>
 
-                <div>
+                <!-- <div>
                     <div class="container-fluid notFound  alert alert-danger ">
                         No <span id="dataLabel" style="color: blue;">Test</span> data found
                     </div>
-                </div>
-                <!-- <table style="width: 100%;table-layout: fixed;">
-                    <tbody id="tbl_data">
+                </div> -->
+                <div style="width:100%; height: 500px; overflow-y: scroll; overflow-x: auto;">
+                <table id="tblHTML" style="width: 100%;table-layout: fixed; overflow: scroll;">
+                    <!-- <div id="tbl_data" style="width:100%;">
                         <tr class="border-bottom">
                             <th class="d">Onto Id</th> 
                             <th class="d">Onto Label</th>
@@ -180,27 +181,34 @@
                             <td class="d" style="color: green;font-weight: bold;">{{ i.2 }}</td>
                         </tr>
                         {% endfor %}
-                    
-                    </tbody>
-                </table> -->
-
-
+                    </div> -->
+                </table>
+                </div>
             </span>
-            <!-- <script>
+            <script>
                 
                 $(document).ready(function(){
-                    
+                    var tblParams = {};
                     var synset_id = document.getElementById("s_id").innerHTML;
                     var tlangno=0;
+                    var pos = document.getElementById('pos').innerHTML.toLowerCase();
+                    tblParams.headerList = ["Ontology ID","Ontology Label","Ontology Description"];
+                    tblParams.colCount = 3;
+                    urlLink = "fetch_ontology";
+                    tblTitle = "Showing Ontology";
+                    createTbl(synset_id,tlangno,pos,urlLink,tblTitle,tblParams);
+                    console.log("Ontology Table Created Successfully");
+
+                    
                     // console.log("cre");
-                    console.log(synset_id);
+                    // console.log(synset_id);
                     // createMeroTbl(3618,"0")
                     // createHoloTbl(474,"0");
                     // createModifiesTbl(52,"0");
                     // createDerivedFromTbl(52,"0");
-                     createOntoTbl(synset_id,tlangno);
+                    // createOntoTbl(synset_id,tlangno);
                 });
-            </script> -->
+            </script>
         </div>
     </div>
   </div>
