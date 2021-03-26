@@ -29,6 +29,15 @@ header{
     vertical-align: top;
 }
 
+
+.error_div {
+    width: 50%;
+    margin-left: 25%;
+    text-align: center;
+    margin-top: 10px;
+    font-size: 18px;
+}
+
 .searchPanel{
     width: 80%;
     border: 1px solid black;
@@ -300,6 +309,7 @@ element.style {
     border-left: 1px solid black;
 }    
 
+
 .tarLang{
     margin: 10px 0px;
 }
@@ -317,6 +327,14 @@ element.style {
 
 }
 
+.notFound {
+    width: 50%;
+    height: 50%;
+    margin-left: 25%;
+    text-align: center;
+    margin-top: 10px;
+    font-size: 18px;
+}
 
 
 
