@@ -112,7 +112,7 @@ function funct(w){
     var word = $("#queryword").val();
     var lang = $("#lang").val();
     // alert('value changed');
-    fetchRecomendationData(word,lang);
+    fetchRecomendationData();
     search_button.focus();
 }
 
@@ -599,8 +599,13 @@ function createTbl(synset_id,langno,pos,urlLink,tblTitle,tblParams)
     })
 }
 
-function fetchRecomendationData(word,lang){
+function fetchRecomendationData(){
     var currentRequest = null;
+    var word = document.getElementById("queryword").value;
+    var l = document.getElementById("lang");
+    var lang = l.options[l.selectedIndex].value
+    console.log(word)
+    console.log(lang)
     currentRequest = $.ajax({
         url: 'word',
         data: {
@@ -658,7 +663,7 @@ $(document).ready(function(){
         var word = $(this).val();
         var lang = $("#lang").val();
         // alert('value changed');
-        fetchRecomendationData(word,lang);
+        fetchRecomendationData();
     });
 });
 
