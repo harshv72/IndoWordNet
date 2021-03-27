@@ -16,14 +16,85 @@ import base64
 appName = 'indoWordNet'
 langName = ['Hindi','English','Assamese','Bengali','Bodo','Gujarati','Kannada','Kashmiri','Konkani','Malayalam','Manipuri','Marathi','Nepali','Sanskrit','Tamil','Telugu','Punjabi','Urdu','Oriya']
 def index(request):
-    return render(request,'index.html',{'found':True})
+    return render(request,'index.html',{'found':True,'suggFound': False})
 
     
 def getCloseMatch(word,lang):
     wordList = []
-    length = 0
+    
 
+    if lang == '1':
+        tblName = "EnglishSynsetData"
+        idList = []
+    else:
+        tblName = "TblAll"+langName[int(lang)]+"SynsetData"
+        
+    try:
+        model = apps.get_model(appName,tblName)
+    except Exception as e:
+        print(e)
+    
+    data = model.objects.using('region').all()
+    
+    for i in data:
+        if lang == '0':
+            words = i.synset.decode('UTF-8').split(',')
+        elif lang == '11':
+            words = i.synset.split(',')
+        elif lang == '1':
+            words = i.synset_words.split(', ')
+            sID = str(i.synset_id)
+        else:
+            words = i.synset.decode('UTF-8').split(', ')
+           
+        for k in words:
+            if word in k:    
+                wordList.append(k)
+                if lang == '1':
+                    idList.append(sID)
 
+    
+    # wordList = sorted(wordList,key=len,reverse=True)
+    if len(wordList) > 10:
+        l = 0
+        newWordList = []
+        length = len(word)
+        for (i,w) in enumerate(wordList):
+            length1 = len(w)
+            ratio = length/length1
+            limit = ((length-1)*10+30)/100
+            if(ratio > limit):
+                print("sani")
+                if lang == '1':
+                    try:
+                        if m.EnglishHindiIdMapping.objects.using('region').filter(english_id = idList[i]).exists():
+                            l = l+1
+                            newWordList.append(w)
+                            if l == 10:
+                                return newWordList
+
+                    except Exception as e:
+                        print(e)
+                
+                else:
+                    l = l+1
+                    newWordList.append(w)
+                    if l == 10:
+                        return newWordList
+    else:
+        if lang == '1':
+            newWordList = []
+            for (i,w) in enumerate(wordList):
+                try:
+                    if m.EnglishHindiIdMapping.objects.using('region').filter(english_id = idList[i]).exists():
+                        newWordList.append(w)
+                    
+                except Exception as e:
+                    print(e)
+            return newWordList    
+
+        return wordList
+    
 
 
 
@@ -189,7 +260,10 @@ def wordnet(request):
    
     if length == 0:
         suggWord = getCloseMatch(word,lang)
-        return render(request,'index.html',{'query':word,'found':False,'syggWord':suggWord})
+        if(len(suggWord) != 0):
+            return render(request,'index.html',{'query':word,'found':False,'suggWord':suggWord,'suggFound' : True,'langno':lang})
+        else:
+            return render(request,'index.html',{'query':word,'found':False,'suggWord':suggWord,'suggFound' : False,'langno':lang})
     return render(request,'wordnet.html', {'query':word,'langno':lang,'length':length,'wordList':wordList})
 
 def fetchSynset(request):
