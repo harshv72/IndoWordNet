@@ -19,7 +19,7 @@ class DjangoMigrations(models.Model):
 
 
 class TblAdjectiveAlsoSee(models.Model):
-    synset_id = models.IntegerField()
+    synset_id = models.IntegerField(primary_key=True)
     also_see_id = models.IntegerField(blank=True, null=True)
 
     class Meta:
@@ -171,7 +171,7 @@ class TblAdjectiveDerivedFrom(models.Model):
 
 
 class TblAdjectiveGradAction(models.Model):
-    synset_id = models.IntegerField()
+    synset_id = models.IntegerField(primary_key=True)
     synset_word = models.CharField(max_length=100, blank=True, null=True)
     grad_action_id = models.IntegerField(blank=True, null=True)
     grad_action_word = models.CharField(max_length=100, blank=True, null=True)
@@ -184,7 +184,7 @@ class TblAdjectiveGradAction(models.Model):
 
 
 class TblAdjectiveGradColor(models.Model):
-    synset_id = models.IntegerField()
+    synset_id = models.IntegerField(primary_key=True)
     synset_word = models.CharField(max_length=100, blank=True, null=True)
     grad_color_id = models.IntegerField(blank=True, null=True)
     grad_color_word = models.CharField(max_length=100, blank=True, null=True)
@@ -197,7 +197,7 @@ class TblAdjectiveGradColor(models.Model):
 
 
 class TblAdjectiveGradGender(models.Model):
-    synset_id = models.IntegerField()
+    synset_id = models.IntegerField(primary_key=True)
     synset_word = models.CharField(max_length=100, blank=True, null=True)
     grad_gender_id = models.IntegerField(blank=True, null=True)
     grad_gender_word = models.CharField(max_length=100, blank=True, null=True)
@@ -210,7 +210,7 @@ class TblAdjectiveGradGender(models.Model):
 
 
 class TblAdjectiveGradLight(models.Model):
-    synset_id = models.IntegerField()
+    synset_id = models.IntegerField(primary_key=True)
     synset_word = models.CharField(max_length=100, blank=True, null=True)
     grad_light_id = models.IntegerField(blank=True, null=True)
     grad_light_word = models.CharField(max_length=100, blank=True, null=True)
@@ -223,7 +223,7 @@ class TblAdjectiveGradLight(models.Model):
 
 
 class TblAdjectiveGradManner(models.Model):
-    synset_id = models.IntegerField()
+    synset_id = models.IntegerField(primary_key=True)
     synset_word = models.CharField(max_length=100, blank=True, null=True)
     grad_manner_id = models.IntegerField(blank=True, null=True)
     grad_manner_word = models.CharField(max_length=100, blank=True, null=True)
@@ -236,7 +236,7 @@ class TblAdjectiveGradManner(models.Model):
 
 
 class TblAdjectiveGradQuality(models.Model):
-    synset_id = models.IntegerField()
+    synset_id = models.IntegerField(primary_key=True)
     synset_word = models.CharField(max_length=100, blank=True, null=True)
     grad_quality_id = models.IntegerField(blank=True, null=True)
     grad_quality_word = models.CharField(max_length=100, blank=True, null=True)
@@ -249,7 +249,7 @@ class TblAdjectiveGradQuality(models.Model):
 
 
 class TblAdjectiveGradSize(models.Model):
-    synset_id = models.IntegerField()
+    synset_id = models.IntegerField(primary_key=True)
     synset_word = models.CharField(max_length=100, blank=True, null=True)
     grad_size_id = models.IntegerField(blank=True, null=True)
     grad_size_word = models.CharField(max_length=100, blank=True, null=True)
@@ -262,7 +262,7 @@ class TblAdjectiveGradSize(models.Model):
 
 
 class TblAdjectiveGradState(models.Model):
-    synset_id = models.IntegerField()
+    synset_id = models.IntegerField(primary_key=True)
     synset_word = models.CharField(max_length=100, blank=True, null=True)
     grad_state_id = models.IntegerField(blank=True, null=True)
     grad_state_word = models.CharField(max_length=100, blank=True, null=True)
@@ -275,7 +275,7 @@ class TblAdjectiveGradState(models.Model):
 
 
 class TblAdjectiveGradTemperature(models.Model):
-    synset_id = models.IntegerField()
+    synset_id = models.IntegerField(primary_key=True)
     synset_word = models.CharField(max_length=100, blank=True, null=True)
     grad_temperature_id = models.IntegerField(blank=True, null=True)
     grad_temperature_word = models.CharField(max_length=100, blank=True, null=True)
@@ -288,7 +288,7 @@ class TblAdjectiveGradTemperature(models.Model):
 
 
 class TblAdjectiveGradTime(models.Model):
-    synset_id = models.IntegerField()
+    synset_id = models.IntegerField(primary_key=True)
     synset_word = models.CharField(max_length=100, blank=True, null=True)
     grad_time_id = models.IntegerField(blank=True, null=True)
     grad_time_word = models.CharField(max_length=100, blank=True, null=True)
@@ -310,7 +310,7 @@ class TblAdjectiveModifiesNoun(models.Model):
 
 
 class TblAdjectiveRelations(models.Model):
-    synset_id = models.IntegerField()
+    synset_id = models.IntegerField(primary_key=True)
     link_type = models.CharField(max_length=100)
     tbl_name = models.CharField(max_length=100)
     description = models.CharField(max_length=250, blank=True, null=True)
@@ -331,7 +331,7 @@ class TblAdjectiveSenseNum(models.Model):
 
 
 class TblAdjectiveSimilar(models.Model):
-    synset_id = models.IntegerField()
+    synset_id = models.IntegerField(primary_key=True)
     similar_id = models.IntegerField(blank=True, null=True)
 
     class Meta:
@@ -340,7 +340,7 @@ class TblAdjectiveSimilar(models.Model):
 
 
 class TblAdverbAlsoSee(models.Model):
-    synset_id = models.IntegerField()
+    synset_id = models.IntegerField(primary_key=True)
     also_see_id = models.IntegerField(blank=True, null=True)
 
     class Meta:
@@ -492,7 +492,7 @@ class TblAdverbDerivedFrom(models.Model):
 
 
 class TblAdverbGradAction(models.Model):
-    synset_id = models.IntegerField()
+    synset_id = models.IntegerField(primary_key=True)
     synset_word = models.CharField(max_length=100, blank=True, null=True)
     grad_action_id = models.IntegerField(blank=True, null=True)
     grad_action_word = models.CharField(max_length=100, blank=True, null=True)
@@ -505,7 +505,7 @@ class TblAdverbGradAction(models.Model):
 
 
 class TblAdverbGradColor(models.Model):
-    synset_id = models.IntegerField()
+    synset_id = models.IntegerField(primary_key=True)
     synset_word = models.CharField(max_length=100, blank=True, null=True)
     grad_color_id = models.IntegerField(blank=True, null=True)
     grad_color_word = models.CharField(max_length=100, blank=True, null=True)
@@ -518,7 +518,7 @@ class TblAdverbGradColor(models.Model):
 
 
 class TblAdverbGradGender(models.Model):
-    synset_id = models.IntegerField()
+    synset_id = models.IntegerField(primary_key=True)
     synset_word = models.CharField(max_length=100, blank=True, null=True)
     grad_gender_id = models.IntegerField(blank=True, null=True)
     grad_gender_word = models.CharField(max_length=100, blank=True, null=True)
@@ -531,7 +531,7 @@ class TblAdverbGradGender(models.Model):
 
 
 class TblAdverbGradLight(models.Model):
-    synset_id = models.IntegerField()
+    synset_id = models.IntegerField(primary_key=True)
     synset_word = models.CharField(max_length=100, blank=True, null=True)
     grad_light_id = models.IntegerField(blank=True, null=True)
     grad_light_word = models.CharField(max_length=100, blank=True, null=True)
@@ -544,7 +544,7 @@ class TblAdverbGradLight(models.Model):
 
 
 class TblAdverbGradManner(models.Model):
-    synset_id = models.IntegerField()
+    synset_id = models.IntegerField(primary_key=True)
     synset_word = models.CharField(max_length=100, blank=True, null=True)
     grad_manner_id = models.IntegerField(blank=True, null=True)
     grad_manner_word = models.CharField(max_length=100, blank=True, null=True)
@@ -557,7 +557,7 @@ class TblAdverbGradManner(models.Model):
 
 
 class TblAdverbGradQuality(models.Model):
-    synset_id = models.IntegerField()
+    synset_id = models.IntegerField(primary_key=True)
     synset_word = models.CharField(max_length=100, blank=True, null=True)
     grad_quality_id = models.IntegerField(blank=True, null=True)
     grad_quality_word = models.CharField(max_length=100, blank=True, null=True)
@@ -570,7 +570,7 @@ class TblAdverbGradQuality(models.Model):
 
 
 class TblAdverbGradSize(models.Model):
-    synset_id = models.IntegerField()
+    synset_id = models.IntegerField(primary_key=True)
     synset_word = models.CharField(max_length=100, blank=True, null=True)
     grad_size_id = models.IntegerField(blank=True, null=True)
     grad_size_word = models.CharField(max_length=100, blank=True, null=True)
@@ -583,7 +583,7 @@ class TblAdverbGradSize(models.Model):
 
 
 class TblAdverbGradState(models.Model):
-    synset_id = models.IntegerField()
+    synset_id = models.IntegerField(primary_key=True)
     synset_word = models.CharField(max_length=100, blank=True, null=True)
     grad_state_id = models.IntegerField(blank=True, null=True)
     grad_state_word = models.CharField(max_length=100, blank=True, null=True)
@@ -596,7 +596,7 @@ class TblAdverbGradState(models.Model):
 
 
 class TblAdverbGradTemperature(models.Model):
-    synset_id = models.IntegerField()
+    synset_id = models.IntegerField(primary_key=True)
     synset_word = models.CharField(max_length=100, blank=True, null=True)
     grad_temperature_id = models.IntegerField(blank=True, null=True)
     grad_temperature_word = models.CharField(max_length=100, blank=True, null=True)
@@ -609,7 +609,7 @@ class TblAdverbGradTemperature(models.Model):
 
 
 class TblAdverbGradTime(models.Model):
-    synset_id = models.IntegerField()
+    synset_id = models.IntegerField(primary_key=True)
     synset_word = models.CharField(max_length=100, blank=True, null=True)
     grad_time_id = models.IntegerField(blank=True, null=True)
     grad_time_word = models.CharField(max_length=100, blank=True, null=True)
@@ -631,7 +631,7 @@ class TblAdverbModifiesVerb(models.Model):
 
 
 class TblAdverbRelations(models.Model):
-    synset_id = models.IntegerField()
+    synset_id = models.IntegerField(primary_key=True)
     link_type = models.CharField(max_length=100)
     tbl_name = models.CharField(max_length=100)
     description = models.CharField(max_length=250, blank=True, null=True)
@@ -685,7 +685,7 @@ class TblMorphRules(models.Model):
 
 
 class TblNearSynset(models.Model):
-    synset_id = models.IntegerField()
+    synset_id = models.IntegerField(primary_key=True)
     near_synset_id = models.IntegerField(blank=True, null=True)
 
     class Meta:
@@ -694,7 +694,7 @@ class TblNearSynset(models.Model):
 
 
 class TblNounAbilityVerb(models.Model):
-    synset_id = models.IntegerField()
+    synset_id = models.IntegerField(primary_key=True)
     ability_verb_id = models.IntegerField(blank=True, null=True)
 
     class Meta:
@@ -835,7 +835,7 @@ class TblNounAntoTime(models.Model):
 
 
 class TblNounAttributes(models.Model):
-    synset_id = models.IntegerField()
+    synset_id = models.IntegerField(primary_key=True)
     attributes_id = models.IntegerField(blank=True, null=True)
 
     class Meta:
@@ -844,7 +844,7 @@ class TblNounAttributes(models.Model):
 
 
 class TblNounCapabilityVerb(models.Model):
-    synset_id = models.IntegerField()
+    synset_id = models.IntegerField(primary_key=True)
     capability_verb_id = models.IntegerField(blank=True, null=True)
 
     class Meta:
@@ -853,7 +853,7 @@ class TblNounCapabilityVerb(models.Model):
 
 
 class TblNounCompound(models.Model):
-    synset_id = models.IntegerField()
+    synset_id = models.IntegerField(primary_key=True)
     synset_word = models.CharField(max_length=100, blank=True, null=True)
     compound_id = models.IntegerField(blank=True, null=True)
     compound_word = models.CharField(max_length=100, blank=True, null=True)
@@ -875,7 +875,7 @@ class TblNounDerivedFrom(models.Model):
 
 
 class TblNounFunctionVerb(models.Model):
-    synset_id = models.IntegerField()
+    synset_id = models.IntegerField(primary_key=True)
     function_verb_id = models.IntegerField(blank=True, null=True)
 
     class Meta:
@@ -884,7 +884,7 @@ class TblNounFunctionVerb(models.Model):
 
 
 class TblNounGradAction(models.Model):
-    synset_id = models.IntegerField()
+    synset_id = models.IntegerField(primary_key=True)
     synset_word = models.CharField(max_length=100, blank=True, null=True)
     grad_action_id = models.IntegerField(blank=True, null=True)
     grad_action_word = models.CharField(max_length=100, blank=True, null=True)
@@ -897,7 +897,7 @@ class TblNounGradAction(models.Model):
 
 
 class TblNounGradColor(models.Model):
-    synset_id = models.IntegerField()
+    synset_id = models.IntegerField(primary_key=True)
     synset_word = models.CharField(max_length=100, blank=True, null=True)
     grad_color_id = models.IntegerField(blank=True, null=True)
     grad_color_word = models.CharField(max_length=100, blank=True, null=True)
@@ -910,7 +910,7 @@ class TblNounGradColor(models.Model):
 
 
 class TblNounGradGender(models.Model):
-    synset_id = models.IntegerField()
+    synset_id = models.IntegerField(primary_key=True)
     synset_word = models.CharField(max_length=100, blank=True, null=True)
     grad_gender_id = models.IntegerField(blank=True, null=True)
     grad_gender_word = models.CharField(max_length=100, blank=True, null=True)
@@ -923,7 +923,7 @@ class TblNounGradGender(models.Model):
 
 
 class TblNounGradLight(models.Model):
-    synset_id = models.IntegerField()
+    synset_id = models.IntegerField(primary_key=True)
     synset_word = models.CharField(max_length=100, blank=True, null=True)
     grad_light_id = models.IntegerField(blank=True, null=True)
     grad_light_word = models.CharField(max_length=100, blank=True, null=True)
@@ -936,7 +936,7 @@ class TblNounGradLight(models.Model):
 
 
 class TblNounGradManner(models.Model):
-    synset_id = models.IntegerField()
+    synset_id = models.IntegerField(primary_key=True)
     synset_word = models.CharField(max_length=100, blank=True, null=True)
     grad_manner_id = models.IntegerField(blank=True, null=True)
     grad_manner_word = models.CharField(max_length=100, blank=True, null=True)
@@ -949,7 +949,7 @@ class TblNounGradManner(models.Model):
 
 
 class TblNounGradQuality(models.Model):
-    synset_id = models.IntegerField()
+    synset_id = models.IntegerField(primary_key=True)
     synset_word = models.CharField(max_length=100, blank=True, null=True)
     grad_quality_id = models.IntegerField(blank=True, null=True)
     grad_quality_word = models.CharField(max_length=100, blank=True, null=True)
@@ -962,7 +962,7 @@ class TblNounGradQuality(models.Model):
 
 
 class TblNounGradSize(models.Model):
-    synset_id = models.IntegerField()
+    synset_id = models.IntegerField(primary_key=True)
     synset_word = models.CharField(max_length=100, blank=True, null=True)
     grad_size_id = models.IntegerField(blank=True, null=True)
     grad_size_word = models.CharField(max_length=100, blank=True, null=True)
@@ -975,7 +975,7 @@ class TblNounGradSize(models.Model):
 
 
 class TblNounGradState(models.Model):
-    synset_id = models.IntegerField()
+    synset_id = models.IntegerField(primary_key=True)
     synset_word = models.CharField(max_length=100, blank=True, null=True)
     grad_state_id = models.IntegerField(blank=True, null=True)
     grad_state_word = models.CharField(max_length=100, blank=True, null=True)
@@ -988,7 +988,7 @@ class TblNounGradState(models.Model):
 
 
 class TblNounGradTemperature(models.Model):
-    synset_id = models.IntegerField()
+    synset_id = models.IntegerField(primary_key=True)
     synset_word = models.CharField(max_length=100, blank=True, null=True)
     grad_temperature_id = models.IntegerField(blank=True, null=True)
     grad_temperature_word = models.CharField(max_length=100, blank=True, null=True)
@@ -1001,7 +1001,7 @@ class TblNounGradTemperature(models.Model):
 
 
 class TblNounGradTime(models.Model):
-    synset_id = models.IntegerField()
+    synset_id = models.IntegerField(primary_key=True)
     synset_word = models.CharField(max_length=100, blank=True, null=True)
     grad_time_id = models.IntegerField(blank=True, null=True)
     grad_time_word = models.CharField(max_length=100, blank=True, null=True)
@@ -1194,7 +1194,7 @@ class TblNounMeroStuffObject(models.Model):
 
 
 class TblNounRelations(models.Model):
-    synset_id = models.IntegerField()
+    synset_id = models.IntegerField(primary_key=True)
     link_type = models.CharField(max_length=100)
     tbl_name = models.CharField(max_length=100)
     description = models.CharField(max_length=250, blank=True, null=True)
@@ -1263,7 +1263,7 @@ class TblSenseCount(models.Model):
 
 
 class TblVerbAlsoSee(models.Model):
-    synset_id = models.IntegerField()
+    synset_id = models.IntegerField(primary_key=True)
     also_see_id = models.IntegerField(blank=True, null=True)
 
     class Meta:
@@ -1404,7 +1404,7 @@ class TblVerbAntoTime(models.Model):
 
 
 class TblVerbCausative(models.Model):
-    synset_id = models.IntegerField()
+    synset_id = models.IntegerField(primary_key=True)
     causative_id = models.IntegerField(blank=True, null=True)
 
     class Meta:
@@ -1413,7 +1413,7 @@ class TblVerbCausative(models.Model):
 
 
 class TblVerbCompounding(models.Model):
-    synset_id = models.IntegerField()
+    synset_id = models.IntegerField(primary_key=True)
     synset_word = models.CharField(max_length=100, blank=True, null=True)
     compounding_id = models.IntegerField(blank=True, null=True)
     compounding_word = models.CharField(max_length=100, blank=True, null=True)
@@ -1424,7 +1424,7 @@ class TblVerbCompounding(models.Model):
 
 
 class TblVerbConjunction(models.Model):
-    synset_id = models.IntegerField()
+    synset_id = models.IntegerField(primary_key=True)
     synset_word = models.CharField(max_length=100, blank=True, null=True)
     conjunction_id = models.IntegerField(blank=True, null=True)
     conjunction_word = models.CharField(max_length=100, blank=True, null=True)
@@ -1446,7 +1446,7 @@ class TblVerbDerivedFrom(models.Model):
 
 
 class TblVerbEntailment(models.Model):
-    synset_id = models.IntegerField()
+    synset_id = models.IntegerField(primary_key=True)
     entailment_id = models.IntegerField(blank=True, null=True)
 
     class Meta:
@@ -1455,7 +1455,7 @@ class TblVerbEntailment(models.Model):
 
 
 class TblVerbGradAction(models.Model):
-    synset_id = models.IntegerField()
+    synset_id = models.IntegerField(primary_key=True)
     synset_word = models.CharField(max_length=100, blank=True, null=True)
     grad_action_id = models.IntegerField(blank=True, null=True)
     grad_action_word = models.CharField(max_length=100, blank=True, null=True)
@@ -1468,7 +1468,7 @@ class TblVerbGradAction(models.Model):
 
 
 class TblVerbGradColor(models.Model):
-    synset_id = models.IntegerField()
+    synset_id = models.IntegerField(primary_key=True)
     synset_word = models.CharField(max_length=100, blank=True, null=True)
     grad_color_id = models.IntegerField(blank=True, null=True)
     grad_color_word = models.CharField(max_length=100, blank=True, null=True)
@@ -1481,7 +1481,7 @@ class TblVerbGradColor(models.Model):
 
 
 class TblVerbGradGender(models.Model):
-    synset_id = models.IntegerField()
+    synset_id = models.IntegerField(primary_key=True)
     synset_word = models.CharField(max_length=100, blank=True, null=True)
     grad_gender_id = models.IntegerField(blank=True, null=True)
     grad_gender_word = models.CharField(max_length=100, blank=True, null=True)
@@ -1494,7 +1494,7 @@ class TblVerbGradGender(models.Model):
 
 
 class TblVerbGradLight(models.Model):
-    synset_id = models.IntegerField()
+    synset_id = models.IntegerField(primary_key=True)
     synset_word = models.CharField(max_length=100, blank=True, null=True)
     grad_light_id = models.IntegerField(blank=True, null=True)
     grad_light_word = models.CharField(max_length=100, blank=True, null=True)
@@ -1507,7 +1507,7 @@ class TblVerbGradLight(models.Model):
 
 
 class TblVerbGradManner(models.Model):
-    synset_id = models.IntegerField()
+    synset_id = models.IntegerField(primary_key=True)
     synset_word = models.CharField(max_length=100, blank=True, null=True)
     grad_manner_id = models.IntegerField(blank=True, null=True)
     grad_manner_word = models.CharField(max_length=100, blank=True, null=True)
@@ -1520,7 +1520,7 @@ class TblVerbGradManner(models.Model):
 
 
 class TblVerbGradQuality(models.Model):
-    synset_id = models.IntegerField()
+    synset_id = models.IntegerField(primary_key=True)
     synset_word = models.CharField(max_length=100, blank=True, null=True)
     grad_quality_id = models.IntegerField(blank=True, null=True)
     grad_quality_word = models.CharField(max_length=100, blank=True, null=True)
@@ -1533,7 +1533,7 @@ class TblVerbGradQuality(models.Model):
 
 
 class TblVerbGradSize(models.Model):
-    synset_id = models.IntegerField()
+    synset_id = models.IntegerField(primary_key=True)
     synset_word = models.CharField(max_length=100, blank=True, null=True)
     grad_size_id = models.IntegerField(blank=True, null=True)
     grad_size_word = models.CharField(max_length=100, blank=True, null=True)
@@ -1546,7 +1546,7 @@ class TblVerbGradSize(models.Model):
 
 
 class TblVerbGradState(models.Model):
-    synset_id = models.IntegerField()
+    synset_id = models.IntegerField(primary_key=True)
     synset_word = models.CharField(max_length=100, blank=True, null=True)
     grad_state_id = models.IntegerField(blank=True, null=True)
     grad_state_word = models.CharField(max_length=100, blank=True, null=True)
@@ -1559,7 +1559,7 @@ class TblVerbGradState(models.Model):
 
 
 class TblVerbGradTemperature(models.Model):
-    synset_id = models.IntegerField()
+    synset_id = models.IntegerField(primary_key=True)
     synset_word = models.CharField(max_length=100, blank=True, null=True)
     grad_temperature_id = models.IntegerField(blank=True, null=True)
     grad_temperature_word = models.CharField(max_length=100, blank=True, null=True)
@@ -1572,7 +1572,7 @@ class TblVerbGradTemperature(models.Model):
 
 
 class TblVerbGradTime(models.Model):
-    synset_id = models.IntegerField()
+    synset_id = models.IntegerField(primary_key=True)
     synset_word = models.CharField(max_length=100, blank=True, null=True)
     grad_time_id = models.IntegerField(blank=True, null=True)
     grad_time_word = models.CharField(max_length=100, blank=True, null=True)
@@ -1594,7 +1594,7 @@ class TblVerbHypernymy(models.Model):
 
 
 class TblVerbRelations(models.Model):
-    synset_id = models.IntegerField()
+    synset_id = models.IntegerField(primary_key=True)
     link_type = models.CharField(max_length=100)
     tbl_name = models.CharField(max_length=100)
     description = models.CharField(max_length=250, blank=True, null=True)
@@ -1615,7 +1615,7 @@ class TblVerbSenseNum(models.Model):
 
 
 class TblVerbTroponymy(models.Model):
-    synset_id = models.IntegerField()
+    synset_id = models.IntegerField(primary_key=True)
     troponymy_id = models.IntegerField(blank=True, null=True)
 
     class Meta:
@@ -1647,7 +1647,7 @@ class EnglishSynsetData(models.Model):
 
 
 class EnglishSynsetData1(models.Model):
-    synset_id = models.IntegerField()
+    synset_id = models.IntegerField(primary_key=True)
     category = models.CharField(max_length=100)
     synset_words = models.CharField(max_length=1000, blank=True, null=True)
     gloss = models.CharField(max_length=1000, blank=True, null=True)
@@ -1725,7 +1725,7 @@ class TblAllBodoSynsetData(models.Model):
 
 
 class TblAllEnglishSynsetData(models.Model):
-    synset_id = models.IntegerField()
+    synset_id = models.IntegerField(primary_key=True)
     head = models.CharField(max_length=100, blank=True, null=True)
     synset = models.CharField(max_length=1000, blank=True, null=True)
     gloss = models.CharField(max_length=1000, blank=True, null=True)
@@ -1761,7 +1761,7 @@ class TblAllHindiSynsetData(models.Model):
 
 
 class TblAllHindiSynsetDataOld(models.Model):
-    synset_id = models.IntegerField()
+    synset_id = models.IntegerField(primary_key=True)
     head = models.CharField(max_length=100, blank=True, null=True)
     synset = models.TextField(blank=True, null=True)
     gloss = models.TextField(blank=True, null=True)
@@ -1906,7 +1906,7 @@ class TblAllSanskritSynsetData(models.Model):
 
 class TblAllSynsetData(models.Model):
     language = models.CharField(db_column='Language', max_length=100, blank=True, null=True)  # Field name made lowercase.
-    synset_id = models.IntegerField()
+    synset_id = models.IntegerField(primary_key=True)
     head = models.CharField(max_length=100, blank=True, null=True)
     synset = models.TextField(blank=True, null=True)
     gloss = models.TextField(blank=True, null=True)

@@ -14,8 +14,14 @@ import os
 # Create your views here.
 
 # Declaring GLobal Variables
-appName = 'indoWordNet'
+# appName = 'indoWordNet'
 langName = ['Hindi','English','Assamese','Bengali','Bodo','Gujarati','Kannada','Kashmiri','Konkani','Malayalam','Manipuri','Marathi','Nepali','Sanskrit','Tamil','Telugu','Punjabi','Urdu','Oriya']
+#Declaring Global Variables
+appName = 'indoWordNet'
+noun_relations_vector = ["ability verb", "attributes", "capability verb", "compound", "function verb"]
+verb_relations_vector = ["causative", "compounding", "conjunction", "derived from", "entailment", "troponymy"]
+
+
 def index(request):
     # wordList = {}
     
@@ -467,32 +473,166 @@ def fetch_regional_data(data,synset_id,tlang):
 
 def ontonymy(request):
     synset_id = request.GET.get('synset_id',None)
+    print(synset_id)
+    langno = request.GET.get('langno',None)
+    print(langno)
     #Fetching node id
     i = m.TblOntoNodes.objects.filter(synset_id= synset_id)[0].onto_nodes_id
     
-    #Fetching Parent Ids
-    onto_ids=[]
-    while(i != 1):
-        onto_ids.append(i)
-        i = m.TblOntoMap.objects.filter(child_id = str(i))[0].parent_id
-    #print(onto_ids)
+    # #Fetching Parent Ids
+    # onto_ids=[]
+    # while(i != 1):
+    #     onto_ids.append(i)
+    #     i = m.TblOntoMap.objects.filter(child_id = str(i))[0].parent_id
+    # #print(onto_ids)
 
-    #Fetching description and data
-    data = {}
-    j=0
-    for i in onto_ids:
-        l = []
-        onto_data = m.TblOntoData.objects.filter(onto_id= str(i))[0]
-        l.append(onto_data.onto_id)
-        l.append(onto_data.onto_data)
-        l.append(onto_data.onto_desc)
-        data[j]=l
-        j=j+1
-    data["length"]=j
+    # #Fetching description and data
+    # data = {}
+    # j=0
+    # for i in onto_ids:
+    #     l = []
+    #     onto_data = m.TblOntoData.objects.filter(onto_id= str(i))[0]
+    #     l.append(onto_data.onto_id)
+    #     l.append(onto_data.onto_data)
+    #     l.append(onto_data.onto_desc)
+    #     data[j]=l
+    #     j=j+1
+    # data["length"]=j
+
+    data = getOntoAllAncestors(synset_id,langno)
+    print(data)
+    # model = apps.get_model(appName, 'TblOntoData') 
+    # onto_data = model.objects.filter(onto_id = str(onto_ids[0]))[0]
+    # data["dynamic"] = onto_data.onto_desc
     onto_data_json = json.dumps(data,ensure_ascii=False)
     
 
     return JsonResponse(onto_data_json,safe=False)
+
+def fetchNounRelations(request):
+    synset_id=request.GET.get('synset_id',None)
+    langno = request.GET.get('langno',None)
+    pos = request.GET.get('pos',None)
+    nounRelationsList = []
+    print(synset_id)
+    if pos != "noun":
+        response = JsonResponse({"error": "there was an error because of category"})
+        response.status_code = 202 # To announce that the user isn't allowed to publish
+        return response
+        ## return failure
+    
+    for suffix in noun_relations_vector:
+        tbl_name = "Tbl" + pos.title().replace(" ","") + suffix.title().replace(" ","")
+        print("Looking in:", tbl_name)
+
+        ans1 = 0
+        ans2 = None
+        col_name = suffix.replace(" ","_") + "_id"
+
+        IDs = None
+        m = apps.get_model(appName, tbl_name)
+        IDs = m.objects.filter(synset_id=synset_id).values()
+
+        if(len(IDs)>0):
+            for i in IDs:
+                temp=[]
+                temp.append(i[col_name])
+                temp.append('Relation '+ suffix.title())
+                nounRelationsList.append(temp)
+    
+    if(len(IDs)==0):
+        response = JsonResponse({"error": "No noun data found"})
+        response.status_code = 202 # To announce that the user isn't allowed to publish
+        return response
+    ## Removing duplicate ids from Antonymy IDs
+    temp_id = []
+    temp = []
+    for k in nounRelationsList:
+        if k[0] not in temp_id:
+            temp_id.append(k[0])
+            temp.append(k)
+    nounRelationsList = temp
+
+    data={}
+    j=0
+    #fetching data
+    for k in nounRelationsList:
+        l=[]
+        synset = searchSynsetDataById(k[0],langno)
+        l.append(k[1])
+        l.append(synset["synonyms"])
+        print(synset["gloss"])
+        l.append(synset["gloss"])
+        # l.append(synset["gloss"][1])
+        l.append(synset["synset_id"])
+        l.append(synset["pos"])
+        data[j]=l
+        j = j+1
+
+    # data["length"]=j
+    nounRelations_data_json = json.dumps(data,ensure_ascii=False)
+            
+    return JsonResponse(nounRelations_data_json,safe=False) 
+
+def fetchVerbRelations(request):
+    synset_id=request.GET.get('synset_id',None)
+    langno = request.GET.get('langno',None)
+    pos = request.GET.get('pos',None)
+    verbRelationsList = []
+    print(synset_id)
+    if pos != "verb":
+        print("Not verb")
+        return None
+        ## return failure
+    
+    for suffix in verb_relations_vector:
+        tbl_name = "Tbl" + pos.title().replace(" ","") + suffix.title().replace(" ","")
+        print("Looking in:", tbl_name)
+
+        ans1 = 0
+        ans2 = None
+        col_name = suffix.replace(" ","_") + "_id"
+
+        IDs = None
+        m = apps.get_model(appName, tbl_name)
+        IDs = m.objects.filter(synset_id=synset_id).values()
+
+        if(len(IDs)>0):
+            for i in IDs:
+                temp=[]
+                temp.append(i[col_name])
+                temp.append('Relation '+ suffix.title())
+                verbRelationsList.append(temp)
+    
+    ## Removing duplicate ids from Antonymy IDs
+    temp_id = []
+    temp = []
+    for k in verbRelationsList:
+        if k[0] not in temp_id:
+            temp_id.append(k[0])
+            temp.append(k)
+    verbRelationsList = temp
+
+    data={}
+    j=0
+    #fetching data
+    for k in verbRelationsList:
+        l=[]
+        synset = searchSynsetDataById(k[0],langno)
+        l.append(k[1])
+        l.append(synset["synonyms"])
+        print(synset["gloss"])
+        l.append(synset["gloss"])
+        # l.append(synset["gloss"][1])
+        l.append(synset["synset_id"])
+        l.append(synset["pos"])
+        data[j]=l
+        j = j+1
+
+    # data["length"]=j
+    verbRelations_data_json = json.dumps(data,ensure_ascii=False)
+            
+    return JsonResponse(verbRelations_data_json,safe=False) 
 
 
 def derivedFrom(request):
@@ -531,7 +671,7 @@ def derivedFrom(request):
         data[j]=l
         j = j+1
 
-    data["length"]=j
+    # data["length"]=j
     derived_data_json = json.dumps(data,ensure_ascii=False)
 
     #fetching data
@@ -596,7 +736,7 @@ def modifies(request):
         data[j]=l
         j = j+1
 
-    data["length"]=j
+    # data["length"]=j
     modifies_data_json = json.dumps(data,ensure_ascii=False)
     # for j in mod_id:
     #     l=[]
@@ -712,7 +852,7 @@ def holonymy(request):
         data[j]=l
         j = j+1
 
-    data["length"]=j
+    # data["length"]=j
     holonymy_data_json = json.dumps(data,ensure_ascii=False)
     # for j in holo_lis:
     #     l=[]
@@ -828,7 +968,7 @@ def meronymy(request):
         data[j]=l
         j = j+1
 
-    data["length"]=j
+    # data["length"]=j
     meronymy_data_json = json.dumps(data,ensure_ascii=False)
     # for j in mero_lis:
     #     l=[]
@@ -949,7 +1089,7 @@ def antonymy(request):
             temp=[]
             temp.append(i['anto_manner_id'])
             temp.append('Antonymy - Manner')
-            mero_lis.append(temp)
+            antonymy_ids.append(temp)
 
     if(len(personality_id)>0):
         for i in personality_id:
@@ -1019,7 +1159,7 @@ def antonymy(request):
         data[j]=l
         j = j+1
 
-    data["length"]=j
+    # data["length"]=j
     antonymy_data_json = json.dumps(data,ensure_ascii=False)
 
     return JsonResponse(antonymy_data_json,safe=False)
@@ -1095,7 +1235,7 @@ def hyponymy(request):
         data[j]=l
         j = j+1
 
-    data["length"]=j
+    # data["length"]=j
     hypo_data_json = json.dumps(data,ensure_ascii=False)
 
     return JsonResponse(hypo_data_json,safe=False)
@@ -1153,7 +1293,7 @@ def hypernymy(request):
         data[j]=l
         j = j+1
 
-    data["length"]=j
+    # data["length"]=j
     hyper_data_json = json.dumps(data,ensure_ascii=False)
 
     return JsonResponse(hyper_data_json,safe=False)
@@ -1176,12 +1316,109 @@ def hypernymy(request):
 
     # return JsonResponse(hyper_data_json,safe=False)
 
-
-
-
-
+def fetchReverseOntonymy(request):
+    oid = request.GET.get('synset_id',None)
+    langno = request.GET.get('langno',None)
+    pos = request.GET.get('pos', None) ##pos is not needed for this function. Still saved it for future purpose
+    tbl_name = "TblOntoNodes"
     
-   
+    try:
+        m = apps.get_model(appName,tbl_name)
+        synset_ids = m.objects.filter(onto_nodes_id = oid).order_by('synset_id').values()
+    except m.DoesNotExist:
+        print("Model for ", tbl_name , " does not exist. Internal Server Error")
+        return None ## for temporary basis
+        #### code for returning error json response
+    
+    if len(synset_ids) == 0:
+        # no data found
+        ### code for return "No more Synset Data exist" error
+        return None
+    print(synset_ids)
+    data={}
+    j=0
+    #fetching data
+    for k in synset_ids:
+        l=[]
+        synset = searchSynsetDataById(k['synset_id'],langno)
+        l.append(synset["synset_id"])
+        l.append(synset["synonyms"])
+        #print(synset["gloss"])
+        l.append(synset["gloss"])
+        # l.append(synset["gloss"][1])
+        l.append(synset["pos"])
+        data[j]=l
+        j = j+1
+
+    # data["length"]=j
+    reverseOnto_data_json = json.dumps(data,ensure_ascii=False)
+            
+    return JsonResponse(reverseOnto_data_json,safe=False)
+
+def showOnto(request):
+    synset_id = request.GET.get('synset_id',None)
+    oid = request.GET.get('oid',None)
+    langno = request.GET.get('langno',None)
+    wordList = getOntoAllAncestors(synset_id,langno)
+
+    keys = list(wordList.keys())
+    for k in keys:
+        if wordList[k][0] > int(oid):
+            wordList.pop(k)
+
+    ini_list = list(range(0,len(wordList)))
+    wordList = dict(zip(ini_list, list(wordList.values())))
+    
+    return render(request,'ontotree.html', {'oid':oid,'langno':langno,'wordList':wordList})
+
+def getOntoAllAncestors(synset_id,langno):
+
+    try:
+        #Fetching node id
+        m = apps.get_model(appName,"TblOntoNodes")
+        i = m.objects.filter(synset_id= synset_id)[0].onto_nodes_id
+    except m.DoesNotExist:
+        print("Internal Server Error")
+        return None ####temporary
+        #### writecode returning error json response
+    
+    onto_ids=[]
+    #onto_ids.append(oid)
+    try:
+        #Fetching Parent Ids
+        m = apps.get_model(appName,"TblOntoMap")
+        while(i != 1):
+            onto_ids.append(i)
+            i = m.objects.filter(child_id = str(i))[0].parent_id
+    except m.DoesNotExist:
+        print("internal servver error")
+        return None
+ 
+    try:
+        m = apps.get_model(appName,"TblOntoData")
+        data = {}
+        parent_id = synset_id
+        j=0
+        for i in onto_ids:
+            l = []
+            onto_data = m.objects.filter(onto_id= str(i))[0]
+            l.append(onto_data.onto_id)
+            l.append(onto_data.onto_data)
+            l.append(onto_data.onto_desc)
+            l.append(parent_id)
+            parent_id = onto_data.onto_id
+            data[j] = l
+            j=j+1
+        #data["length"]=j
+    except m.DoesNotExist:
+        print("tblontodata does not exist")
+        return None
+    
+    #onto_data_json = json.dumps(data,ensure_ascii=False)
+    return data
+    
+
+
 def feedBack(request):
     return render(request,'index.html#feedBack',context=None)
 

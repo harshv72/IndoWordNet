@@ -366,10 +366,18 @@ function fetchTblData(synset_id,langno,pos,btnValue){
             console.log("Ontology Table Created Successfully");
             break;
         case "7":
-            createNounRelationTbl(synset_id,langno);
+            tblParams.headerList[0] = "Noun Relation Type";
+            urlLink = "fetch_nounRelations";
+            tblTitle = "Showing Noun Relations";
+            createTbl(synset_id,langno,pos,urlLink,tblTitle,tblParams);
+            console.log("Noun Relation Table Created Successfully");
             break;
         case "8":
-            createVerbRelationTbl(synset_id,langno);
+            tblParams.headerList[0] = "Verb Relation Type";
+            urlLink = "fetch_verbRelations";
+            tblTitle = "Showing Verb Relations";
+            createTbl(synset_id,langno,pos,urlLink,tblTitle,tblParams);
+            console.log("Verb Relation Table Created Successfully");
             break;
         case "9":
             tblParams.headerList[0] = "Derived From ID";
@@ -384,6 +392,13 @@ function fetchTblData(synset_id,langno,pos,btnValue){
             tblTitle = "Showing Modifies";
             createTbl(synset_id,langno,pos,urlLink,tblTitle,tblParams);
             console.log("Modifies Table Created Successfully");
+            break;
+        case "11":
+            tblParams.headerList[0] = "Synset ID";
+            urlLink = "fetch_revOnto";
+            tblTitle = "Showing Synset List"; // proper title needed for table
+            createTbl(synset_id,langno,pos,urlLink,tblTitle,tblParams);
+            console.log("Reverse Ontology Table Created Successfully");
             break;
         default:
             console.log("default case in fetch_tbl_data");
@@ -549,7 +564,20 @@ function getSynsetData(synset_id,tlangno,pos){
 
 function createTbl(synset_id,langno,pos,urlLink,tblTitle,tblParams)
 {
-    document.getElementById("tblTitle").innerHTML = tblTitle;
+    // removing Error Section visibility
+    errMsg = document.getElementById('errMsg');
+    errMsg.style.display = "None";
+
+    // Applying table visibility
+    tbldivHTML = document.getElementById('tbldivHTML');
+    tbldivHTML.style.display = "block";
+
+    // settting table title
+    tblTitleHTML = document.getElementById("tblTitle").innerHTML = tblTitle;
+    
+    //generating Table
+    tblHTML = document.getElementById('tblHTML');
+    tblHTML.innerHTML = "";
     //var pos = document.getElementById("pos").innerHTML.toLowerCase();
     $.ajax({
         url: urlLink,
@@ -560,17 +588,13 @@ function createTbl(synset_id,langno,pos,urlLink,tblTitle,tblParams)
         },
         dataType: 'json',
         success: function (data) {
-            if(data) {
+            if(data["error"]){
+                showErrorMessage(data["error"]);
+            }
+            else{
                 var data = JSON.parse(data);
                 console.log(data);
                 var i,j,k;
-
-                // settting table title
-                tblTitleHTML = document.getElementById("tblTitle").innerHTML = tblTitle;
-
-                //generating Table
-                tblHTML = document.getElementById('tblHTML');
-                tblHTML.innerHTML = "";
 
                 //creating TblHeader
                 var thead = document.createElement('thead');
@@ -599,7 +623,7 @@ function createTbl(synset_id,langno,pos,urlLink,tblTitle,tblParams)
                 //creating TblBody
                 var tbody = document.createElement("tbody");
                 var colCount = tblParams.colCount; //denotes number of columns in the table, if 3 table is for onto, else for any other *.nymy for ex. Hypernymy,Hyponymy
-                for(i=0;i<data.length;i++)
+                for(i=0;i<Object.keys(data).length;i++)
                 {
                     var row = document.createElement('tr');
                     row.className = "border-bottom";
@@ -637,9 +661,13 @@ function createTbl(synset_id,langno,pos,urlLink,tblTitle,tblParams)
                                 }
                                 else
                                 {
-                                    cell.style.color = "blue";
-                                    var text = document.createTextNode(data[i.toString()][j]);
-                                    cell.appendChild(text);
+                                    var a = document.createElement("a");
+                                    a.textContent = data[i.toString()][j];
+                                    a.href = "showonto?synset_id="+ synset_id + "&oid=" + data[i.toString()][j-1] +"&langno=" + langno;
+                                    // a.appendChild(linkText);
+                                    cell.appendChild(a);
+                                    //var text = document.createTextNode(data[i.toString()][j]);
+                                    //cell.appendChild(text);
                                 }
                                 break;
                             case 2:
@@ -676,14 +704,33 @@ function createTbl(synset_id,langno,pos,urlLink,tblTitle,tblParams)
                 }
                 tblHTML.appendChild(tbody);
             }
-            else{
-                console.log("Error: No data fetched");
-                // call to Error CSS Page to show
+        },
+        error: function(response){
+            console.log(response["status"]);
+            if(response["status"] == 404){
+                showErrorMessage("Page Not Found");
+            }
+            else if(response["status"] == 500){
+                showErrorMessage("Page Not Found");
             }
         }
     })
 }
 
+// function fetchRecomendationData(){
+function showErrorMessage(msg){
+
+    // removing table visibility
+    tblHTML = document.getElementById('tbldivHTML');
+    tblHTML.style.display = "None";
+    errText = document.getElementById("errText");
+    errText.innerHTML = msg;
+    errMsg = document.getElementById("errMsg");
+    errMsg.style.display = "block";
+    
+    // errText.style.display = "inline";
+    
+}
 function fetchRecomendationData(){
     var currentRequest = null;
 
@@ -735,6 +782,15 @@ function fetchRecomendationData(){
     }
 }
 
+function fetchReverseOnto(oid){
+    var selectedOntoID = document.getElementById("selectedOntoID");
+    selectedOntoID.innerHTML = oid;
+    var tlangno = document.getElementById('tlangOnto').value;
+    var btnValue = "11";
+    var synset_id = oid;
+    var pos = "noun";
+    fetchTblData(synset_id,tlangno,pos,btnValue);
+}
 
 $(document).ready(function(){
     langno = document.getElementById("lang").value;
@@ -764,6 +820,16 @@ $(document).ready(function(){
         var synset_id = $("#s_id").text();
         var pos = document.getElementById("pos").innerHTML.toLowerCase();
         fetchTblData(synset_id,tlangno,pos,btnValue);
+        //alert($(this).val());
+    });
+
+    $('#tlangOnto').on('change',function(){
+        var tlang = $(this);
+        var tlangno = tlang.val();
+        var pos = "noun";
+        var btnValue = "11";
+        var selectedOntoID = document.getElementById("selectedOntoID");
+        fetchTblData(selectedOntoID,tlangno,pos,btnValue);
         //alert($(this).val());
     });
     
