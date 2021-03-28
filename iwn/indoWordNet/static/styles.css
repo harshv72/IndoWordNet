@@ -38,6 +38,16 @@ header{
     font-size: 18px;
 }
 
+.close_match_div {
+    width: 80%;
+    margin-left: 10%;
+    text-align: center;
+    padding: 20px;
+    margin-bottom: 10px;
+    font-size: 18px;
+    
+}
+
 .searchPanel{
     width: 80%;
     border: 1px solid black;
@@ -391,3 +401,12 @@ alert-info {
 } */
 
 
+.references{
+    width: 80%;
+    border: 1px solid black;
+    box-shadow: 8px 8px 10px 1px;
+    padding: 50px 10px;
+    padding-left: 50px;   
+    left: 0;
+    right: 0;
+}
