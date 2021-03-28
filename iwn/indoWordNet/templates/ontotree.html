@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Indowordnet</title>
+  {% load static %}
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="{% static 'assets/js/scripts.js' %}"></script>
+  
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.slim.min.js"></script>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="{% static 'styles.css' %}">
+</head>
+
+
+
+<body>
+  {% include 'header.html' %}
+  <div>&nbsp;</div>
+  {% include 'searchbox.html' %}
+  
+  <div>&nbsp;</div>
+  
+<div class="container-fluid synset">
+    <table style="width: 100%;table-layout: fixed;">
+        <tbody>
+            <tr class="border-bottom">
+                <td class="a">Ontology ID</td>
+                <td class="b">:</td>
+                <td id="onto_id" class="c" style="color: black;">{{wordList.0.0}}</td>
+            </tr>
+            <tr class="border-bottom">
+                <td class="a">Ontology Label</td>
+                <td class="b">:</td>
+                <td id="onto_label" class="c" style="color: blue;">{{wordList.0.1}}</td>
+            </tr>
+            <tr class="border-bottom">
+                <td class="a">Ontology Description</td>
+                <td class="b">:</td>
+                <td id="onto_desc" class="c" style="color: green;">{{wordList.0.2}}</td>
+            </tr>
+        </tbody>    
+    </table>
+</div>
+        
+
+
+
+<div>&nbsp;</div>
+  <div class="container-fluid data">
+    <div class="row container-fluid">
+        <div class="col-3 selector dataspace2" >
+            <span class="tarLang">
+                <label for="tlangOnto" style="text-align: center;">Target language :</label>
+                <select class=" form-control " id="tlangOnto" name="tlangno"  style="height: 30px;" >
+                    <option value="0" selected>हिन्दी hindi</option>
+                    <option value="1">English</option>
+                    <option value="2">অসমীয়া (Assamese)</option>
+                    <option value="3">বাংলা (Bengali)</option>
+                    <option value="4">bodo</option>
+                    <option value="5">ગુજરાતી (Gujarati)</option>
+                    <option value="6"> ಕನ್ನಡ (Kannada) </option>
+                    <option value="7">کًش (Kashmiri)</option>
+                    <option value="8">konkani</option>
+                    <option value="9">മലയാളം (Malayalam)</option>
+                    <option value="10">manipuri</option>
+                    <option value="11">मराठी (Marathi)</option>
+                    <option value="12"> नेपाली (Nepali)</option>
+                    <option value="13">संस्कृतम् (Sanskrit)</option>
+                    <option value="14"> தமிழ் (Tamil)</option>
+                    <option value="15">తెలుగు} (Telugu)</option>
+                    <option value="16">punjabi</option>
+                    <option value="17">urdu</option>
+                    <option value="18">oriya</option>
+                </select>
+            </span>
+            <!--
+            <span class="btn-group-vertical col ontoBtn">
+                <button type="button" class="btn btn-info btn-md" style="font-size: 1.2vw; text-align: center;">Synset</button>    
+            </span>
+            -->
+            <span>
+                <div id="tbl2Title" class="dataHead">
+                    Hierarchy
+                </div>
+            </span>
+            
+            <!-- <span class="ontoBtn" style="background-color: lightblue;">
+                <div class="bar_titleLeft alert alert-info" style="font-size: 1.2vw;"><p style="font-size: 1.2vw;">Hierarchy</p></div>
+            </span> -->
+            <span>                            <!-- <div>
+                    <div class="container-fluid notFound  alert alert-danger ">
+                        No <span id="dataLabel" style="color: blue;">Test</span> data found
+                    </div>
+                </div> -->
+                <div style="width:100%;height: 440px; overflow-y: scroll;overflow-x: auto;">
+                <table id="tblHTML2" style="width: 100%;table-layout: fixed;overflow: scroll;">
+                    <div id="tbl_data2" style="width:100%;">
+                        <!-- <tr class="border-bottom">
+                            <th class="d">Onto Id</th> 
+                            <th class="d">Onto Label</th>
+                            <th class="d">Onto Description</th>
+                        </tr>
+                         -->
+                        {% for key,value in wordList.items %}
+                            <tr class="border-bottom">
+                                <td class="d2" style="color: black;">{{ value.0 }}</td>
+                                <td class="b">:</td>
+                                <td class="d2" style="text-align: left;color: blue;"><a href="#" onclick="fetchReverseOnto({{ i.0 }})" >{{ value.1 }}</a></td>
+                            </tr>
+                            <tr class="border-bottom" >
+                                <td class="d2" style="color: green;" colspan="3">{{ value.2 }}</td>
+                            </tr>
+                            <tr class="border-bottom">
+                                <td style="background: black;" colspan="3"></td>
+                                <!--empty row-->
+                            </tr>
+                            
+                            <!-- <td class="d" style="color: blue;font-weight: bold;">{{ i.1 }}</td>
+                            <td class="d" style="color: green;font-weight: bold;">{{ i.2 }}</td>
+                        </tr> -->
+                        {% endfor %}
+                    </div>
+                </table>
+                </div>
+            </span>
+        </div>
+        
+        <div class="col-9 dataspace container-fluid" >
+            
+            <span>
+                <div id="tblTitle" class="dataHead">
+                    Ontology
+                </div>
+            </span>
+
+            <span>
+
+                <!-- <div>
+                    <div class="container-fluid notFound  alert alert-danger ">
+                        No <span id="dataLabel" style="color: blue;">Test</span> data found
+                    </div>
+                </div> -->
+                <div style="width:100%; height: 500px; overflow-y: scroll; overflow-x: auto;">
+                <table id="tblHTML" style="width: 100%;table-layout: fixed; overflow: scroll;">
+                    <input type="hidden" id="selectedOntoID"></input>
+                    <!-- <div id="tbl_data" style="width:100%;">
+                        <tr class="border-bottom">
+                            <th class="d">Onto Id</th> 
+                            <th class="d">Onto Label</th>
+                            <th class="d">Onto Description</th>
+                        </tr>
+                        
+                        {% for i in wordList.0.5 %}
+                        <tr class="border-bottom">
+                            <td class="d" style="color: black;font-weight: bold;">{{ i.0 }}</td>
+                            <td class="d" style="color: blue;font-weight: bold;">{{ i.1 }}</td>
+                            <td class="d" style="color: green;font-weight: bold;">{{ i.2 }}</td>
+                        </tr>
+                        {% endfor %}
+                    </div> -->
+                </table>
+                </div>
+            </span>
+            <script>
+                
+                // $(document).ready(function(){
+                //     var tblParams = {};
+                //     var synset_id = document.getElementById("s_id").innerHTML;
+                //     var tlangno=0;
+                //     var pos = document.getElementById('pos').innerHTML.toLowerCase();
+                //     tblParams.headerList = ["Ontology ID","Ontology Label","Ontology Description"];
+                //     tblParams.colCount = 3;
+                //     urlLink = "fetch_ontology";
+                //     tblTitle = "Showing Ontology";
+                //     createTbl(synset_id,tlangno,pos,urlLink,tblTitle,tblParams);
+                //     console.log("Ontology Table Created Successfully");
+
+                    
+                //     // console.log("cre");
+                //     // console.log(synset_id);
+                //     // createMeroTbl(3618,"0")
+                //     // createHoloTbl(474,"0");
+                //     // createModifiesTbl(52,"0");
+                //     // createDerivedFromTbl(52,"0");
+                //     // createOntoTbl(synset_id,tlangno);
+                // });
+            </script>
+        </div>
+    </div>
+  </div>
+
+  <div>&nbsp;</div>
+  <div>&nbsp;</div>
+  <div>&nbsp;</div>
+  <div>&nbsp;</div>
+  <div>&nbsp;</div>
+  <div>&nbsp;</div>
+
+  <center><b>Acknowledgment:</b> The majority of the funding for Indowordnet came from TDIL, DEITY, MCIT. Part of Dravidian wordnet  work was supported in the project's initial phase by MHRD. Sanskrit wordnet was supported by MHRD</center><br>
+
+  {% include 'footer.html' %}
+  <div>&nbsp;</div>
+
+  
+  
+
+</body>
+</html>

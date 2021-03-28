@@ -19,10 +19,13 @@ from indoWordNet import views
 urlpatterns = [
     path('',views.index,name='index'),
     path('wordnet',views.wordnet,name='wordnet'),
+    path('showonto',views.showOnto,name='showonto'),
     path('home',views.index,name='index'),
     path('home#contactUs',views.contactUs,name='contactUs'),
     path('home#feedBack',views.feedBack,name='feedBack'),
     path('fetch_synset',views.fetchSynset,name='fetchSynset'),
+    path('fetch_nounRelations',views.fetchNounRelations,name='nounRelations'),
+    path('fetch_verbRelations',views.fetchVerbRelations,name='verbRelations'),
     path('fetch_derivedFrom',views.derivedFrom,name='derivedFrom'),
     path('fetch_modifies',views.modifies,name='modifies'),
     path('fetch_holonymy',views.holonymy,name='holonymy'),
@@ -31,6 +34,7 @@ urlpatterns = [
     path('fetch_hypernymy',views.hypernymy,name='hypernymy'),
     path('fetch_hyponymy',views.hyponymy,name='hyponymy'),
     path('fetch_ontology',views.ontonymy,name='ontology'),
+    path('fetch_revOnto',views.fetchReverseOntonymy,name='reverseOntonymy'),
     path('word',views.word,name='word')
 ]
 

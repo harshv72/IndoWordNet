@@ -191,6 +191,13 @@ element.style {
     
 }
 
+.d2{
+    text-align:  left ;
+    padding-left: 0px;
+    padding-right: 20px;
+    
+}
+
 .a, .b, .c, .d {
     font-family: cambria;
     font-size: 16px;
@@ -307,8 +314,14 @@ element.style {
     padding: 10px;
     padding-right: 0px;
     border-left: 1px solid black;
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
 }    
 
+.dataspace2{
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+}
 
 .tarLang{
     margin: 10px 0px;
@@ -320,21 +333,61 @@ element.style {
 
 .dataHead{
     margin: 10px 0px;
-    background-color: aquamarine;
+    background-color: #d1ecf1;
     text-align: center;
     padding: 5px;
     font-weight: bold;
 
 }
 
-.notFound {
-    width: 50%;
-    height: 50%;
-    margin-left: 25%;
+div.bar_titleLeft {
+    color: #333;
     text-align: center;
-    margin-top: 10px;
-    font-size: 18px;
+    font-size: larger;
+    font-weight: bold;
 }
 
+alert-info {
+    color: #31708f;
+    background-color: #d9edf7;
+    border-color: #bce8f1;
+}
+
+.alertErr {
+    width: 100%;
+    padding: 0px;
+    margin: 20px 0px;
+    border: 1px solid transparent;
+    border-top-color: transparent;
+    border-right-color: transparent;
+    border-bottom-color: transparent;
+    border-left-color: transparent;
+    border-radius: 4px;
+}
+
+.notFound {
+    height: 10%;
+    position: relative;
+    border: 3px solid lightcoral;
+  }
+  
+.notFound span {
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+/* .alert {
+    padding: 0px;
+    margin: 20px 20px;
+    border: 1px solid transparent;
+    border-top-color: transparent;
+    border-right-color: transparent;
+    border-bottom-color: transparent;
+    border-left-color: transparent;
+    border-radius: 4px;
+} */
 
 
