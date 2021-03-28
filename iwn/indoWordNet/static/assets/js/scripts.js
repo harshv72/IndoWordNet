@@ -41,6 +41,90 @@ function toggle(thistag){
     });
 }
 
+// function autocomplete(inp, arr) {
+//     var currentFocus;
+//     inp.addEventListener("input", function(e) {
+//         var a, b, i, val = this.value;
+//         closeAllLists();
+//         if (!val) { return false;}
+//         currentFocus = -1;
+//         a = document.createElement("DIV");
+//         a.setAttribute("id", this.id + "autocomplete-list");
+//         a.setAttribute("class", "autocomplete-items");
+//         this.parentNode.appendChild(a);
+//         k = 0;
+//         for (i = 0; ; i++) {
+//             if (arr[i].substr(0, val.length)== val) {
+//                 k = k+1;
+//                 b = document.createElement("DIV");
+//                 b.innerHTML = "<strong>" + arr[i].substr(0, val.length) + "</strong>";
+//                 b.innerHTML += arr[i].substr(val.length);
+//                 b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
+//                 b.addEventListener("click", function(e) {
+//                     inp.value = this.getElementsByTagName("input")[0].value;
+//                     closeAllLists();
+//                 });
+//                 a.appendChild(b);
+//                 if(k==10){
+//                     break;
+//                 }
+//             }
+//         }
+//         if (k == 0){
+//             b = document.createElement("DIV");
+//                 b.innerHTML = "<strong> Not Found </strong>";
+//                 b.addEventListener("click", function(e) {
+//                     inp.value = this.getElementsByTagName("input")[0].value;
+//                     closeAllLists();
+//                 });
+//                 a.appendChild(b);
+                
+//         }
+//     });
+//     inp.addEventListener("keydown", function(e) {
+//         var x = document.getElementById(this.id + "autocomplete-list");
+//         if (x) x = x.getElementsByTagName("div");
+//         if (e.keyCode == 40) {
+//             currentFocus++;
+//             addActive(x);
+//         } 
+//         else if (e.keyCode == 38) { //up
+//             currentFocus--;
+//             addActive(x);
+//         }
+//         else if (e.keyCode == 13) {
+//             e.preventDefault();
+//             if (currentFocus > -1) {
+//                 if (x) x[currentFocus].click();
+//             }
+//         }
+//     });
+//     function addActive(x) {
+//         if (!x) return false;
+//         removeActive(x);
+//         if (currentFocus >= x.length) currentFocus = 0;
+//         if (currentFocus < 0) currentFocus = (x.length - 1);
+//         x[currentFocus].classList.add("autocomplete-active");
+//     }
+//     function removeActive(x) {
+//         for (var i = 0; i < x.length; i++) {
+//             x[i].classList.remove("autocomplete-active");
+//         }
+//     }
+//     function closeAllLists(elmnt) {
+//         var x = document.getElementsByClassName("autocomplete-items");
+//         for (var i = 0; i < x.length; i++) {
+//             if (elmnt != x[i] && elmnt != inp) {
+//             x[i].parentNode.removeChild(x[i]);
+//             }
+//         }
+//     }
+//     document.addEventListener("click", function (e) {
+//         closeAllLists(e.target);
+//     });
+//   }
+  
+  
 function autocomplete(inp, arr) {
     var currentFocus;
     // console.log("1")
@@ -78,6 +162,7 @@ function autocomplete(inp, arr) {
             }
             
         }
+        inp.focus()
     // });
 
   
@@ -109,8 +194,8 @@ function funct(w){
 
     queryword.value = queryword.value + w;
     // search()
-    var word = $("#queryword").val();
-    var lang = $("#lang").val();
+    // var word = $("#queryword").val();
+    // var lang = $("#lang").val();
     // alert('value changed');
     fetchRecomendationData();
     search_button.focus();
@@ -601,29 +686,53 @@ function createTbl(synset_id,langno,pos,urlLink,tblTitle,tblParams)
 
 function fetchRecomendationData(){
     var currentRequest = null;
+
+
+
     var word = document.getElementById("queryword").value;
+    word = word.trim()
     var l = document.getElementById("lang");
     var lang = l.options[l.selectedIndex].value
+    
+    
+    console.log(word.length)
     console.log(word)
     console.log(lang)
-    currentRequest = $.ajax({
-        url: 'word',
-        data: {
-          'q': word,
-          'langno': lang
-        },
-        dataType: 'json',
-        
-        success: function (data) {
-            if (data) {
-                var data = JSON.parse(data);
-                console.log(word)
-                console.log(data);
-                var inp = document.getElementById("queryword");
-                autocomplete(inp,data)
+
+  
+    if(word.length != 0){
+        console.log(word)
+    
+        var ajaxReq = 'ToCancelPrevReq';
+        ajaxReq =$.ajax({
+            url: 'word',
+            data: {
+            'q': word,
+            'langno': lang
+            },
+            dataType: 'json',
+            beforeSend : function() {
+                if(ajaxReq != 'ToCancelPrevReq' && ajaxReq.readyState < 4) {
+                    ajaxReq.abort();
+                }
+            },
+            success: function (data) {
+                if (data) {
+                    var data = JSON.parse(data);
+                    // console.log(word)
+                    // console.log(data);
+                    var inp = document.getElementById("queryword");
+                    // inp.focus()
+                    autocomplete(inp,data)
+                }
             }
-        }
-    });
+        });
+    }
+    else{
+        console.log("close")
+        var list = document.getElementById("autocomplete-list");
+        list.remove();
+    }
 }
 
 
@@ -658,13 +767,41 @@ $(document).ready(function(){
         //alert($(this).val());
     });
     
-      $('#queryword').bind('input DOMSubtreeModified',function(){
-        console.log($(this).val());
-        var word = $(this).val();
-        var lang = $("#lang").val();
+    
+
+    $('#queryword').change(function(){
+        // console.log($(this).val());
+        // var word = $(this).val();
+        // var lang = $("#lang").val();
         // alert('value changed');
         fetchRecomendationData();
     });
+
+    var typingTimer;                //timer identifier
+    var doneTypingInterval = 500;  //time in ms, 5 second for example
+    var $input = $('#queryword');
+
+    //on keyup, start the countdown
+    $input.on('input', function () {
+        clearTimeout(typingTimer);
+        typingTimer = setTimeout(doneTyping, doneTypingInterval);
+    });
+
+    //on keydown, clear the countdown 
+    $input.on('keydown', function () {
+        clearTimeout(typingTimer);
+    });
+
+    function doneTyping () {
+        fetchRecomendationData();
+      }
+
+
+
+
+
+
+
 });
 
 function fetchTableSynsetTitle(tlang){

@@ -8,6 +8,7 @@ from django.apps import apps
 # from indoWordNet.models import TblAllAssameseSynsetData,TblAllBengaliSynsetData,TblAllBodoSynsetData,TblAllGujaratiSynsetData,TblAllHindiSynsetData
 import indoWordNet.models as m
 import base64
+import os
 
 
 # Create your views here.
@@ -16,6 +17,38 @@ import base64
 appName = 'indoWordNet'
 langName = ['Hindi','English','Assamese','Bengali','Bodo','Gujarati','Kannada','Kashmiri','Konkani','Malayalam','Manipuri','Marathi','Nepali','Sanskrit','Tamil','Telugu','Punjabi','Urdu','Oriya']
 def index(request):
+    # wordList = {}
+    
+    # for lang in range(19):
+    #     word = []
+    #     if lang == 1:
+    #         tblName = "EnglishSynsetData"
+    #     else:
+    #         tblName = "TblAll"+langName[int(lang)]+"SynsetData"
+            
+    #     try:
+    #         model = apps.get_model(appName,tblName)
+    #     except Exception as e:
+    #         print(e)
+        
+    #     data = model.objects.using('region').all()
+    #     for i in data:
+    #         if lang == 0:
+    #             words = i.synset.decode('UTF-8').split(',')
+    #         elif lang == 11:
+    #             words = i.synset.split(',')
+    #         elif lang == 1:
+    #             words = i.synset_words.split(', ')
+    #         else:
+    #             words = i.synset.decode('UTF-8').split(', ')
+    #         for k in words:
+    #             word.append(k)
+    #     wordList[str(lang)] = word
+
+    # with open('words.json','w') as outfile:
+    #     json.dump(wordList,outfile) 
+    #     print(os.path.abspath(outfile.name))
+
     return render(request,'index.html',{'found':True,'suggFound': False})
 
     
@@ -37,24 +70,26 @@ def getCloseMatch(word,lang):
     data = model.objects.using('region').all()
     
     for i in data:
-        if lang == '0':
-            words = i.synset.decode('UTF-8').split(',')
-        elif lang == '11':
-            words = i.synset.split(',')
-        elif lang == '1':
-            words = i.synset_words.split(', ')
-            sID = str(i.synset_id)
-        else:
-            words = i.synset.decode('UTF-8').split(', ')
-           
+        try:
+            if lang == '0':
+                words = i.synset.decode('UTF-8').split(',')
+            elif lang == '11':
+                words = i.synset.split(',')
+            elif lang == '1':
+                words = i.synset_words.split(', ')
+                sID = str(i.synset_id)
+            else:
+                words = i.synset.decode('UTF-8').split(', ')
+        except Exception as e:
+            print(e)
+
+
         for k in words:
-            if word in k:    
+            if word in k:   
                 wordList.append(k)
                 if lang == '1':
                     idList.append(sID)
 
-    
-    # wordList = sorted(wordList,key=len,reverse=True)
     if len(wordList) > 10:
         l = 0
         newWordList = []
@@ -62,38 +97,45 @@ def getCloseMatch(word,lang):
         for (i,w) in enumerate(wordList):
             length1 = len(w)
             ratio = length/length1
-            limit = ((length-1)*10+30)/100
-            if(ratio > limit):
-                print("sani")
-                if lang == '1':
-                    try:
-                        if m.EnglishHindiIdMapping.objects.using('region').filter(english_id = idList[i]).exists():
-                            l = l+1
-                            newWordList.append(w)
-                            if l == 10:
-                                return newWordList
+            # limit = ((length-1)*10+30)/100
+            limit = 0
+            print(w)
+            try:
+                if(ratio > limit):
+                    if lang == '1':
+                        try:
+                            if m.EnglishHindiIdMapping.objects.using('region').filter(english_id = idList[i]):
+                                l = l+1
+                                newWordList.append(w)
+                                if l == 10:
+                                    return newWordList,l
 
-                    except Exception as e:
-                        print(e)
-                
-                else:
-                    l = l+1
-                    newWordList.append(w)
-                    if l == 10:
-                        return newWordList
+                        except Exception as e:
+                            print(e)
+                    
+                    else:
+                        l = l+1
+                        newWordList.append(w)
+                        if l == 10:
+                            return newWordList,l
+            except Exception as e:
+                print(e)
+        return wordList,l
     else:
+        
         if lang == '1':
+            l=0
             newWordList = []
             for (i,w) in enumerate(wordList):
                 try:
-                    if m.EnglishHindiIdMapping.objects.using('region').filter(english_id = idList[i]).exists():
+                    if m.EnglishHindiIdMapping.objects.using('region').filter(english_id = idList[i]):
                         newWordList.append(w)
-                    
+                        l=l+1                       
                 except Exception as e:
                     print(e)
-            return newWordList    
-
-        return wordList
+            return newWordList,l   
+        l =len(wordList)
+        return wordList,l
     
 
 
@@ -119,6 +161,7 @@ def getSynsetByWord(word,lang):
                     hindiId = m.EnglishHindiIdMapping.objects.using('region').filter(english_id = str(i.synset_id))
                 except Exception as e:
                     print(e)
+                    
                 
                 for j in hindiId:
                     length = length + 1
@@ -128,7 +171,12 @@ def getSynsetByWord(word,lang):
                     l.append(synonuyms)
                     
                     try:
-                        l.append(i.gloss.split(';'))
+                        gloss = i.gloss.split(';')
+                        if len(gloss) == 1:
+                            gloss.append("Example statement not available")
+                            l.append(gloss)
+                        else:
+                            l.append(gloss)
                     except Exception as e:
                         l.append(str(i.gloss))
                     
@@ -166,12 +214,11 @@ def getSynsetByWord(word,lang):
             try:
                 if lang == '0':
                     i = m.TblAllSynset.objects.get(synset_id = str(i.synset_id))
-                if lang == '0':
-                    synonuyms = i.synset.decode('UTF-8').split(',')
-                elif lang == "11":
+               
+                if lang == "11":
                     synonuyms = i.synset.split(',')
                 else:
-                    synonuyms = i.synset.decode('UTF-8').split(', ')
+                    synonuyms = i.synset.decode('UTF-8').replace(', ',',').split(',')
             except Exception as e:
                 print(e)
 
@@ -184,7 +231,10 @@ def getSynsetByWord(word,lang):
                 
                 try:
                     gloss = i.gloss.decode('UTF-8').replace(':',';')
-                    l.append(gloss.split(';'))
+                    gloss = gloss.split(';')
+                    if len(gloss) == 1:
+                        gloss.append("Example statement not available")
+                    l.append(gloss)
                 except Exception as e:
                     print(e)
                     l.append(i.gloss.decode('UTF-8'))
@@ -222,18 +272,26 @@ def getSynsetByID(sID,lang):
 
     try:
         if lang == '0':
-            i = m.TblAllSynset.objects.get(synset_id = str(i.synset_id))
+            i = m.TblAllSynset.objects.get(synset_id = str(sID))
+        elif lang == '1':
+            englishId = m.EnglishHindiIdMapping.objects.using('region').get(hindi_id = str(sID))
+            i = model.objects.using('region').get(synset_id = str(englishId.english_id))
         else:
             i = model.objects.using('region').get(synset_id = str(sID))
-            
-        if lang == '0':
-            synonuyms = i.synset.decode('UTF-8').split(',')
+
+        if lang == '1':    
+            synonuyms = i.synset_words.split(',')
         elif lang == "11":
             synonuyms = i.synset.split(',')
         else:
-            synonuyms = i.synset.decode('UTF-8').split(', ')
+            synonuyms = i.synset.decode('UTF-8').replace(', ',',').split(',')
+            
     except Exception as e:
         print(e)
+        data['pos']=''
+        data['synonyms'] = []
+        data['gloss'] = ['','']
+        return
 
     data['pos'] = str(i.category)
 
@@ -244,11 +302,21 @@ def getSynsetByID(sID,lang):
             gloss = i.gloss.replace(':',';')  
         else:  
             gloss = i.gloss.decode('UTF-8').replace(':',';')  
+        
+        
+        
         data['gloss'] = gloss.split(';')
     except Exception as e:
         print(e)
         gloss = i.gloss.decode('UTF-8')
-        data['gloss'] = gloss.split(';')
+        
+    gloss = gloss.split(';')
+    if len(gloss) == 1:
+        gloss.append("Example statement not available")
+        data['gloss'] = gloss
+    else:
+        data['gloss'] = gloss
+
     return data
 
 def wordnet(request):
@@ -259,8 +327,8 @@ def wordnet(request):
     wordList,length = getSynsetByWord(word,lang)
    
     if length == 0:
-        suggWord = getCloseMatch(word,lang)
-        if(len(suggWord) != 0):
+        suggWord,l= getCloseMatch(word,lang)
+        if(l != 0):
             return render(request,'index.html',{'query':word,'found':False,'suggWord':suggWord,'suggFound' : True,'langno':lang})
         else:
             return render(request,'index.html',{'query':word,'found':False,'suggWord':suggWord,'suggFound' : False,'langno':lang})
