@@ -220,14 +220,23 @@ def getSynsetByWord(word,lang):
             try:
                 if lang == '0':
                     i = m.TblAllSynset.objects.get(synset_id = str(i.synset_id))
-               
-                if lang == "11":
+                    print(i)
+
+
+                if lang == "0":
+                    synonuyms = []
+                    words = m.TblAllWords.objects.filter(synset_id = str(i.synset_id))
+                    for j in words:
+                        synonuyms.append(j.word)
+
+                elif lang == "11":
                     synonuyms = i.synset.split(',')
                 else:
                     synonuyms = i.synset.decode('UTF-8').replace(', ',',').split(',')
             except Exception as e:
                 print(e)
 
+           
             if word in synonuyms:
                 length = length + 1
                 l=[]
@@ -285,7 +294,12 @@ def getSynsetByID(sID,lang):
         else:
             i = model.objects.using('region').get(synset_id = str(sID))
 
-        if lang == '1':    
+        if lang == '0':
+            synonuyms = []
+            words = m.TblAllWords.objects.filter(synset_id = str(i.synset_id))
+            for j in words:
+                synonuyms.append(j.word)            
+        elif lang == '1':    
             synonuyms = i.synset_words.split(',')
         elif lang == "11":
             synonuyms = i.synset.split(',')
