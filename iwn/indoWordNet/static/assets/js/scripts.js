@@ -314,7 +314,7 @@ function fetchTblData(synset_id,langno,pos,btnValue){
     };
     switch(btnValue){
         case "0":
-            getSynsetData(synset_id,langno,pos);
+            getSynsetData(synset_id,langno,pos); 
             break;
             // tblParams.headerList[0] = "Synset ID";
             // urlLink = "fetch_synset";
@@ -326,35 +326,35 @@ function fetchTblData(synset_id,langno,pos,btnValue){
             tblParams.headerList[0] = "Hypernymy ID";
             urlLink = "fetch_hypernymy";
             tblTitle = "Showing Hypernymy";
-            createTbl(synset_id,langno,pos,urlLink,tblTitle,tblParams);
+            createTbl(synset_id,langno,pos,urlLink,tblTitle,tblParams,btnValue,-25); // last parameter doesnt matter unless btnValue=11
             console.log("Hypernymy Table Created Successfully");
             break;
         case "2":
             tblParams.headerList[0] = "Hyponymy ID";
             urlLink = "fetch_hyponymy";
             tblTitle = "Showing Hyponymy";
-            createTbl(synset_id,langno,pos,urlLink,tblTitle,tblParams);
+            createTbl(synset_id,langno,pos,urlLink,tblTitle,tblParams,btnValue,-25);
             console.log("Hyponymy Table Created Successfully");
             break;
         case "3":
             tblParams.headerList[0] = "Holonymy Type";
             urlLink = "fetch_holonymy";
             tblTitle = "Showing Holonymy";
-            createTbl(synset_id,langno,pos,urlLink,tblTitle,tblParams);
+            createTbl(synset_id,langno,pos,urlLink,tblTitle,tblParams,btnValue,-25);
             console.log("Holonymy Table Created Successfully");
             break;
         case "4":
             tblParams.headerList[0] = "Meronymy Type";
             urlLink = "fetch_meronymy";
             tblTitle = "Showing Meronymy";
-            createTbl(synset_id,langno,pos,urlLink,tblTitle,tblParams);
+            createTbl(synset_id,langno,pos,urlLink,tblTitle,tblParams,btnValue,-25);
             console.log("Meronymy Table Created Successfully");
             break;
         case "5":
             tblParams.headerList[0] = "Antonymy ID";
             urlLink = "fetch_antonymy";
             tblTitle = "Showing Antonymy";
-            createTbl(synset_id,langno,pos,urlLink,tblTitle,tblParams);
+            createTbl(synset_id,langno,pos,urlLink,tblTitle,tblParams,btnValue,-25);
             console.log("Antonymy Table Created Successfully");
             break;
         case "6":
@@ -362,42 +362,45 @@ function fetchTblData(synset_id,langno,pos,btnValue){
             tblParams.colCount = 3;
             urlLink = "fetch_ontology";
             tblTitle = "Showing Ontology";
-            createTbl(synset_id,langno,pos,urlLink,tblTitle,tblParams);
+            createTbl(synset_id,langno,pos,urlLink,tblTitle,tblParams,btnValue,-25);
             console.log("Ontology Table Created Successfully");
             break;
         case "7":
             tblParams.headerList[0] = "Noun Relation Type";
             urlLink = "fetch_nounRelations";
             tblTitle = "Showing Noun Relations";
-            createTbl(synset_id,langno,pos,urlLink,tblTitle,tblParams);
+            createTbl(synset_id,langno,pos,urlLink,tblTitle,tblParams,btnValue,-25);
             console.log("Noun Relation Table Created Successfully");
             break;
         case "8":
             tblParams.headerList[0] = "Verb Relation Type";
             urlLink = "fetch_verbRelations";
             tblTitle = "Showing Verb Relations";
-            createTbl(synset_id,langno,pos,urlLink,tblTitle,tblParams);
+            createTbl(synset_id,langno,pos,urlLink,tblTitle,tblParams,btnValue,-25);
             console.log("Verb Relation Table Created Successfully");
             break;
         case "9":
             tblParams.headerList[0] = "Derived From ID";
             urlLink = "fetch_derivedFrom";
             tblTitle = "Showing Derived From";
-            createTbl(synset_id,langno,pos,urlLink,tblTitle,tblParams);
+            createTbl(synset_id,langno,pos,urlLink,tblTitle,tblParams,btnValue,-25);
             console.log("Derived From Table Created Successfully");
             break;
         case "10":
-            tblParams.headerList[0] = "Modifies ID";
+            var modifiesVector = {adjective: "Noun", adverb: "Verb"}
+            tblParams.headerList[0] = "Modifies " + modifiesVector[pos] +" ID";
             urlLink = "fetch_modifies";
             tblTitle = "Showing Modifies";
-            createTbl(synset_id,langno,pos,urlLink,tblTitle,tblParams);
+            createTbl(synset_id,langno,pos,urlLink,tblTitle,tblParams,btnValue,-25);
             console.log("Modifies Table Created Successfully");
             break;
         case "11":
             tblParams.headerList[0] = "Synset ID";
             urlLink = "fetch_revOnto";
             tblTitle = "Showing Synset List"; // proper title needed for table
-            createTbl(synset_id,langno,pos,urlLink,tblTitle,tblParams);
+
+            var start = parseInt(document.getElementById("start").value)
+            createTbl(synset_id,langno,pos,urlLink,tblTitle,tblParams,btnValue,start);
             console.log("Reverse Ontology Table Created Successfully");
             break;
         default:
@@ -420,7 +423,21 @@ function getSynsetData(synset_id,tlangno,pos){
         },
         dataType: 'json',
         success: function (data) {
-          if (data) {
+            if(data.hasOwnProperty("error")){
+                console.log("Error:" + data["error"][1]);
+                console.log("Cause:" + data["cause"]);
+                showErrorMessage(data["error"][1]);
+            }
+            else {
+            
+            // removing Error Section visibility
+            errMsg = document.getElementById('errMsg');
+            errMsg.style.display = "None";
+
+            // Applying table visibility
+            tbldivHTML = document.getElementById('tbldivHTML');
+            tbldivHTML.style.display = "block";
+
             var data = JSON.parse(data);
             console.log(data);
             
@@ -487,15 +504,22 @@ function getSynsetData(synset_id,tlangno,pos){
             
             cell3.className = "c";
             cell3.colSpan = "4";
-            console.log(data["synonyms"].length)
-            for(i=0;i<data["synonyms"].length;i++)
-            {
-                var a = document.createElement("a");
-                a.textContent = " " + data["synonyms"][i] + ",";
-                a.href = "wordnet?langno="+ tlang +"&query=" + data["synonyms"][i];
-               // a.appendChild(linkText);
-                cell3.appendChild(a);
+            if(data["synonyms"].length == 0){
+                cell3.style.color = "blue";
+                text3 = document.createTextNode("No Synonyms Available");
+                cell3.appendChild(text3);
             }
+            else{
+                for(i=0;i<data["synonyms"].length;i++)
+                {
+                    var a = document.createElement("a");
+                    a.textContent = " " + data["synonyms"][i] + ",";
+                    a.href = "wordnet?langno="+ tlang +"&query=" + data["synonyms"][i];
+                    // a.appendChild(linkText);
+                    cell3.appendChild(a);
+                }
+            }
+            
             
             row2.appendChild(cell1);
             row2.appendChild(cell2);
@@ -520,7 +544,13 @@ function getSynsetData(synset_id,tlangno,pos){
             
             cell3.className = "c";
             cell3.colSpan = "4";
-            text3 = document.createTextNode(data["gloss"][0]);
+            cell3.style.color = "red";
+            if(data["gloss"][0] == ''){
+                text3 = document.createTextNode("No Gloss Available");
+            }
+            else{
+                text3 = document.createTextNode(data["gloss"][0]);
+            }
             cell3.appendChild(text3);
             
             row3.appendChild(cell1);
@@ -546,7 +576,13 @@ function getSynsetData(synset_id,tlangno,pos){
             
             cell3.className = "c";
             cell3.colSpan = "4";
-            text3 = document.createTextNode(data["gloss"][1]);
+            cell3.style.color = "green";
+            if(data["gloss"][1] == ''){
+                text3 = document.createTextNode("No Example Statement Available");
+            }
+            else{
+                text3 = document.createTextNode(data["gloss"][1]);
+            }
             cell3.appendChild(text3);
             
             row4.appendChild(cell1);
@@ -555,14 +591,21 @@ function getSynsetData(synset_id,tlangno,pos){
             syndata.appendChild(row4);
 
           }
-          else{
-              console.log("No data found");
-          }
+          
+        },
+        error: function(response){
+            console.log(response["status"]);
+            if(response["status"] == 404){
+                showErrorMessage("Page Not Found");
+            }
+            else if(response["status"] == 500){
+                showErrorMessage("Internal Server Error");
+            }
         }
       });
 }
 
-function createTbl(synset_id,langno,pos,urlLink,tblTitle,tblParams)
+function createTbl(synset_id,langno,pos,urlLink,tblTitle,tblParams,btnValue,start)
 {
     // removing Error Section visibility
     errMsg = document.getElementById('errMsg');
@@ -584,12 +627,34 @@ function createTbl(synset_id,langno,pos,urlLink,tblTitle,tblParams)
         data: {
             'synset_id': synset_id,
             'langno': langno,
-            'pos': pos
+            'pos': pos,
+            'start': start
         },
         dataType: 'json',
+        beforeSend: function(){
+            // Show image container
+            console.log("Loading...");
+            //$("#loader").show();
+           },
         success: function (data) {
-            if(data["error"]){
-                showErrorMessage(data["error"]);
+            if(data.hasOwnProperty("error")){
+                if(btnValue == "11"){
+                    if(data["error"][0] == "2"){
+                        $("#start").trigger("change");
+                        document.getElementById("start").value = (start + 25).toString();
+                        document.getElementById("nextOnto").style.display = "none";
+                        document.getElementById("currentLength").value = "25";
+                    }
+                    else if(data["error"][0] == "1"){
+                        document.getElementById("start").value = 0;
+                        document.getElementById("currentLength").value = "25";
+                        document.getElementById("nextOnto").style.display = "none";
+                        document.getElementById("prevOnto").style.display = "none";
+                    }
+                }
+                console.log("Error:" + data["error"][1]);
+                console.log("Cause:" + data["cause"]);
+                showErrorMessage(data["error"][1]);
             }
             else{
                 var data = JSON.parse(data);
@@ -617,19 +682,34 @@ function createTbl(synset_id,langno,pos,urlLink,tblTitle,tblParams)
                     cell.appendChild(text);
                     row.appendChild(cell);
                 }
+                
                 thead.append(row);
                 tblHTML.appendChild(thead);
 
                 //creating TblBody
                 var tbody = document.createElement("tbody");
                 var colCount = tblParams.colCount; //denotes number of columns in the table, if 3 table is for onto, else for any other *.nymy for ex. Hypernymy,Hyponymy
+                var cellColSpan = 0;
+                var noData;
+                var currentLength = Object.keys(data).length;
                 for(i=0;i<Object.keys(data).length;i++)
                 {
+                    
+                    noData = false;
+                    cellColSpan = 0;
                     var row = document.createElement('tr');
                     row.className = "border-bottom";
                     
+                    // Checking if data available or not, if not then setting colCount 1 will only print first column data and other columns will be empty.
+                    if(data[i.toString()][3][0] == "1"){
+                        noData = true;
+                        row.style.backgroundColor = "#FFCCCB";
+                        
+                    }
                     for(j=0;j<colCount;j++)
                     {
+                        // console.log("i:" + i + " j:" + j);
+                        // console.log("j:"+j);
                         var cell = document.createElement('td');
                         cell.className = "d";
                         // cell.style.color = tblParams["colColor"][j];
@@ -637,6 +717,8 @@ function createTbl(synset_id,langno,pos,urlLink,tblTitle,tblParams)
                         // cell.style.wordBreak = "break-word";
                         cell.style.overflowWrap = "break-word";
                         cell.style.wordWrap = "break-all";
+                        cell.colSpan = cellColSpan.toString();
+                        // console.log("Colspan of cell:" + cell.colSpan);
                         // cell.style.textAlign = tblParams["colTextAlign"][j];    
                         
                         switch(j)
@@ -680,17 +762,35 @@ function createTbl(synset_id,langno,pos,urlLink,tblTitle,tblParams)
                                 }
                                 else
                                 {
-                                    cell.style.color = "green";
                                     cell.style.textAlign = "left";
-                                    var text = document.createTextNode(data[i.toString()][j]);
-                                    cell.appendChild(text);
+                                    var text;
+                                    if(noData){
+                                        // console.log("In No Data");
+                                        cell.style.color = "black";
+                                        cell.style.fontWeight = "bold";
+                                        text = document.createTextNode(data[i.toString()][j][1]);
+                                    }
+                                    else{   
+                                        cell.style.color = "green";
+                                        text = document.createTextNode(data[i.toString()][j]);    
+                                    }  
+                                    cell.appendChild(text); 
                                 }
                                 break;
                             case 3:
-                                cell.style.color = "green";
                                 cell.style.textAlign = "left";
-                                var text = document.createTextNode(data[i.toString()][2][1]);
-                                cell.appendChild(text);
+                                var text;
+                                if(noData){
+                                    // console.log("In No Data");
+                                    cell.style.color = "black";
+                                    cell.style.fontWeight = "bold";
+                                    text = document.createTextNode(data[i.toString()][j][1]);
+                                }
+                                else{
+                                    cell.style.color = "green";   
+                                    text = document.createTextNode(data[i.toString()][2][1]);    
+                                }  
+                                cell.appendChild(text); 
                                 break;
                             default:
                                 cell.style.color = "black";
@@ -698,11 +798,23 @@ function createTbl(synset_id,langno,pos,urlLink,tblTitle,tblParams)
                                 cell.appendChild(text);
                                 break;
                         }
+                        cellColSpan = 0;
                         row.appendChild(cell);
+                        if(noData){
+                            j += colCount - 2;
+                            cellColSpan =  colCount - 1;
+                            console.log("Colspan: " + cellColSpan);
+                        }
                     }
                     tbody.appendChild(row);
                 }
                 tblHTML.appendChild(tbody);
+                if(btnValue == "11"){
+                    $("#start").trigger("change");
+                    document.getElementById("start").value = (start + currentLength).toString();
+                    document.getElementById("currentLength").value = currentLength.toString();
+                    $("#currentLength").trigger("change");
+                }                
             }
         },
         error: function(response){
@@ -711,9 +823,14 @@ function createTbl(synset_id,langno,pos,urlLink,tblTitle,tblParams)
                 showErrorMessage("Page Not Found");
             }
             else if(response["status"] == 500){
-                showErrorMessage("Page Not Found");
+                showErrorMessage("Internal Server Error");
             }
-        }
+        },
+        complete: function(){
+            // Show image container
+            console.log("finished");
+            //$("#loader").show();
+           }
     })
 }
 
@@ -784,11 +901,14 @@ function fetchRecomendationData(){
 
 function fetchReverseOnto(oid){
     var selectedOntoID = document.getElementById("selectedOntoID");
-    selectedOntoID.innerHTML = oid;
+    selectedOntoID.value = oid;
     var tlangno = document.getElementById('tlangOnto').value;
     var btnValue = "11";
     var synset_id = oid;
     var pos = "noun";
+
+    document.getElementById("start").value = "0";
+    document.getElementById("currentLength").value = "25";
     fetchTblData(synset_id,tlangno,pos,btnValue);
 }
 
@@ -838,21 +958,95 @@ $(document).ready(function(){
         var btnValue = $("button.btn-info").val();
         var synset_id = $("#s_id").text();
         var pos = document.getElementById("pos").innerHTML.toLowerCase();
+
+        //preserve k and cl
         fetchTblData(synset_id,tlangno,pos,btnValue);
         //alert($(this).val());
     });
 
     $('#tlangOnto').on('change',function(){
+        var start = document.getElementById("start").value;
+        console.log(start);
+        var currentLength = document.getElementById("currentLength").value;
+        console.log(currentLength);
+        if((parseInt(start) - parseInt(currentLength))>0){
+            document.getElementById("start").value = (parseInt(start) - parseInt(currentLength)).toString();
+        }
+        else{
+            document.getElementById("start").value = "0";
+        }
+        
+        console.log($("#start").val());
+        
         var tlang = $(this);
         var tlangno = tlang.val();
         var pos = "noun";
         var btnValue = "11";
-        var selectedOntoID = document.getElementById("selectedOntoID");
+        var selectedOntoID = document.getElementById("selectedOntoID").value;
         fetchTblData(selectedOntoID,tlangno,pos,btnValue);
         //alert($(this).val());
     });
     
-    
+    $('#prevOnto').on('click',function(){
+        var start = document.getElementById("start").value;
+        console.log(start);
+        var currentLength = document.getElementById("currentLength").value;
+        console.log(currentLength);
+        if((parseInt(start) - parseInt(currentLength) - 25)>0){
+            document.getElementById("start").value = (parseInt(start) - parseInt(currentLength) - 25).toString();
+        }
+        else{
+            document.getElementById("start").value = "0";
+        }
+        console.log($("#start").val());
+        console.log("prevStart");
+        var tlangno = $("#tlangOnto").val();
+        var btnValue = "11";
+        var synset_id = document.getElementById("selectedOntoID").value;
+        var pos = "noun";
+        fetchTblData(synset_id,tlangno,pos,btnValue);
+        //alert($(this).val());
+    });
+
+    $('#nextOnto').on('click',function(){
+        // var start = document.getElementById("start").value;
+        // var currentLength = document.getElementById("currentLength").value;
+        // var newstart = document.getElementById("start").value = start - currentLength - 25;
+        // console.log("newStart");
+        console.log("nextStart");
+        var tlangno = $("#tlangOnto").val();
+        var btnValue = "11";
+        var synset_id = document.getElementById("selectedOntoID").value;
+        var pos = "noun";
+        fetchTblData(synset_id,tlangno,pos,btnValue);
+        //alert($(this).val());
+    });
+
+    $("#start").change(function(){
+        console.log("in prevonto dissable enable");
+        var start = parseInt(document.getElementById("start").value);
+        if(start <= 0){
+            console.log("disabling previous")
+            $("#prevOnto").css("display", "none");
+        }
+        else{
+            console.log("enabling previous");
+            $("#prevOnto").css("display", "inline-block");
+        }
+    });
+
+    $("#currentLength").change(function(){
+        console.log("in nextonto dissable enable");
+        var currentLength = parseInt(document.getElementById("currentLength").value);
+        if(currentLength < 25){
+            console.log("enabling next");
+            $("#nextOnto").css("display", "none");
+        }
+        else{
+            console.log("enabling next");
+            $("#nextOnto").css("display", "inline-block");
+        }
+    });
 
     $('#queryword').change(function(){
         // console.log($(this).val());
@@ -953,6 +1147,5 @@ function fetchTableSynsetTitle(tlang){
             break;
       } 
 }  
-
 
 

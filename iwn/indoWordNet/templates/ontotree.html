@@ -83,6 +83,12 @@
                     <option value="18">oriya</option>
                 </select>
             </span>
+            <script>
+                const params = new URLSearchParams(window.location.search);
+                const langno = params.get('langno');
+                var tlangOnto = document.getElementById("tlangOnto");
+                tlangOnto.selectedIndex = langno;
+            </script>
             <!--
             <span class="btn-group-vertical col ontoBtn">
                 <button type="button" class="btn btn-info btn-md" style="font-size: 1.2vw; text-align: center;">Synset</button>    
@@ -97,6 +103,7 @@
             <!-- <span class="ontoBtn" style="background-color: lightblue;">
                 <div class="bar_titleLeft alert alert-info" style="font-size: 1.2vw;"><p style="font-size: 1.2vw;">Hierarchy</p></div>
             </span> -->
+            
             <span>                            <!-- <div>
                     <div class="container-fluid notFound  alert alert-danger ">
                         No <span id="dataLabel" style="color: blue;">Test</span> data found
@@ -115,7 +122,7 @@
                             <tr class="border-bottom">
                                 <td class="d2" style="color: black;">{{ value.0 }}</td>
                                 <td class="b">:</td>
-                                <td class="d2" style="text-align: left;color: blue;"><a href="#" onclick="fetchReverseOnto({{ i.0 }})" >{{ value.1 }}</a></td>
+                                <td class="d2" style="text-align: left;color: blue;"><a href="#" onclick="fetchReverseOnto({{ value.0 }})" >{{ value.1 }}</a></td>
                             </tr>
                             <tr class="border-bottom" >
                                 <td class="d2" style="color: green;" colspan="3">{{ value.2 }}</td>
@@ -142,7 +149,10 @@
                     Ontology
                 </div>
             </span>
-
+            <div id="errMsg" class="container-fluid notFound  alertErr alert-danger" style="text-align: center;display: none;">
+                <span id="errText" style="color: black;font-weight: bold;">Test</span>
+            </div>
+            <input type="hidden" id="selectedOntoID" value="{{wordList.0.0}}"></input>
             <span>
 
                 <!-- <div>
@@ -150,9 +160,9 @@
                         No <span id="dataLabel" style="color: blue;">Test</span> data found
                     </div>
                 </div> -->
-                <div style="width:100%; height: 500px; overflow-y: scroll; overflow-x: auto;">
+                <div id="tbldivHTML" style="width:100%; height: 500px; overflow-y: scroll; overflow-x: auto;">
                 <table id="tblHTML" style="width: 100%;table-layout: fixed; overflow: scroll;">
-                    <input type="hidden" id="selectedOntoID"></input>
+                    
                     <!-- <div id="tbl_data" style="width:100%;">
                         <tr class="border-bottom">
                             <th class="d">Onto Id</th> 
@@ -169,6 +179,24 @@
                         {% endfor %}
                     </div> -->
                 </table>
+                </div>
+                <div>
+                    <input type="hidden" id="start" value="0"></input>
+                    <input type="hidden" id="currentLength" value="25"></input>
+                    <script>
+                        document.getElementById("start").value = "0";
+                        document.getElementById("currentLength").value = "25";
+                    </script>
+                    <table style="width: 100%;table-layout: fixed;margin-top: 10px;">
+                        <tbody>
+                            <tr>
+                                <td colspan="4" align="center">
+                                    <button id="prevOnto" class="btn-sm  btn-primary" style="display: none;">Previous</button>
+                                    <button id="nextOnto" class="btn-sm  btn-primary" style="display: none;">Next</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </span>
             <script>
