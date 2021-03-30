@@ -59,11 +59,11 @@ def getSynsetByWord(word,lang):
 
         for i in data:
             try:
-                synonuyms = i.synset_words.split(', ')
+                synonyms = i.synset_words.split(', ')
             except Exception as e:
                 print(e)
             
-            if word in synonuyms:
+            if word in synonyms:
                 try:
                     hindiId = m.EnglishHindiIdMapping.objects.using('region').filter(english_id = str(i.synset_id))
                 except Exception as e:
@@ -75,7 +75,7 @@ def getSynsetByWord(word,lang):
                     l=[]
                     l.append(str(j.hindi_id))
                     l.append(str(j.hindi_category))
-                    l.append(synonuyms)
+                    l.append(synonyms)
                     
                     try:
                         gloss = i.gloss.split(';')
@@ -124,25 +124,25 @@ def getSynsetByWord(word,lang):
 
 
                 if lang == "0":
-                    synonuyms = []
+                    synonyms = []
                     words = m.TblAllWords.objects.filter(synset_id = str(i.synset_id))
                     for j in words:
-                        synonuyms.append(j.word)
+                        synonyms.append(j.word)
 
                 elif lang == "11":
-                    synonuyms = i.synset.split(',')
+                    synonyms = i.synset.split(',')
                 else:
-                    synonuyms = i.synset.decode('UTF-8').replace(', ',',').split(',')
+                    synonyms = i.synset.decode('UTF-8').replace(', ',',').split(',')
             except Exception as e:
                 print(e)
 
            
-            if word in synonuyms:
+            if word in synonyms:
                 length = length + 1
                 l=[]
                 l.append(str(i.synset_id))
                 l.append(str(i.category))
-                l.append(synonuyms)
+                l.append(synonyms)
                 
                 ## Appending Gloss is particular language
                 try:
@@ -293,19 +293,20 @@ def getSynsetByID(sID,lang):
         data['error'] = ['1','No Data found for given Synset']
         return data
 
-        data['pos'] = str(i.category)
+    data['pos'] = str(i.category)
 
+    try:
         if lang == '0':
-            synonuyms = []
+            synonyms = []
             words = m.TblAllWords.objects.filter(synset_id = str(i.synset_id))
             for j in words:
-                synonuyms.append(j.word)            
+                synonyms.append(j.word)            
         elif lang == '1':    
-            synonuyms = i.synset_words.split(',')
+            synonyms = i.synset_words.split(',')
         elif lang == "11":
-            synonuyms = i.synset.split(',')
+            synonyms = i.synset.split(',')
         else:
-            synonuyms = i.synset.decode('UTF-8').replace(', ',',').split(',')        
+            synonyms = i.synset.decode('UTF-8').replace(', ',',').split(',')        
     except Exception as e:
         print(e)
         data['synonyms'] = []
@@ -313,7 +314,7 @@ def getSynsetByID(sID,lang):
         data['error'] = ['2','No Synonyms found for given Synset']
         return data
 
-    data["synonyms"] = synonuyms
+    data["synonyms"] = synonyms
 
     try:
         if lang == '1':
