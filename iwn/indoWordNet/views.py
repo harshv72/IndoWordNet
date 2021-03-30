@@ -297,7 +297,7 @@ def getSynsetByID(sID,lang):
         data['pos']=''
         data['synonyms'] = []
         data['gloss'] = ['','']
-        return
+        return data
 
     data['pos'] = str(i.category)
 
