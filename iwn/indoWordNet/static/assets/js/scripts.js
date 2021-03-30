@@ -792,7 +792,26 @@ function fetchReverseOnto(oid){
     fetchTblData(synset_id,tlangno,pos,btnValue);
 }
 
+
 $(document).ready(function(){
+  
+    $("#lang").on('change',function(){
+        localStorage.setItem('langSelected',$(this).val()) ;
+        $("#lang").val(localStorage.getItem("langSelected"));
+    });
+
+    $("#tlang, #tlangOnto").on('change',function(){
+        localStorage.setItem('tlangSelected',$(this).val()) ;
+        $("#tlang, #tlangOnto").val(localStorage.getItem("tlangSelected"));
+    });
+
+    $(window).on('load',function(){
+        $("#lang").val(localStorage.getItem("langSelected"));
+        $("#tlang, #tlangOnto").val(localStorage.getItem("tlangSelected"));
+    });
+
+    
+    
     langno = document.getElementById("lang").value;
    
     $("#aBtnGroup button").on('click',function(){
@@ -860,7 +879,7 @@ $(document).ready(function(){
 
     function doneTyping () {
         fetchRecomendationData();
-      }
+    }
 
 
 
