@@ -3,7 +3,8 @@
       <center><h3><b>Provide Your Feedback</b></h3>
       <div>&nbsp;</div>
       <div>
-        <form id="feedback" name="feedback">
+        <form id="feedback" method="POST" action="feedBack" name="feedback">
+          {% csrf_token %}
           <table>
             <tbody>
               <tr>
@@ -22,7 +23,7 @@
               </tr>
               <tr>
                 <td colspan="3" align="center">
-                  <button class="btn  btn-primary from-control" type="submit">Submit</button>
+                  <input type="submit" class="btn  btn-primary from-control">
                 </td>
               </tr>
             </tbody>

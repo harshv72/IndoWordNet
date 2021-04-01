@@ -44,6 +44,20 @@
   
   {% endif %}
   
+  {% if  feedBack %}
+  <div class="error_div alert-info  alert-dismissible" role="feedback">
+    <button type="button" class="close" data-dismiss="feedback">
+      <span aria-hidden="true">X</span>
+      <span class="sr-only">Close</span>
+    </button>
+    Feedback submited
+  </div>
+  {% else %}
+  <div>&nbsp;</div>
+  <div>&nbsp;</div>
+  
+  {% endif %}
+  
   {% if  suggFound %}
   <div>
     <div class="close_match_div alert-info  alert-dismissible" role="sugg">
