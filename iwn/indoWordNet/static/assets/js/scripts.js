@@ -932,7 +932,7 @@ $(document).ready(function(){
 
     
     
-    langno = document.getElementById("lang").value;
+    // langno = document.getElementById("lang").value;
    
     $("#aBtnGroup button").on('click',function(){
         var thisBtn = $(this);
