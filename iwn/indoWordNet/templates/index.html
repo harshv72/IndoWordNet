@@ -66,6 +66,20 @@
   
   {% endif %}
   
+  {% if  feedBack %}
+  <div class="close_match_div alert-info  alert-dismissible" role="feedback">
+    <button type="button" class="close" data-dismiss="feedback">
+      <span aria-hidden="true">X</span>
+      <span class="sr-only">Close</span>
+    </button>
+    Feedback submited
+  </div>
+  {% else %}
+  <div>&nbsp;</div>
+  <div>&nbsp;</div>
+  
+  {% endif %}
+  
   {% if  suggFound %}
   <div>
     <div class="close_match_div alert-info  alert-dismissible" role="sugg">
@@ -105,11 +119,22 @@
   <div>&nbsp;</div>
   <div>&nbsp;</div>
   <div>&nbsp;</div>
-  <div id="feedBack">&nbsp;</div>
+  <div id="currentStatistics">&nbsp;</div>
   <div >&nbsp;</div>
   <div>&nbsp;</div>
   <div>&nbsp;</div>
   <div>&nbsp;</div>
+  <div>&nbsp;</div>
+  <div>&nbsp;</div>
+  {% include 'currentStatistics.html' %}
+  <div id="feedBack">&nbsp;</div> 
+  <div>&nbsp;</div>
+  <div>&nbsp;</div>
+  
+  <div>&nbsp;</div>
+  <div>&nbsp;</div>
+  
+ 
   <div>&nbsp;</div>
   <div>&nbsp;</div>
   {% include 'feedback.html' %}

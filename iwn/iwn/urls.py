@@ -13,29 +13,29 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.urls import path,include
+from django.urls import path, include
 from django.contrib import admin
 from indoWordNet import views
-urlpatterns = [
-    path('',views.index,name='index'),
-    path('wordnet',views.wordnet,name='wordnet'),
-    path('showonto',views.showOnto,name='showonto'),
-    # path('home#contactUs',views.contactUs,name='contactUs'),
-    path('home',views.index,name='index'),
-    # path('viewHome',views.viewHome,name='viewHome'),
-    path('feedback',views.feedback,name='feedBack'),
-    path('fetch_synset',views.fetchSynset,name='fetchSynset'),
-    path('fetch_nounRelations',views.fetchNounRelations,name='nounRelations'),
-    path('fetch_verbRelations',views.fetchVerbRelations,name='verbRelations'),
-    path('fetch_derivedFrom',views.fetchDerivedFrom,name='derivedFrom'),
-    path('fetch_modifies',views.fetchModifies,name='modifies'),
-    path('fetch_holonymy',views.fetchHolonymy,name='holonymy'),
-    path('fetch_meronymy',views.fetchMeronymy,name='meronymy'),
-    path('fetch_antonymy',views.fetchAntonymy,name='antonymy'),
-    path('fetch_hypernymy',views.fetchHypernymy,name='hypernymy'),
-    path('fetch_hyponymy',views.fetchHyponymy,name='hyponymy'),
-    path('fetch_ontology',views.fetchOntonymy,name='ontology'),
-    path('fetch_revOnto',views.fetchReverseOntonymy,name='reverseOntonymy'),
-    path('word',views.word,name='word')
-]
 
+urlpatterns = [
+    path("", views.index, name="index"),
+    path("wordnet", views.wordnet, name="wordnet"),
+    path("showonto", views.showOnto, name="showonto"),
+    path("home", views.index, name="index"),
+    path("currentStatistics",views.getStatestics, name="currentStatistics"),
+    path('feedback',views.feedback,name='feedBack'),
+    path("fetch_synset", views.fetchSynset, name="fetchSynset"),
+    path("fetch_nounRelations", views.fetchNounRelations, name="nounRelations"),
+    path("fetch_verbRelations", views.fetchVerbRelations, name="verbRelations"),
+    path("fetch_derivedFrom", views.fetchDerivedFrom, name="derivedFrom"),
+    path("fetch_modifies", views.fetchModifies, name="modifies"),
+    path("fetch_holonymy", views.fetchHolonymy, name="holonymy"),
+    path("fetch_meronymy", views.fetchMeronymy, name="meronymy"),
+    path("fetch_antonymy", views.fetchAntonymy, name="antonymy"),
+    path("fetch_hypernymy", views.fetchHypernymy, name="hypernymy"),
+    path("fetch_hyponymy", views.fetchHyponymy, name="hyponymy"),
+    path("fetch_ontology", views.fetchOntonymy, name="ontology"),
+    path("fetch_revOnto", views.fetchReverseOntonymy, name="reverseOntonymy"),
+    path("word", views.word, name="word"),
+    
+]

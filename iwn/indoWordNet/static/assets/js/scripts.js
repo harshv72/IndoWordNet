@@ -867,19 +867,14 @@ function fetchRecomendationData(){
     if(word.length != 0){
         console.log(word)
     
-        var ajaxReq = 'ToCancelPrevReq';
-        ajaxReq =$.ajax({
+       
+        $.ajax({
             url: 'word',
             data: {
             'q': word,
             'langno': lang
             },
             dataType: 'json',
-            beforeSend : function() {
-                if(ajaxReq != 'ToCancelPrevReq' && ajaxReq.readyState < 4) {
-                    ajaxReq.abort();
-                }
-            },
             success: function (data) {
                 if (data) {
                     var data = JSON.parse(data);
@@ -981,6 +976,32 @@ function validateForm(){
     // alert("Hello");
 }
 
+function getStatistics(langno){
+    $.ajax({
+        url : "currentStatistics",
+        data : {
+            "langno" : langno,
+        },
+        dataType: 'json',
+        success: function (data) {
+            if (data) {
+                var data = JSON.parse(data);
+                // console.log(word)
+                console.log(data);
+                document.getElementById("langName").innerHTML = data[0]
+                document.getElementById("noun").innerHTML = data[1]
+                document.getElementById("verb").innerHTML = data[2]
+                document.getElementById("adjective").innerHTML = data[3]
+                document.getElementById("adverb").innerHTML = data[4]
+                document.getElementById("totel").innerHTML = data[5]
+                
+                
+            }
+        }
+    
+    })
+}
+
 $(document).ready(function(){
   
     $("#lang").on('change',function(){
@@ -996,6 +1017,11 @@ $(document).ready(function(){
     $(window).on('load',function(){
         $("#lang").val(localStorage.getItem("langSelected"));
         $("#tlang, #tlangOnto").val(localStorage.getItem("tlangSelected"));
+    });
+
+    $("#slang").on('change',function(){
+        console.log("lang change")
+        getStatistics($(this).val());
     });
 
     
