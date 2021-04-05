@@ -3,27 +3,27 @@
       <center><h3><b>Provide Your Feedback</b></h3>
       <div>&nbsp;</div>
       <div>
-        <form id="feedback" method="POST" action="feedBack" name="feedback">
+        <form id="feedback" name="feedback" action="feedback" onsubmit=" return validateForm()" method="POST">
           {% csrf_token %}
           <table>
             <tbody>
               <tr>
                 <td class="a">Your Name</td>
                 <td class="b">:</td>
-                <td class="c"><input class="form-control" type="text" id="name" name="name"></td>
+                <td class="c"><input class="form-control" type="text" id="name" name="name" size="20" maxlength="250" oninput="this.setCustomValidity('')"></td>
               </tr>
               <tr>
                 <td class="a">E-mail ID</td>
                 <td class="b">:</td>
-                <td class="c"><input class="form-control" type="email" id="email" name="email"></td>
+                <td class="c"><input class="form-control" type="email" id="email" name="email" size="20"  maxlength="250" oninput="this.setCustomValidity('')" ></td>
               </tr><tr>
                 <td class="a">Comments</td>
                 <td class="b">:</td>
-                <td class="c"><textarea class="form-control" cols="50" rows="10"  id="comments" name="comments"></textarea></td>
+                <td class="c"><textarea class="form-control" style="resize: none;" cols="50" rows="10" id="comments" name="comments"  maxlength="1000" oninput="this.setCustomValidity('')"></textarea></td>
               </tr>
               <tr>
                 <td colspan="3" align="center">
-                  <input type="submit" class="btn  btn-primary from-control">
+                  <button class="btn  btn-primary from-control" type="submit" value="submit">Submit</button>
                 </td>
               </tr>
             </tbody>
@@ -31,6 +31,7 @@
         </form>
 
       </div>
+      
     </center>
     </div>  
   </div>

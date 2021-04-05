@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from django.views.generic import TemplateView
 from django.http import JsonResponse
 import json
@@ -22,9 +22,20 @@ modifiesVector = {"adjective": "modifies noun", "adverb": "modifies verb"}
 stat = []
 ## App Functions
 
-## Index Function - For Home Page Rendering
+## Index Function - For Home Page
 def index(request):
-    return render(request, "index.html", {"found": True, "suggFound": False })
+    feedbackSuccess = None
+    if('feedbackSuccess' in request.GET):
+        feedbackSuccess = request.GET.get('feedbackSuccess',None)
+        return render(request,'index.html',{'found':True,'suggFound': False,'feedbackSuccess': feedbackSuccess})
+    
+    feedbackError = None
+    if('feedbackError' in request.GET):
+        feedbackError = request.GET.get('feedbackError',None)
+        return render(request,'index.html',{'found':True,'suggFound': False,'feedbackError': feedbackError})
+    
+    return render(request,'index.html',{'found':True,'suggFound': False})
+
 
 
 ## Wordnet Function  - For Main Page Rendering
@@ -1185,4 +1196,24 @@ def getStatestics(request):
     statistics = json.dumps(l, ensure_ascii=False)
     return JsonResponse(statistics, safe=False)
 
+def feedback(request):
+    if(request.method == "GET"):
+        return render(request,'index.html#feedBack',context=None)
+    elif(request.is_ajax and request.method == "POST"):
+        name = request.POST.get('name',None)
+        emailId = request.POST.get('email',None)
+        comments = request.POST.get('comments',None)
 
+        try:
+            record = m.UserFeedback(name=name,emailid=emailId,comments=comments)
+            record.save(using='iwn_utilities')
+            if(record.pk):
+                return redirect('/?feedbackSuccess=True')
+            else:
+                return redirect('/?feedbackError=True')
+        except Exception as e:
+            print(e)
+            return redirect('/?feedbackError=True')
+
+def contactUs(request):
+    return render(request,'index.html#contactUs',context=None)

@@ -23,6 +23,7 @@ urlpatterns = [
     path("showonto", views.showOnto, name="showonto"),
     path("home", views.index, name="index"),
     path("currentStatistics",views.getStatestics, name="currentStatistics"),
+    path('feedback',views.feedback,name='feedBack'),
     path("fetch_synset", views.fetchSynset, name="fetchSynset"),
     path("fetch_nounRelations", views.fetchNounRelations, name="nounRelations"),
     path("fetch_verbRelations", views.fetchVerbRelations, name="verbRelations"),
@@ -36,4 +37,5 @@ urlpatterns = [
     path("fetch_ontology", views.fetchOntonymy, name="ontology"),
     path("fetch_revOnto", views.fetchReverseOntonymy, name="reverseOntonymy"),
     path("word", views.word, name="word"),
+    
 ]
