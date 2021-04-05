@@ -1,0 +1,65 @@
+<div class="container-fluid currentStatistics">
+  <center><h3><b>Current Statistics</b></h3>
+  <div > 
+    <table style="margin-bottom: 20px;">
+      <tbody>
+        <tr>
+          <td>Language :</td>
+          <td>
+            <select class=" form-control " id="slang" name="tlangno"  style="height: 30px;" >
+              <option value="0">हिन्दी hindi</option>
+              <option value="1">English</option>
+              <option value="2">অসমীয়া (Assamese)</option>
+              <option value="3">বাংলা (Bengali)</option>
+              <option value="4">bodo</option>
+              <option value="5">ગુજરાતી (Gujarati)</option>
+              <option value="6"> ಕನ್ನಡ (Kannada) </option>
+              <option value="7">کًش (Kashmiri)</option>
+              <option value="8">konkani</option>
+              <option value="9">മലയാളം (Malayalam)</option>
+              <option value="10">manipuri</option>
+              <option value="11">मराठी (Marathi)</option>
+              <option value="12"> नेपाली (Nepali)</option>
+              <option value="13">संस्कृतम् (Sanskrit)</option>
+              <option value="14"> தமிழ் (Tamil)</option>
+              <option value="15">తెలుగు} (Telugu)</option>
+              <option value="16">punjabi</option>
+              <option value="17">urdu</option>
+              <option value="18">oriya</option>
+          </select>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+    <div>
+      <table style="width: 80%;table-layout: fixed;">
+        <tbody>
+          <tr class="border-bottom">
+            <th class="b" style="background-color: #eee;font-size: 1.2vw;">LANGUAGES</th>
+            <th class="b" style="background-color: #eee;font-size: 1.2vw;">:</th>
+            <th class="b" style="background-color: #eee;font-size: 1.2vw;">NOUN</th>
+            <th class="b" style="background-color: #eee;font-size: 1.2vw;">VERB</th>
+            <th class="b" style="background-color: #eee;font-size: 1.2vw;">ADJECTIVE</th>
+            <th class="b" style="background-color: #eee;font-size: 1.2vw;">ADVERB</th>
+            <th class="b" style="background-color: #eee;font-size: 1.2vw;">TOTEL</th>
+          </tr>
+         
+          <tr class="border-bottom">
+            <td class="b" id="langName"  style="font-size: 1.2vw;"></td>
+            <td class="b" style="font-size: 1.2vw;">:</td>
+            <td class="b" id="noun" style="font-size: 1.2vw;"></td>
+            <td class="b" id="verb" style="font-size: 1.2vw;"></td>
+            <td class="b" id="adjective" style="font-size: 1.2vw;"></td>
+            <td class="b" id="adverb" style="font-size: 1.2vw;"></td>
+            <td class="b" id="totel" style="font-size: 1.2vw;"></td>
+          </tr>
+         
+        </tbody>
+      </table>
+    </div>
+    </center>
+    <script>
+      getStatistics(0);
+    </script>
+  </div>

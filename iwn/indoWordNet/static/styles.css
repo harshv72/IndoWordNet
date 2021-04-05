@@ -39,19 +39,14 @@ header {
 
 .close_match_div {
   width: 80%;
-
-  margin-left: 25%;
+  margin-left: 10%;
   text-align: center;
-  margin-top: 10px;
+  padding: 20px;
+  margin-bottom: 10px;
   font-size: 18px;
-
-  /* margin-left: 10%;
-    text-align: center;
-    padding: 20px;
-    margin-bottom: 10px;
-    font-size: 18px;
-     */
+    
 }
+
 
 .searchPanel {
   width: 80%;
@@ -213,6 +208,19 @@ element.style {
   padding: 5px;
 }
 
+
+
+.currentStatistics {
+  width: 80%;
+  border: 1px solid black;
+  box-shadow: 8px 8px 10px 1px;
+  padding: 50px 50px;
+  padding-left: 50px;
+  left: 0;
+  right: 0;
+}
+
+
 .contactUs {
   width: 80%;
   border: 1px solid black;
@@ -222,6 +230,9 @@ element.style {
   left: 0;
   right: 0;
 }
+
+
+
 
 .contactUs .name {
   font-family: Cambria;
