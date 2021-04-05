@@ -1951,3 +1951,14 @@ class TblAllUrduSynsetData(models.Model):
     class Meta:
         managed = False
         db_table = 'tbl_all_urdu_synset_data'
+
+class UserFeedback(models.Model):
+    feedback_id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=250)
+    emailid = models.CharField(db_column='emailId', max_length=250)  # Field name made lowercase.
+    comments = models.CharField(max_length=1000)
+    creationtime = models.DateTimeField(db_column='creationTime',auto_now_add=True)  # Field name made lowercase.
+
+    class Meta:
+        managed = False
+        db_table = 'user_feedback'

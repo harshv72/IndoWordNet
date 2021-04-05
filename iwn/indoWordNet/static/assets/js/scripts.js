@@ -514,7 +514,7 @@ function getSynsetData(synset_id,tlangno,pos){
                 {
                     var a = document.createElement("a");
                     a.textContent = " " + data["synonyms"][i] + ",";
-                    a.href = "wordnet?langno="+ tlang +"&query=" + data["synonyms"][i];
+                    a.href = "wordnet?langno="+ tlangno +"&query=" + data["synonyms"][i];
                     // a.appendChild(linkText);
                     cell3.appendChild(a);
                 }
@@ -912,6 +912,74 @@ function fetchReverseOnto(oid){
     fetchTblData(synset_id,tlangno,pos,btnValue);
 }
 
+function validateForm(){
+
+    var ser_data;
+    document.getElementById("feedback").addEventListener("submit", function(event){
+        event.preventDefault();
+        ser_data = $(this).serialize();
+    });
+
+    var obj=document.getElementById("name");
+    obj.setCustomValidity("");
+    var x = obj.value;
+    if (x==null || x.trim()=="")
+    {
+        obj.setCustomValidity("First Name must be filled out.");
+        return false;
+    }
+    var pattern=/[-!$%^&*()_+|~=`{}\[\]:";'<>?,.\/]/;
+    if (pattern.test(x))
+    {
+      obj.setCustomValidity("First name must not contain special characters");
+      return false;
+    }
+
+    var obj=document.getElementById("email");
+    obj.setCustomValidity("");
+    var x = obj.value;
+    if (x==null || x.trim()=="")
+    {
+        obj.setCustomValidity("E-Mail ID must be filled out");
+        return false;
+    }
+
+    var pattern = /^[a-zA-Z0-9\-_]+(\.[a-zA-Z0-9\-_]+)*@[a-z0-9]+(\-[a-z0-9]+)*(\.[a-z0-9]+(\-[a-z0-9]+)*)*\.[a-z]{2,4}$/;
+    if (!pattern.test(x))
+    {
+        obj.setCustomValidity("Not a valid e-mail address");
+        return false;
+    }
+
+    var obj=document.getElementById("comments");
+    obj.setCustomValidity("");
+    var x = obj.value;
+    if (x==null || x.trim()=="")
+    {
+        obj.setCustomValidity("Comment must be filled out");
+        return false;
+    }
+    
+    // $.ajax({
+    //     url: 'feedback',
+    //     type: 'POST',
+    //     data: ser_data,
+    //     dataType: 'json',
+    //     success: function (data) {
+    //         if(data["error"] == 0){
+    //             document.getElementById("feedbackError").style.display = "inline-block";
+    //             document.getElementById("feedbackErrorText").innerHTML = "Feedback Submitted Successfully.";
+    //         }
+    //     },
+    //     error: function (response){
+    //         document.getElementById("feedbackError").style.display = "inline-block";
+    //         document.getElementById("feedbackErrorText").innerHTML = "Error In Feedback Submission.";
+    //     }
+    // });
+    
+    return true;
+    // alert("Hello");
+}
 
 $(document).ready(function(){
   

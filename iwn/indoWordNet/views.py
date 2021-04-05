@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from django.views.generic import TemplateView
 from django.http import JsonResponse
 import json
@@ -23,10 +23,34 @@ verbRelationsVector = ["causative", "compounding", "conjunction", "derived from"
 modifiesVector = {"adjective": "modifies noun", "adverb": "modifies verb"}
 ## App Functions
 
-## Index Function - For Home Page Rendering
+## Index Function - For Home Page
 def index(request):
+    feedbackSuccess = None
+    if('feedbackSuccess' in request.GET):
+        feedbackSuccess = request.GET.get('feedbackSuccess',None)
+        return render(request,'index.html',{'found':True,'suggFound': False,'feedbackSuccess': feedbackSuccess})
     
+    feedbackError = None
+    if('feedbackError' in request.GET):
+        feedbackError = request.GET.get('feedbackError',None)
+        return render(request,'index.html',{'found':True,'suggFound': False,'feedbackError': feedbackError})
+    
+    # m.UserFeedback.objects.using('iwn_utilities').all().delete()
     return render(request,'index.html',{'found':True,'suggFound': False})
+
+# def viewHome(request):
+#     print("In Index")
+#     success = None
+#     error = None
+#     # print("s: ", feedbackSuccess, " f: ")
+#     # print("kwargs: ", request.kwargs)
+#     # if('feedbackSuccess' in request.GET):
+#     if('feedbackSuccess' in request.session):
+#         success = request.session.get('feedbackSuccess',None)
+#     # if(feedbackError != ''):
+#     #     error = feedbackError
+#     # m.UserFeedback.objects.using('iwn_utilities').all().delete()
+#     return render(request,'index.html',{'found':True,'suggFound': False, 'feedbackSuccess': success})
 
 ## Wordnet Function  - For Main Page Rendering
 ## It searches for synset by word, if found: returns list of synsets and redirects to wordnet.html
@@ -1788,8 +1812,30 @@ def word(request):
     
 
 
-def feedBack(request):
-    return render(request,'index.html#feedBack',context=None)
+def feedback(request):
+    if(request.method == "GET"):
+        print("in get")
+        return render(request,'index.html#feedBack',context=None)
+    elif(request.is_ajax and request.method == "POST"):
+        print("In post")
+        name = request.POST.get('name',None)
+        emailId = request.POST.get('email',None)
+        comments = request.POST.get('comments',None)
 
+        try:
+            record = m.UserFeedback(name=name,emailid=emailId,comments=comments)
+            record.save(using='iwn_utilities')
+            if(record.pk):
+                print("success")
+                # request.session['feedbackSuccess'] = True
+                return redirect('/?feedbackSuccess=True')
+            else:
+                print("failure")
+                # request.session['feedbackError'] = True
+                return redirect('/?feedbackError=True')
+        except Exception as e:
+            print("failure: ", e)
+            # request.session['feedbackError'] = True
+            return redirect('/?feedbackError=True')
 def contactUs(request):
     return render(request,'index.html#contactUs',context=None)
