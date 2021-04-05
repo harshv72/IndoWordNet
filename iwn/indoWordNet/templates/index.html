@@ -8,7 +8,7 @@
   {% load static %}
  
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
- 
+  <script src="{% static 'assets/js/scripts.js' %}"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.slim.min.js"></script>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
@@ -21,7 +21,7 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
   <link rel="stylesheet" href="{% static 'styles.css' %}">
  
-  <script src="{% static 'assets/js/scripts.js' %}"></script>
+  
 </head>
 <body>
   
@@ -30,6 +30,28 @@
   <div>&nbsp;</div>
   <div>&nbsp;</div>
   
+  {% if feedbackSuccess %}
+  <div id="feedbackSuccess" class="error_div alert alert-success alert-dismissible" role="alert">
+    <button type="button" class="close" data-dismiss="alert">
+      <span aria-hidden="true">X</span>
+      <span class="sr-only">Close</span>
+    </button>
+    <p id="feedbackSuccessText" style="display: inherit;">Your feedback is submitted successfully.</p>
+  </div>
+  {% endif %}
+  
+  {% if feedbackError %}
+  <div id="feedbackError" class="error_div alert alert-danger alert-dismissible" role="alert">
+    <button type="button" class="close" data-dismiss="alert">
+      <span aria-hidden="true">X</span>
+      <span class="sr-only">Close</span>
+    </button>
+    <p id="feedbackErrorText" style="display: inherit;">Error Occured While Submitting The Feedback.</p>
+  </div>
+  <div>&nbsp;</div>
+  <div>&nbsp;</div>
+  {% endif %}
+
   {% if not found %}
   <div class="error_div alert alert-danger alert-dismissible" role="alert">
     <button type="button" class="close" data-dismiss="alert">
