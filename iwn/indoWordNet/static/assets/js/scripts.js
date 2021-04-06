@@ -29,9 +29,9 @@ function toggle(thistag){
 
     $(document).on("keypress", '#Search_Form', function (e) {   
         var code = e.keyCode || e.which;					   
-        console.log(code);									   
+        // console.log(code);									   
         if (code == 13) {
-            console.log('Inside');
+            // console.log('Inside');
             e.preventDefault();
             return false;
         }
@@ -199,10 +199,10 @@ function prev(l,wl,ln){
 }
 
 function fetchTblData(synset_id,langno,pos,btnValue){
-    console.log("Synset ID:" + synset_id);
-    console.log("Target langNo:" + langno);
-    console.log("POS:"+ pos);
-    console.log("Button Value:" + btnValue);
+    // console.log("Synset ID:" + synset_id);
+    // console.log("Target langNo:" + langno);
+    // console.log("POS:"+ pos);
+    // console.log("Button Value:" + btnValue);
 
     var tblParams = {
         headerList: ["Id","Synonyms","Gloss","Example"],
@@ -217,35 +217,35 @@ function fetchTblData(synset_id,langno,pos,btnValue){
             urlLink = "fetch_hypernymy";
             tblTitle = "Showing Hypernymy";
             createTbl(synset_id,langno,pos,urlLink,tblTitle,tblParams,btnValue,-25);
-            console.log("Hypernymy Table Created Successfully");
+            // console.log("Hypernymy Table Created Successfully");
             break;
         case "2":
             tblParams.headerList[0] = "Hyponymy ID";
             urlLink = "fetch_hyponymy";
             tblTitle = "Showing Hyponymy";
             createTbl(synset_id,langno,pos,urlLink,tblTitle,tblParams,btnValue,-25);
-            console.log("Hyponymy Table Created Successfully");
+            // console.log("Hyponymy Table Created Successfully");
             break;
         case "3":
             tblParams.headerList[0] = "Holonymy Type";
             urlLink = "fetch_holonymy";
             tblTitle = "Showing Holonymy";
             createTbl(synset_id,langno,pos,urlLink,tblTitle,tblParams,btnValue,-25);
-            console.log("Holonymy Table Created Successfully");
+            // console.log("Holonymy Table Created Successfully");
             break;
         case "4":
             tblParams.headerList[0] = "Meronymy Type";
             urlLink = "fetch_meronymy";
             tblTitle = "Showing Meronymy";
             createTbl(synset_id,langno,pos,urlLink,tblTitle,tblParams,btnValue,-25);
-            console.log("Meronymy Table Created Successfully");
+            // console.log("Meronymy Table Created Successfully");
             break;
         case "5":
             tblParams.headerList[0] = "Antonymy ID";
             urlLink = "fetch_antonymy";
             tblTitle = "Showing Antonymy";
             createTbl(synset_id,langno,pos,urlLink,tblTitle,tblParams,btnValue,-25);
-            console.log("Antonymy Table Created Successfully");
+            // console.log("Antonymy Table Created Successfully");
             break;
         case "6":
             tblParams.headerList = ["Ontology ID","Ontology Label","Ontology Description"];
@@ -253,28 +253,28 @@ function fetchTblData(synset_id,langno,pos,btnValue){
             urlLink = "fetch_ontology";
             tblTitle = "Showing Ontology";
             createTbl(synset_id,langno,pos,urlLink,tblTitle,tblParams,btnValue,-25);
-            console.log("Ontology Table Created Successfully");
+            // console.log("Ontology Table Created Successfully");
             break;
         case "7":
             tblParams.headerList[0] = "Noun Relation Type";
             urlLink = "fetch_nounRelations";
             tblTitle = "Showing Noun Relations";
             createTbl(synset_id,langno,pos,urlLink,tblTitle,tblParams,btnValue,-25);
-            console.log("Noun Relation Table Created Successfully");
+            // console.log("Noun Relation Table Created Successfully");
             break;
         case "8":
             tblParams.headerList[0] = "Verb Relation Type";
             urlLink = "fetch_verbRelations";
             tblTitle = "Showing Verb Relations";
             createTbl(synset_id,langno,pos,urlLink,tblTitle,tblParams,btnValue,-25);
-            console.log("Verb Relation Table Created Successfully");
+            // console.log("Verb Relation Table Created Successfully");
             break;
         case "9":
             tblParams.headerList[0] = "Derived From ID";
             urlLink = "fetch_derivedFrom";
             tblTitle = "Showing Derived From";
             createTbl(synset_id,langno,pos,urlLink,tblTitle,tblParams,btnValue,-25);
-            console.log("Derived From Table Created Successfully");
+            // console.log("Derived From Table Created Successfully");
             break;
         case "10":
             var modifiesVector = {adjective: "Noun", adverb: "Verb"}
@@ -282,7 +282,7 @@ function fetchTblData(synset_id,langno,pos,btnValue){
             urlLink = "fetch_modifies";
             tblTitle = "Showing Modifies";
             createTbl(synset_id,langno,pos,urlLink,tblTitle,tblParams,btnValue,-25);
-            console.log("Modifies Table Created Successfully");
+            // console.log("Modifies Table Created Successfully");
             break;
         case "11":
             tblParams.headerList[0] = "Synset ID";
@@ -291,10 +291,10 @@ function fetchTblData(synset_id,langno,pos,btnValue){
 
             var start = parseInt(document.getElementById("start").value)
             createTbl(synset_id,langno,pos,urlLink,tblTitle,tblParams,btnValue,start);
-            console.log("Reverse Ontology Table Created Successfully");
+            // console.log("Reverse Ontology Table Created Successfully");
             break;
         default:
-            console.log("default case in fetch_tbl_data");
+            // console.log("default case in fetch_tbl_data");
             break;
     }
 }
@@ -314,8 +314,8 @@ function getSynsetData(synset_id,tlangno,pos){
         dataType: 'json',
         success: function (data) {
             if(data.hasOwnProperty("error")){
-                console.log("Error:" + data["error"][1]);
-                console.log("Cause:" + data["cause"]);
+                // console.log("Error:" + data["error"][1]);
+                // console.log("Cause:" + data["cause"]);
                 showErrorMessage(data["error"][1]);
             }
             else {
@@ -329,7 +329,7 @@ function getSynsetData(synset_id,tlangno,pos){
             tbldivHTML.style.display = "block";
 
             var data = JSON.parse(data);
-            console.log(data);
+            // console.log(data);
             
             syndata = document.getElementById('tblHTML');
             syndata.innerHTML = "";
@@ -480,7 +480,7 @@ function getSynsetData(synset_id,tlangno,pos){
           
         },
         error: function(response){
-            console.log(response["status"]);
+            // console.log(response["status"]);
             if(response["status"] == 404){
                 showErrorMessage("Page Not Found");
             }
@@ -518,7 +518,7 @@ function createTbl(synset_id,langno,pos,urlLink,tblTitle,tblParams,btnValue,star
         dataType: 'json',
         beforeSend: function(){
             // Show image container
-            console.log("Loading...");
+            // console.log("Loading...");
            },
         success: function (data) {
             if(data.hasOwnProperty("error")){
@@ -536,13 +536,13 @@ function createTbl(synset_id,langno,pos,urlLink,tblTitle,tblParams,btnValue,star
                         document.getElementById("prevOnto").style.display = "none";
                     }
                 }
-                console.log("Error:" + data["error"][1]);
-                console.log("Cause:" + data["cause"]);
+                // console.log("Error:" + data["error"][1]);
+                // console.log("Cause:" + data["cause"]);
                 showErrorMessage(data["error"][1]);
             }
             else{
                 var data = JSON.parse(data);
-                console.log(data);
+                // console.log(data);
                 var i,j,k;
 
                 //creating TblHeader
@@ -675,7 +675,7 @@ function createTbl(synset_id,langno,pos,urlLink,tblTitle,tblParams,btnValue,star
                         if(noData){
                             j += colCount - 2;
                             cellColSpan =  colCount - 1;
-                            console.log("Colspan: " + cellColSpan);
+                            // console.log("Colspan: " + cellColSpan);
                         }
                     }
                     tbody.appendChild(row);
@@ -690,7 +690,7 @@ function createTbl(synset_id,langno,pos,urlLink,tblTitle,tblParams,btnValue,star
             }
         },
         error: function(response){
-            console.log(response["status"]);
+            // console.log(response["status"]);
             if(response["status"] == 404){
                 showErrorMessage("Page Not Found");
             }
@@ -700,7 +700,7 @@ function createTbl(synset_id,langno,pos,urlLink,tblTitle,tblParams,btnValue,star
         },
         complete: function(){
             // Show image container
-            console.log("finished");
+            // console.log("finished");
         }
     })
 }
@@ -728,13 +728,13 @@ function fetchRecomendationData(){
     var lang = l.options[l.selectedIndex].value
     
     
-    console.log(word.length)
-    console.log(word)
-    console.log(lang)
+    // console.log(word.length)
+    // console.log(word)
+    // console.log(lang)
 
   
     if(word.length != 0){
-        console.log(word)
+        // console.log(word)
     
        
         $.ajax({
@@ -754,7 +754,7 @@ function fetchRecomendationData(){
         });
     }
     else{
-        console.log("close")
+        // console.log("close")
         var list = document.getElementById("autocomplete-list");
         list.remove();
     }
@@ -836,7 +836,7 @@ function getStatistics(langno){
         success: function (data) {
             if (data) {
                 var data = JSON.parse(data);
-                console.log(data);
+                // console.log(data);
                 document.getElementById("langName").innerHTML = data[0]
                 document.getElementById("noun").innerHTML = data[1]
                 document.getElementById("verb").innerHTML = data[2]
@@ -869,7 +869,7 @@ $(document).ready(function(){
     });
 
     $("#slang").on('change',function(){
-        console.log("lang change")
+        // console.log("lang change")
         getStatistics($(this).val());
     });
 
@@ -905,9 +905,9 @@ $(document).ready(function(){
 
     $('#tlangOnto').on('change',function(){
         var start = document.getElementById("start").value;
-        console.log(start);
+        // console.log(start);
         var currentLength = document.getElementById("currentLength").value;
-        console.log(currentLength);
+        // console.log(currentLength);
         if((parseInt(start) - parseInt(currentLength))>0){
             document.getElementById("start").value = (parseInt(start) - parseInt(currentLength)).toString();
         }
@@ -915,7 +915,7 @@ $(document).ready(function(){
             document.getElementById("start").value = "0";
         }
         
-        console.log($("#start").val());
+        // console.log($("#start").val());
         
         var tlang = $(this);
         var tlangno = tlang.val();
@@ -928,17 +928,17 @@ $(document).ready(function(){
     
     $('#prevOnto').on('click',function(){
         var start = document.getElementById("start").value;
-        console.log(start);
+        // console.log(start);
         var currentLength = document.getElementById("currentLength").value;
-        console.log(currentLength);
+        // console.log(currentLength);
         if((parseInt(start) - parseInt(currentLength) - 25)>0){
             document.getElementById("start").value = (parseInt(start) - parseInt(currentLength) - 25).toString();
         }
         else{
             document.getElementById("start").value = "0";
         }
-        console.log($("#start").val());
-        console.log("prevStart");
+        // console.log($("#start").val());
+        // console.log("prevStart");
         var tlangno = $("#tlangOnto").val();
         var btnValue = "11";
         var synset_id = document.getElementById("selectedOntoID").value;
@@ -948,7 +948,7 @@ $(document).ready(function(){
     });
 
     $('#nextOnto').on('click',function(){
-        console.log("nextStart");
+        // console.log("nextStart");
         var tlangno = $("#tlangOnto").val();
         var btnValue = "11";
         var synset_id = document.getElementById("selectedOntoID").value;
@@ -958,27 +958,27 @@ $(document).ready(function(){
     });
 
     $("#start").change(function(){
-        console.log("in prevonto dissable enable");
+        // console.log("in prevonto dissable enable");
         var start = parseInt(document.getElementById("start").value);
         if(start <= 0){
-            console.log("disabling previous")
+            // console.log("disabling previous")
             $("#prevOnto").css("display", "none");
         }
         else{
-            console.log("enabling previous");
+            // console.log("enabling previous");
             $("#prevOnto").css("display", "inline-block");
         }
     });
 
     $("#currentLength").change(function(){
-        console.log("in nextonto dissable enable");
+        // console.log("in nextonto dissable enable");
         var currentLength = parseInt(document.getElementById("currentLength").value);
         if(currentLength < 25){
-            console.log("enabling next");
+            // console.log("enabling next");
             $("#nextOnto").css("display", "none");
         }
         else{
-            console.log("enabling next");
+            // console.log("enabling next");
             $("#nextOnto").css("display", "inline-block");
         }
     });
