@@ -150,6 +150,8 @@ def getSynsetByWord(word, lang):
             except Exception as e:
                 print(e)
 
+            print(synonyms)
+
             if word in synonyms:
                 length = length + 1
                 l = []

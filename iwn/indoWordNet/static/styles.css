@@ -90,7 +90,6 @@ header {
 }
 
 .autocomplete-items div {
-  /* padding: 5px; */
   padding: 5px 30px;
   width: 100%;
   cursor: pointer;
@@ -98,7 +97,6 @@ header {
   border-bottom: 1px solid #d4d4d4;
 }
 
-/*when hovering an item:*/
 .autocomplete-items div:hover {
   background-color: #f0ebeb;
 }
@@ -392,17 +390,6 @@ alert-info {
   left: 50%;
   transform: translate(-50%, -50%);
 }
-
-/* .alert {
-    padding: 0px;
-    margin: 20px 20px;
-    border: 1px solid transparent;
-    border-top-color: transparent;
-    border-right-color: transparent;
-    border-bottom-color: transparent;
-    border-left-color: transparent;
-    border-radius: 4px;
-} */
 
 .references {
   width: 80%;
