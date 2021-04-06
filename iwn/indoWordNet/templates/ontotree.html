@@ -89,26 +89,14 @@
                 var tlangOnto = document.getElementById("tlangOnto");
                 tlangOnto.selectedIndex = langno;
             </script>
-            <!--
-            <span class="btn-group-vertical col ontoBtn">
-                <button type="button" class="btn btn-info btn-md" style="font-size: 1.2vw; text-align: center;">Synset</button>    
-            </span>
-            -->
             <span>
                 <div id="tbl2Title" class="dataHead">
                     Hierarchy
                 </div>
             </span>
             
-            <!-- <span class="ontoBtn" style="background-color: lightblue;">
-                <div class="bar_titleLeft alert alert-info" style="font-size: 1.2vw;"><p style="font-size: 1.2vw;">Hierarchy</p></div>
-            </span> -->
             
-            <span>                            <!-- <div>
-                    <div class="container-fluid notFound  alert alert-danger ">
-                        No <span id="dataLabel" style="color: blue;">Test</span> data found
-                    </div>
-                </div> -->
+            <span> 
                 <div style="width:100%;height: 440px; overflow-y: scroll;overflow-x: auto;">
                 <table id="tblHTML2" style="width: 100%;table-layout: fixed;overflow: scroll;">
                     <div id="tbl_data2" style="width:100%;">
@@ -129,7 +117,6 @@
                             </tr>
                             <tr class="border-bottom">
                                 <td style="background: black;" colspan="3"></td>
-                                <!--empty row-->
                             </tr>
                             
                             <!-- <td class="d" style="color: blue;font-weight: bold;">{{ i.1 }}</td>
@@ -155,11 +142,6 @@
             <input type="hidden" id="selectedOntoID" value="{{wordList.0.0}}"></input>
             <span>
 
-                <!-- <div>
-                    <div class="container-fluid notFound  alert alert-danger ">
-                        No <span id="dataLabel" style="color: blue;">Test</span> data found
-                    </div>
-                </div> -->
                 <div id="tbldivHTML" style="width:100%; height: 500px; overflow-y: scroll; overflow-x: auto;">
                 <table id="tblHTML" style="width: 100%;table-layout: fixed; overflow: scroll;">
                     
@@ -199,31 +181,7 @@
                     </table>
                 </div>
             </span>
-            <script>
-                
-                // $(document).ready(function(){
-                //     var tblParams = {};
-                //     var synset_id = document.getElementById("s_id").innerHTML;
-                //     var tlangno=0;
-                //     var pos = document.getElementById('pos').innerHTML.toLowerCase();
-                //     tblParams.headerList = ["Ontology ID","Ontology Label","Ontology Description"];
-                //     tblParams.colCount = 3;
-                //     urlLink = "fetch_ontology";
-                //     tblTitle = "Showing Ontology";
-                //     createTbl(synset_id,tlangno,pos,urlLink,tblTitle,tblParams);
-                //     console.log("Ontology Table Created Successfully");
-
-                    
-                //     // console.log("cre");
-                //     // console.log(synset_id);
-                //     // createMeroTbl(3618,"0")
-                //     // createHoloTbl(474,"0");
-                //     // createModifiesTbl(52,"0");
-                //     // createDerivedFromTbl(52,"0");
-                //     // createOntoTbl(synset_id,tlangno);
-                // });
-            </script>
-        </div>
+          </div>
     </div>
   </div>
 

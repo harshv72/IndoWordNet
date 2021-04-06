@@ -1,14 +1,11 @@
 function expand(thistag){
-    //alert();
     var s = document.getElementById("lang");
        try{
            for(i=0;i<=s.length;i++){
-               //alert(i);
                m = document.getElementById("map"+i).style;
                m.display = 'none';
            }
        }catch(er){}
-    //alert(s.value);
     m = document.getElementById("map"+s.value).style;
     m.display = 'block';
 
@@ -30,9 +27,9 @@ function toggle(thistag){
    else
        {close1(thistag);}
 
-    $(document).on("keypress", '#Search_Form', function (e) {  // Disabling the enter keypress submission, required for the 
-        var code = e.keyCode || e.which;					   // function to check word if its empty, the function is 
-        console.log(code);									   // called on 'click', hence disabling enter submission is necessary. - Diptesh 20/08/2014
+    $(document).on("keypress", '#Search_Form', function (e) {   
+        var code = e.keyCode || e.which;					   
+        console.log(code);									   
         if (code == 13) {
             console.log('Inside');
             e.preventDefault();
@@ -40,95 +37,9 @@ function toggle(thistag){
         }
     });
 }
-
-// function autocomplete(inp, arr) {
-//     var currentFocus;
-//     inp.addEventListener("input", function(e) {
-//         var a, b, i, val = this.value;
-//         closeAllLists();
-//         if (!val) { return false;}
-//         currentFocus = -1;
-//         a = document.createElement("DIV");
-//         a.setAttribute("id", this.id + "autocomplete-list");
-//         a.setAttribute("class", "autocomplete-items");
-//         this.parentNode.appendChild(a);
-//         k = 0;
-//         for (i = 0; ; i++) {
-//             if (arr[i].substr(0, val.length)== val) {
-//                 k = k+1;
-//                 b = document.createElement("DIV");
-//                 b.innerHTML = "<strong>" + arr[i].substr(0, val.length) + "</strong>";
-//                 b.innerHTML += arr[i].substr(val.length);
-//                 b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
-//                 b.addEventListener("click", function(e) {
-//                     inp.value = this.getElementsByTagName("input")[0].value;
-//                     closeAllLists();
-//                 });
-//                 a.appendChild(b);
-//                 if(k==10){
-//                     break;
-//                 }
-//             }
-//         }
-//         if (k == 0){
-//             b = document.createElement("DIV");
-//                 b.innerHTML = "<strong> Not Found </strong>";
-//                 b.addEventListener("click", function(e) {
-//                     inp.value = this.getElementsByTagName("input")[0].value;
-//                     closeAllLists();
-//                 });
-//                 a.appendChild(b);
-                
-//         }
-//     });
-//     inp.addEventListener("keydown", function(e) {
-//         var x = document.getElementById(this.id + "autocomplete-list");
-//         if (x) x = x.getElementsByTagName("div");
-//         if (e.keyCode == 40) {
-//             currentFocus++;
-//             addActive(x);
-//         } 
-//         else if (e.keyCode == 38) { //up
-//             currentFocus--;
-//             addActive(x);
-//         }
-//         else if (e.keyCode == 13) {
-//             e.preventDefault();
-//             if (currentFocus > -1) {
-//                 if (x) x[currentFocus].click();
-//             }
-//         }
-//     });
-//     function addActive(x) {
-//         if (!x) return false;
-//         removeActive(x);
-//         if (currentFocus >= x.length) currentFocus = 0;
-//         if (currentFocus < 0) currentFocus = (x.length - 1);
-//         x[currentFocus].classList.add("autocomplete-active");
-//     }
-//     function removeActive(x) {
-//         for (var i = 0; i < x.length; i++) {
-//             x[i].classList.remove("autocomplete-active");
-//         }
-//     }
-//     function closeAllLists(elmnt) {
-//         var x = document.getElementsByClassName("autocomplete-items");
-//         for (var i = 0; i < x.length; i++) {
-//             if (elmnt != x[i] && elmnt != inp) {
-//             x[i].parentNode.removeChild(x[i]);
-//             }
-//         }
-//     }
-//     document.addEventListener("click", function (e) {
-//         closeAllLists(e.target);
-//     });
-//   }
-  
   
 function autocomplete(inp, arr) {
     var currentFocus;
-    // console.log("1")
-    // inp.addEventListener("input", function(e) {
         var a, b, i, val = inp.value;
         currentFocus = -1;
         a = document.createElement("DIV");
@@ -163,7 +74,6 @@ function autocomplete(inp, arr) {
             
         }
         inp.focus()
-    // });
 
   
 
@@ -188,15 +98,10 @@ document.addEventListener("click", function (e) {
 
 
 function funct(w){
-    //alert(w);
     queryword = document.getElementById("queryword");
     search_button = document.getElementById("search_button");
 
     queryword.value = queryword.value + w;
-    // search()
-    // var word = $("#queryword").val();
-    // var lang = $("#lang").val();
-    // alert('value changed');
     fetchRecomendationData();
     search_button.focus();
 }
@@ -235,20 +140,15 @@ function next(l,wl,ln)
     }
     
     var tlangno = document.getElementById("tlang").value;
-    //var ele = document.getElementsByName('button');
     var ele = document.getElementById("aBtnGroup").children;
     pos = document.getElementById("pos").innerHTML.toLowerCase();
-    //console.log(ele);
     for(i = 0; i < ele.length; i++) { 
-        //console.log(ele[i].className)
         if(ele[i].className.includes("btn-info")){
-            //console.log(ele[i].value)
             fetchTblData(synset_id,tlangno,pos,ele[i].value);
             
             break; 
         }
     } 
-    //createOntoTbl(wl[synset][0],0);
 
     synset = synset+1;
 }
@@ -286,14 +186,10 @@ function prev(l,wl,ln){
     }
     
     var tlangno = document.getElementById("tlang").value;
-    //var ele = document.getElementsByName('button');
     var ele = document.getElementById("aBtnGroup").children;
     var pos = document.getElementById("pos").innerHTML.toLowerCase();
-    //console.log(ele);
     for(i = 0; i < ele.length; i++) { 
-        //console.log(ele[i].className)
         if(ele[i].className.includes("btn-info")){
-            //console.log(ele[i].value)
             fetchTblData(synset_id,tlangno,pos,ele[i].value);
             
             break; 
@@ -316,17 +212,11 @@ function fetchTblData(synset_id,langno,pos,btnValue){
         case "0":
             getSynsetData(synset_id,langno,pos); 
             break;
-            // tblParams.headerList[0] = "Synset ID";
-            // urlLink = "fetch_synset";
-            // tblTitle = fetchTableSynsetTitle(langno);
-            // createTbl(synset_id,langno,pos,urlLink,tblTitle,tblParams);
-            // console.log("Synset Table Created Successfully");
-            // break;
         case "1":
             tblParams.headerList[0] = "Hypernymy ID";
             urlLink = "fetch_hypernymy";
             tblTitle = "Showing Hypernymy";
-            createTbl(synset_id,langno,pos,urlLink,tblTitle,tblParams,btnValue,-25); // last parameter doesnt matter unless btnValue=11
+            createTbl(synset_id,langno,pos,urlLink,tblTitle,tblParams,btnValue,-25);
             console.log("Hypernymy Table Created Successfully");
             break;
         case "2":
@@ -397,7 +287,7 @@ function fetchTblData(synset_id,langno,pos,btnValue){
         case "11":
             tblParams.headerList[0] = "Synset ID";
             urlLink = "fetch_revOnto";
-            tblTitle = "Showing Synset List"; // proper title needed for table
+            tblTitle = "Showing Synset List"; 
 
             var start = parseInt(document.getElementById("start").value)
             createTbl(synset_id,langno,pos,urlLink,tblTitle,tblParams,btnValue,start);
@@ -413,7 +303,7 @@ function getSynsetData(synset_id,tlangno,pos){
 
     var langText = fetchTableSynsetTitle(tlangno);
     document.getElementById("tblTitle").innerHTML = langText;
-    //var synset_id = document.getElementById("s_id").innerHTML;
+    
     $.ajax({
         url: 'fetch_synset',
         data: {
@@ -486,7 +376,6 @@ function getSynsetData(synset_id,tlangno,pos){
             row1.appendChild(cell6);
             syndata.appendChild(row1);
 
-            /////////////////////////////
 
             var row2 = document.createElement('tr');
             row2.className = "border-bottom";
@@ -515,7 +404,6 @@ function getSynsetData(synset_id,tlangno,pos){
                     var a = document.createElement("a");
                     a.textContent = " " + data["synonyms"][i] + ",";
                     a.href = "wordnet?langno="+ tlangno +"&query=" + data["synonyms"][i];
-                    // a.appendChild(linkText);
                     cell3.appendChild(a);
                 }
             }
@@ -526,7 +414,6 @@ function getSynsetData(synset_id,tlangno,pos){
             row2.appendChild(cell3);
             syndata.appendChild(row2);
 
-            ////////////////////////
 
             var row3 = document.createElement('tr');
             row3.className = "border-bottom";
@@ -558,7 +445,6 @@ function getSynsetData(synset_id,tlangno,pos){
             row3.appendChild(cell3);
             syndata.appendChild(row3);
 
-            ///////////////////
 
             var row4 = document.createElement('tr');
             row4.className = "border-bottom";
@@ -621,7 +507,6 @@ function createTbl(synset_id,langno,pos,urlLink,tblTitle,tblParams,btnValue,star
     //generating Table
     tblHTML = document.getElementById('tblHTML');
     tblHTML.innerHTML = "";
-    //var pos = document.getElementById("pos").innerHTML.toLowerCase();
     $.ajax({
         url: urlLink,
         data: {
@@ -634,7 +519,6 @@ function createTbl(synset_id,langno,pos,urlLink,tblTitle,tblParams,btnValue,star
         beforeSend: function(){
             // Show image container
             console.log("Loading...");
-            //$("#loader").show();
            },
         success: function (data) {
             if(data.hasOwnProperty("error")){
@@ -708,18 +592,11 @@ function createTbl(synset_id,langno,pos,urlLink,tblTitle,tblParams,btnValue,star
                     }
                     for(j=0;j<colCount;j++)
                     {
-                        // console.log("i:" + i + " j:" + j);
-                        // console.log("j:"+j);
                         var cell = document.createElement('td');
                         cell.className = "d";
-                        // cell.style.color = tblParams["colColor"][j];
-                        // cell.style.fontWeight = "bold";
-                        // cell.style.wordBreak = "break-word";
                         cell.style.overflowWrap = "break-word";
                         cell.style.wordWrap = "break-all";
                         cell.colSpan = cellColSpan.toString();
-                        // console.log("Colspan of cell:" + cell.colSpan);
-                        // cell.style.textAlign = tblParams["colTextAlign"][j];    
                         
                         switch(j)
                         {
@@ -737,7 +614,6 @@ function createTbl(synset_id,langno,pos,urlLink,tblTitle,tblParams,btnValue,star
                                         var a = document.createElement("a");
                                         a.textContent = data[i.toString()][j][k] + ", ";
                                         a.href = "wordnet?langno="+ langno +"&query=" + data[i.toString()][j][k];
-                                        // a.appendChild(linkText);
                                         cell.appendChild(a);
                                     }
                                 }
@@ -746,10 +622,8 @@ function createTbl(synset_id,langno,pos,urlLink,tblTitle,tblParams,btnValue,star
                                     var a = document.createElement("a");
                                     a.textContent = data[i.toString()][j];
                                     a.href = "showonto?synset_id="+ synset_id + "&oid=" + data[i.toString()][j-1] +"&langno=" + langno;
-                                    // a.appendChild(linkText);
                                     cell.appendChild(a);
-                                    //var text = document.createTextNode(data[i.toString()][j]);
-                                    //cell.appendChild(text);
+                                   
                                 }
                                 break;
                             case 2:
@@ -765,7 +639,6 @@ function createTbl(synset_id,langno,pos,urlLink,tblTitle,tblParams,btnValue,star
                                     cell.style.textAlign = "left";
                                     var text;
                                     if(noData){
-                                        // console.log("In No Data");
                                         cell.style.color = "black";
                                         cell.style.fontWeight = "bold";
                                         text = document.createTextNode(data[i.toString()][j][1]);
@@ -781,7 +654,6 @@ function createTbl(synset_id,langno,pos,urlLink,tblTitle,tblParams,btnValue,star
                                 cell.style.textAlign = "left";
                                 var text;
                                 if(noData){
-                                    // console.log("In No Data");
                                     cell.style.color = "black";
                                     cell.style.fontWeight = "bold";
                                     text = document.createTextNode(data[i.toString()][j][1]);
@@ -829,8 +701,7 @@ function createTbl(synset_id,langno,pos,urlLink,tblTitle,tblParams,btnValue,star
         complete: function(){
             // Show image container
             console.log("finished");
-            //$("#loader").show();
-           }
+        }
     })
 }
 
@@ -844,9 +715,7 @@ function showErrorMessage(msg){
     errText.innerHTML = msg;
     errMsg = document.getElementById("errMsg");
     errMsg.style.display = "block";
-    
-    // errText.style.display = "inline";
-    
+   
 }
 function fetchRecomendationData(){
     var currentRequest = null;
@@ -878,10 +747,7 @@ function fetchRecomendationData(){
             success: function (data) {
                 if (data) {
                     var data = JSON.parse(data);
-                    // console.log(word)
-                    // console.log(data);
                     var inp = document.getElementById("queryword");
-                    // inp.focus()
                     autocomplete(inp,data)
                 }
             }
@@ -955,25 +821,9 @@ function validateForm(){
         return false;
     }
     
-    // $.ajax({
-    //     url: 'feedback',
-    //     type: 'POST',
-    //     data: ser_data,
-    //     dataType: 'json',
-    //     success: function (data) {
-    //         if(data["error"] == 0){
-    //             document.getElementById("feedbackError").style.display = "inline-block";
-    //             document.getElementById("feedbackErrorText").innerHTML = "Feedback Submitted Successfully.";
-    //         }
-    //     },
-    //     error: function (response){
-    //         document.getElementById("feedbackError").style.display = "inline-block";
-    //         document.getElementById("feedbackErrorText").innerHTML = "Error In Feedback Submission.";
-    //     }
-    // });
     
     return true;
-    // alert("Hello");
+   
 }
 
 function getStatistics(langno){
@@ -986,7 +836,6 @@ function getStatistics(langno){
         success: function (data) {
             if (data) {
                 var data = JSON.parse(data);
-                // console.log(word)
                 console.log(data);
                 document.getElementById("langName").innerHTML = data[0]
                 document.getElementById("noun").innerHTML = data[1]
@@ -1026,8 +875,7 @@ $(document).ready(function(){
 
     
     
-    // langno = document.getElementById("lang").value;
-   
+    
     $("#aBtnGroup button").on('click',function(){
         var thisBtn = $(this);
         var btnValue = thisBtn.val();
@@ -1036,14 +884,11 @@ $(document).ready(function(){
         var pos = document.getElementById("pos").innerHTML.toLowerCase();
         
         fetchTblData(synset_id,tlangno,pos,btnValue);
-        // if(thisBtn.val() == '0'){
-        //     getSynsetData(tlangno)
-        // }
         thisBtn.siblings().removeClass('active');
         thisBtn.addClass('active');
         thisBtn.siblings().removeClass('btn-info').addClass('btn-outline-info');
         thisBtn.removeClass('btn-outline-info').addClass('btn-info');
-       //alert(thisBtn.val());
+      
     });
 
     $('#tlang').on('change',function(){
@@ -1055,7 +900,7 @@ $(document).ready(function(){
 
         //preserve k and cl
         fetchTblData(synset_id,tlangno,pos,btnValue);
-        //alert($(this).val());
+       
     });
 
     $('#tlangOnto').on('change',function(){
@@ -1078,7 +923,7 @@ $(document).ready(function(){
         var btnValue = "11";
         var selectedOntoID = document.getElementById("selectedOntoID").value;
         fetchTblData(selectedOntoID,tlangno,pos,btnValue);
-        //alert($(this).val());
+      
     });
     
     $('#prevOnto').on('click',function(){
@@ -1099,21 +944,17 @@ $(document).ready(function(){
         var synset_id = document.getElementById("selectedOntoID").value;
         var pos = "noun";
         fetchTblData(synset_id,tlangno,pos,btnValue);
-        //alert($(this).val());
+       
     });
 
     $('#nextOnto').on('click',function(){
-        // var start = document.getElementById("start").value;
-        // var currentLength = document.getElementById("currentLength").value;
-        // var newstart = document.getElementById("start").value = start - currentLength - 25;
-        // console.log("newStart");
         console.log("nextStart");
         var tlangno = $("#tlangOnto").val();
         var btnValue = "11";
         var synset_id = document.getElementById("selectedOntoID").value;
         var pos = "noun";
         fetchTblData(synset_id,tlangno,pos,btnValue);
-        //alert($(this).val());
+       
     });
 
     $("#start").change(function(){
@@ -1143,10 +984,6 @@ $(document).ready(function(){
     });
 
     $('#queryword').change(function(){
-        // console.log($(this).val());
-        // var word = $(this).val();
-        // var lang = $("#lang").val();
-        // alert('value changed');
         fetchRecomendationData();
     });
 
