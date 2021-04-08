@@ -150,7 +150,7 @@ def getSynsetByWord(word, lang):
             except Exception as e:
                 print(e)
 
-            print(synonyms)
+            #print(synonyms)
 
             if word in synonyms:
                 length = length + 1
@@ -640,7 +640,7 @@ def fetchNounRelations(request):
     langno = request.GET.get("langno", None)
     pos = request.GET.get("pos", None)
     nounRelationsList = []
-    print(synset_id)
+    #print(synset_id)
     if pos != "noun":
         response = JsonResponse({"error": ["1", "No Noun Relations Data Found."],"cause": "Invalid Part Of Speech: " + pos})
         response.status_code = 202  # To announce that the user isn't allowed to publish
